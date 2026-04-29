@@ -3,12 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Floema Style - Elegant 3D Flythrough</title>
+    <title>3am.</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
+        /* 定義主題 CSS 變數 */
+        :root {
+            --bg-color: #F6F5F2; /* Light mode 背景色 */
+            --text-color: #1a1a1a; /* Light mode 標題/選單字色 */
+            --nav-bg: white; /* Light mode 選單按鈕背景 */
+            --nav-hover-bg: #1a1a1a; /* Light mode 選單按鈕 Hover 背景 */
+            --nav-hover-text: white; /* Light mode 選單按鈕 Hover 字色 */
+            /* Light mode 中心漸變白霧 */
+            --fog-gradient: radial-gradient(circle at center, rgba(246, 245, 242, 0.95) 0%, rgba(246, 245, 242, 0.6) 20%, transparent 50%);
+            --logo-filter: none; /* Light mode Logo 顏色不變 (假設原本係黑色) */
+            --blend-mode: multiply; /* Light mode 字體疊加模式 */
+        }
+
+        body.dark {
+            --bg-color: #121212; /* Dark mode 背景色 (深灰/黑) */
+            --text-color: #f0f0f0; /* Dark mode 標題/選單字色 (淺灰/白) */
+            --nav-bg: #2a2a2a; /* Dark mode 選單按鈕背景 */
+            --nav-hover-bg: #f0f0f0; /* Dark mode 選單按鈕 Hover 背景 */
+            --nav-hover-text: #121212; /* Dark mode 選單按鈕 Hover 字色 */
+            /* Dark mode 中心漸變黑霧 */
+            --fog-gradient: radial-gradient(circle at center, rgba(18, 18, 18, 0.95) 0%, rgba(18, 18, 18, 0.7) 20%, transparent 50%);
+            /* Dark mode Logo 反白 (將黑色 SVG 轉成白色) */
+            --logo-filter: invert(1) brightness(2); 
+            --blend-mode: normal; /* Dark mode 唔需要 multiply，否則黑色背景字會睇唔到 */
+        }
+
         body {
-            background-color: #F6F5F2;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             font-family: 'Inter', sans-serif;
             margin: 0;
             display: flex;
@@ -16,6 +43,7 @@
             align-items: center;
             min-height: 100vh;
             overflow: hidden;
+            transition: background-color 0.5s ease, color 0.5s ease; /* 平滑過渡 */
         }
 
         #canvas-container {
@@ -28,7 +56,8 @@
             /* 1000px perspective 係最接近人眼自然透視嘅設定 */
             perspective: 1000px; 
             transform-style: preserve-3d;
-            background-color: #F6F5F2;
+            background-color: var(--bg-color);
+            transition: background-color 0.5s ease;
         }
 
         .image-plane {
@@ -46,19 +75,20 @@
             border-radius: 4px; 
         }
 
-        /* 中心漸變白霧遮罩：營造從白光中誕生嘅感覺 */
+        /* 中心漸變霧遮罩：應用 CSS 變數 */
         .center-fade-mask {
             position: absolute;
             inset: 0;
             pointer-events: none;
             z-index: 25; 
-            background: radial-gradient(circle at center, rgba(246, 245, 242, 0.95) 0%, rgba(246, 245, 242, 0.6) 20%, transparent 50%);
+            background: var(--fog-gradient);
+            transition: background 0.5s ease;
         }
 
-        /* 導航欄按鈕樣式 */
+        /* 導航欄按鈕樣式：應用 CSS 變數 */
         .nav-pill {
-            background-color: white;
-            color: #1a1a1a;
+            background-color: var(--nav-bg);
+            color: var(--text-color);
             padding: 0.4rem 1rem;
             border-radius: 9999px;
             font-size: 0.75rem;
@@ -66,10 +96,57 @@
             letter-spacing: 0.05em;
             transition: all 0.2s;
             cursor: pointer;
+            border: 1px solid rgba(128, 128, 128, 0.2); /* 加條幼邊框，Dark mode 睇落有層次啲 */
         }
         .nav-pill:hover {
-            background-color: #1a1a1a;
-            color: white;
+            background-color: var(--nav-hover-bg);
+            color: var(--nav-hover-text);
+        }
+
+        /* 控制 Logo 顏色 */
+        .dynamic-logo {
+            filter: var(--logo-filter);
+            transition: filter 0.5s ease;
+        }
+
+        /* 控制大標題疊加模式 */
+        .hero-title {
+            color: var(--text-color);
+            mix-blend-mode: var(--blend-mode);
+            transition: color 0.5s ease;
+        }
+
+        /* Dark Mode Icon 切換按鈕樣式 */
+        .theme-toggle-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--nav-bg);
+            border: 1px solid rgba(128, 128, 128, 0.2);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .theme-toggle-btn:hover {
+            background-color: var(--nav-hover-bg);
+        }
+        
+        /* 確保 icon img 喺 hover 時唔會消失，但有反色效果 (視乎你 svg 設計，可自行微調) */
+        .theme-toggle-btn img {
+            width: 16px;
+            height: 16px;
+            transition: filter 0.2s;
+        }
+        
+        /* 當 theme-toggle-btn hover 並且處於 Light Mode 時，反白裡面嘅 icon */
+        body:not(.dark) .theme-toggle-btn:hover img {
+            filter: invert(1);
+        }
+        /* 當 theme-toggle-btn hover 並且處於 Dark Mode 時，將白色 icon 變黑 */
+        body.dark .theme-toggle-btn:hover img {
+            filter: invert(1);
         }
     </style>
 </head>
@@ -80,19 +157,27 @@
         <!-- Header -->
         <header class="absolute top-0 left-0 w-full p-8 flex justify-between items-center z-50">
             <div class="flex items-center gap-6">
-                <!-- 替換為本地 SVG Logo -->
-                <img src="./assets/3amDS.svg" alt="3amDS Logo" class="h-6 md:h-8 object-contain">
+                <!-- 替換為本地 SVG Logo，加入 dynamic-logo 類別 -->
+                <img src="./assets/3amDS.svg" alt="3amDS Logo" class="h-6 md:h-8 object-contain dynamic-logo">
             </div>
-            <nav class="hidden md:flex gap-2">
+            <nav class="hidden md:flex gap-2 items-center">
                 <div class="nav-pill">ABOUT</div>
                 <div class="nav-pill">WORKS</div>
                 <div class="nav-pill">CONTACT</div>
+                
+                <!-- 主題切換按鈕 -->
+                <button id="themeToggleBtn" class="theme-toggle-btn ml-2" aria-label="Toggle Dark Mode">
+                    <!-- 預設顯示 Dark-mode icon (因為預設係 Light mode) -->
+                    <img id="icon-moon" src="./assets/Dark-mode.svg" alt="Dark Mode" class="block">
+                    <!-- 預設隱藏 Light-mode icon -->
+                    <img id="icon-sun" src="./assets/Light-mode.svg" alt="Light Mode" class="hidden">
+                </button>
             </nav>
         </header>
 
         <!-- 置中大標題 -->
         <div class="absolute inset-0 flex items-center justify-center z-40 pointer-events-none">
-            <h1 class="text-4xl md:text-5xl lg:text-7xl xl:text-[85px] font-normal tracking-tight text-[#1a1a1a] text-center px-4 leading-tight mix-blend-multiply">
+            <h1 class="hero-title text-4xl md:text-5xl lg:text-7xl xl:text-[85px] font-normal tracking-tight text-center px-4 leading-tight">
                 Spaces for people,<br>made for life.
             </h1>
         </div>
@@ -105,6 +190,47 @@
     </div>
 
     <script>
+        // === Theme Toggle Logic ===
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const body = document.body;
+        const iconMoon = document.getElementById('icon-moon');
+        const iconSun = document.getElementById('icon-sun');
+
+        // 檢查用家之前係咪揀過 Dark Mode (存喺 localStorage)
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            body.classList.add('dark');
+            iconMoon.classList.add('hidden');
+            iconSun.classList.remove('hidden');
+            iconSun.classList.add('block');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            // 切換 body 嘅 dark class
+            body.classList.toggle('dark');
+            
+            // 切換 Icon 顯示
+            if (body.classList.contains('dark')) {
+                iconMoon.classList.remove('block');
+                iconMoon.classList.add('hidden');
+                
+                iconSun.classList.remove('hidden');
+                iconSun.classList.add('block');
+                
+                localStorage.setItem('theme', 'dark'); // 記低選擇
+            } else {
+                iconSun.classList.remove('block');
+                iconSun.classList.add('hidden');
+                
+                iconMoon.classList.remove('hidden');
+                iconMoon.classList.add('block');
+                
+                localStorage.setItem('theme', 'light'); // 記低選擇
+            }
+        });
+
+
+        // === 3D Animation Logic ===
         const scene = document.getElementById('scene');
         
         // 換上橫向 (Landscape 4:3) 比例嘅圖片 URL
