@@ -9,28 +9,28 @@
     <style>
         /* 定義主題 CSS 變數 */
         :root {
-            --bg-color: #F6F5F2; /* Light mode 背景色 */
-            --text-color: #1a1a1a; /* Light mode 標題/選單字色 */
-            --nav-bg: white; /* Light mode 選單按鈕背景 */
-            --nav-hover-bg: #1a1a1a; /* Light mode 選單按鈕 Hover 背景 */
-            --nav-hover-text: white; /* Light mode 選單按鈕 Hover 字色 */
-            /* Light mode 中心漸變白霧 */
-            --fog-gradient: radial-gradient(circle at center, rgba(246, 245, 242, 0.95) 0%, rgba(246, 245, 242, 0.6) 20%, transparent 50%);
-            --logo-filter: none; /* Light mode Logo 顏色不變 (假設原本係黑色) */
-            --blend-mode: multiply; /* Light mode 字體疊加模式 */
+            --bg-color: #F6F5F2; 
+            --text-color: #000000; 
+            --nav-bg: white; 
+            --nav-hover-bg: #000000; 
+            --nav-hover-text: white; 
+            --fog-gradient: radial-gradient(circle at center, rgba(246, 245, 242, 0.95) 0%, rgba(246, 245, 242, 0.6) 20%, transparent 60%);
+            --logo-filter: brightness(0); 
+            --icon-filter: brightness(0);
+            --icon-hover-filter: brightness(0) invert(1);
         }
 
         body.dark {
-            --bg-color: #121212; /* Dark mode 背景色 (深灰/黑) */
-            --text-color: #f0f0f0; /* Dark mode 標題/選單字色 (淺灰/白) */
-            --nav-bg: #2a2a2a; /* Dark mode 選單按鈕背景 */
-            --nav-hover-bg: #f0f0f0; /* Dark mode 選單按鈕 Hover 背景 */
-            --nav-hover-text: #121212; /* Dark mode 選單按鈕 Hover 字色 */
-            /* Dark mode 中心漸變黑霧 */
-            --fog-gradient: radial-gradient(circle at center, rgba(18, 18, 18, 0.95) 0%, rgba(18, 18, 18, 0.7) 20%, transparent 50%);
-            /* Dark mode Logo 反白 (將黑色 SVG 轉成白色) */
-            --logo-filter: invert(1) brightness(2); 
-            --blend-mode: normal; /* Dark mode 唔需要 multiply，否則黑色背景字會睇唔到 */
+            --bg-color: #000000; 
+            --text-color: #ffffff; 
+            --nav-bg: #1a1a1a; 
+            --nav-hover-bg: #ffffff; 
+            --nav-hover-text: #000000; 
+            /* 為 Dark mode 加入暗黑霧，令白字更清晰，同時過渡更自然 */
+            --fog-gradient: radial-gradient(circle at center, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.4) 30%, transparent 60%); 
+            --logo-filter: brightness(0) invert(1); 
+            --icon-filter: brightness(0) invert(1);
+            --icon-hover-filter: brightness(0);
         }
 
         body {
@@ -38,26 +38,59 @@
             color: var(--text-color);
             font-family: 'Inter', sans-serif;
             margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
             overflow: hidden;
-            transition: background-color 0.5s ease, color 0.5s ease; /* 平滑過渡 */
+            transition: color 0.4s ease; 
+        }
+
+        /* === 鎖定機制 === 
+           確保圓圈擴散期間，真正嘅底色唔會因為 body.dark 提早觸發而瞬間閃黑/閃白 
+        */
+        body.theme-transitioning.to-dark {
+            background-color: #F6F5F2 !important;
+        }
+        body.theme-transitioning.to-light {
+            background-color: #000000 !important;
+        }
+
+        /* 擴散層：負責繪製放大嘅新背景色 */
+        #theme-reveal-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0; 
+            clip-path: circle(0px at var(--x, 50%) var(--y, 50%));
+            will-change: clip-path;
+        }
+
+        /* 當啟動擴散時，播放動畫（時間加長至 1.5s，並使用完美嘅先慢後快曲線） */
+        #theme-reveal-layer.expanding {
+            animation: revealTheme 1.5s cubic-bezier(0.45, 0, 0.15, 1) forwards;
+        }
+
+        @keyframes revealTheme {
+            0% { clip-path: circle(0px at var(--x) var(--y)); }
+            100% { clip-path: circle(var(--radius) at var(--x) var(--y)); }
+        }
+
+        /* 確保其他 UI 元素都會順滑轉色 */
+        .nav-pill, .dynamic-logo, .theme-toggle-btn img, .hero-title {
+            transition: all 0.4s ease;
         }
 
         #canvas-container {
             position: relative;
-            width: 100vw;
-            max-width: 1920px;
-            aspect-ratio: 4 / 3;
-            max-height: 100vh;
+            width: 100%;
+            height: 100%;
             overflow: hidden;
-            /* 1000px perspective 係最接近人眼自然透視嘅設定 */
             perspective: 1000px; 
             transform-style: preserve-3d;
-            background-color: var(--bg-color);
-            transition: background-color 0.5s ease;
+            z-index: 1; 
         }
 
         .image-plane {
@@ -68,117 +101,146 @@
             transform-style: preserve-3d;
             will-change: transform, opacity;
             object-fit: cover;
-            /* 橫向 4:3 比例，整體基礎大細增加 30% (200px -> 260px) */
-            width: 260px; 
-            height: 195px;
+            width: 338px; 
+            height: 254px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.06);
             border-radius: 4px; 
         }
 
-        /* 中心漸變霧遮罩：應用 CSS 變數 */
         .center-fade-mask {
             position: absolute;
             inset: 0;
             pointer-events: none;
             z-index: 25; 
             background: var(--fog-gradient);
-            transition: background 0.5s ease;
+            transition: opacity 0.3s ease, background 0.4s ease; 
+        }
+        
+        /* 隱藏霧效嘅 class，防止轉場時穿崩 */
+        .center-fade-mask.hidden-fog {
+            opacity: 0;
         }
 
-        /* 導航欄按鈕樣式：應用 CSS 變數 */
         .nav-pill {
             background-color: var(--nav-bg);
             color: var(--text-color);
-            padding: 0.4rem 1rem;
+            padding: 0.5rem 1.2rem;
             border-radius: 9999px;
             font-size: 0.75rem;
             font-weight: 500;
             letter-spacing: 0.05em;
-            transition: all 0.2s;
             cursor: pointer;
-            border: 1px solid rgba(128, 128, 128, 0.2); /* 加條幼邊框，Dark mode 睇落有層次啲 */
+            border: none;
+            display: flex;
+            align-items: center;
+            height: 38px; 
         }
         .nav-pill:hover {
             background-color: var(--nav-hover-bg);
             color: var(--nav-hover-text);
         }
 
-        /* 控制 Logo 顏色 */
         .dynamic-logo {
             filter: var(--logo-filter);
-            transition: filter 0.5s ease;
+            height: 1.2rem; 
+        }
+        @media (min-width: 768px) {
+            .dynamic-logo {
+                height: 1.6rem; 
+            }
         }
 
-        /* 控制大標題疊加模式 */
         .hero-title {
             color: var(--text-color);
-            mix-blend-mode: var(--blend-mode);
-            transition: color 0.5s ease;
+            z-index: 40;
+            opacity: 0; 
+            animation: fadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.8s forwards;
         }
 
-        /* Dark Mode Icon 切換按鈕樣式 */
+        /* === Landing Animation Keyframes === */
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeDown {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        #intro-curtain {
+            background-color: var(--bg-color);
+            animation: fadeOut 1.2s ease forwards;
+        }
+
+        header {
+            opacity: 0;
+            animation: fadeDown 1s cubic-bezier(0.2, 0.8, 0.2, 1) 1.6s forwards;
+        }
+
         .theme-toggle-btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 32px;
-            height: 32px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             background-color: var(--nav-bg);
-            border: 1px solid rgba(128, 128, 128, 0.2);
+            border: none;
             cursor: pointer;
-            transition: all 0.2s;
+            z-index: 60; 
         }
         .theme-toggle-btn:hover {
             background-color: var(--nav-hover-bg);
         }
         
-        /* 確保 icon img 喺 hover 時唔會消失，但有反色效果 (視乎你 svg 設計，可自行微調) */
         .theme-toggle-btn img {
-            width: 16px;
-            height: 16px;
-            transition: filter 0.2s;
+            width: 18px;
+            height: 18px;
+            filter: var(--icon-filter);
         }
         
-        /* 當 theme-toggle-btn hover 並且處於 Light Mode 時，反白裡面嘅 icon */
-        body:not(.dark) .theme-toggle-btn:hover img {
-            filter: invert(1);
-        }
-        /* 當 theme-toggle-btn hover 並且處於 Dark Mode 時，將白色 icon 變黑 */
-        body.dark .theme-toggle-btn:hover img {
-            filter: invert(1);
+        .theme-toggle-btn:hover img {
+            filter: var(--icon-hover-filter);
         }
     </style>
 </head>
 <body>
+    
+    <!-- 全新的獨立擴散層 -->
+    <div id="theme-reveal-layer"></div>
 
     <div id="canvas-container">
         
+        <!-- 進場動畫遮罩：用來呈現 3D 場景淡入效果 -->
+        <div id="intro-curtain" class="absolute inset-0 pointer-events-none z-30"></div>
+
         <!-- Header -->
-        <header class="absolute top-0 left-0 w-full p-8 flex justify-between items-center z-50">
-            <div class="flex items-center gap-6">
-                <!-- 替換為本地 SVG Logo，加入 dynamic-logo 類別 -->
-                <img src="./assets/3amDS.svg" alt="3amDS Logo" class="h-6 md:h-8 object-contain dynamic-logo">
+        <header class="absolute top-0 left-0 w-full px-8 pt-[15px] pb-8 flex justify-between items-center z-50">
+            <div class="flex items-center gap-6 h-[38px]">
+                <img src="./assets/3amDS.svg" alt="3amDS Logo" class="object-contain dynamic-logo" onerror="this.src='https://placehold.co/100x30?text=3amDS'">
             </div>
-            <nav class="hidden md:flex gap-2 items-center">
+            <nav class="hidden md:flex gap-2 items-center h-[38px]">
                 <div class="nav-pill">ABOUT</div>
                 <div class="nav-pill">WORKS</div>
                 <div class="nav-pill">CONTACT</div>
                 
-                <!-- 主題切換按鈕 -->
-                <button id="themeToggleBtn" class="theme-toggle-btn ml-2" aria-label="Toggle Dark Mode">
-                    <!-- 預設顯示 Dark-mode icon (因為預設係 Light mode) -->
-                    <img id="icon-moon" src="./assets/Dark-mode.svg" alt="Dark Mode" class="block">
-                    <!-- 預設隱藏 Light-mode icon -->
-                    <img id="icon-sun" src="./assets/Light-mode.svg" alt="Light Mode" class="hidden">
+                <button id="themeToggleBtn" class="theme-toggle-btn ml-2" aria-label="Toggle Theme">
+                    <img id="icon-img" src="./assets/Dark-mode.svg" alt="Toggle Theme" onerror="this.src='https://placehold.co/18x18/000000/FFFFFF?text=M'">
                 </button>
             </nav>
         </header>
 
         <!-- 置中大標題 -->
         <div class="absolute inset-0 flex items-center justify-center z-40 pointer-events-none">
-            <h1 class="hero-title text-4xl md:text-5xl lg:text-7xl xl:text-[85px] font-normal tracking-tight text-center px-4 leading-tight">
-                Spaces for people,<br>made for life.
+            <h1 class="hero-title text-4xl md:text-5xl lg:text-7xl xl:text-[80px] font-normal tracking-tight text-center px-4 leading-[1.1]">
+                Hundreds of works,<br>
+                <span>soul in every pixel.</span>
             </h1>
         </div>
 
@@ -190,66 +252,93 @@
     </div>
 
     <script>
-        // === Theme Toggle Logic ===
+        // === Seamless Theme Toggle Logic ===
         const themeToggleBtn = document.getElementById('themeToggleBtn');
         const body = document.body;
-        const iconMoon = document.getElementById('icon-moon');
-        const iconSun = document.getElementById('icon-sun');
+        const iconImg = document.getElementById('icon-img');
+        const revealLayer = document.getElementById('theme-reveal-layer');
+        const fadeMask = document.querySelector('.center-fade-mask');
+        let isAnimatingTheme = false;
 
-        // 檢查用家之前係咪揀過 Dark Mode (存喺 localStorage)
+        // 初始化狀態
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'dark') {
             body.classList.add('dark');
-            iconMoon.classList.add('hidden');
-            iconSun.classList.remove('hidden');
-            iconSun.classList.add('block');
+            iconImg.src = './assets/Light-mode.svg';
         }
 
-        themeToggleBtn.addEventListener('click', () => {
-            // 切換 body 嘅 dark class
-            body.classList.toggle('dark');
+        themeToggleBtn.addEventListener('click', (e) => {
+            if (isAnimatingTheme) return; 
+            isAnimatingTheme = true;
+
+            const isCurrentlyDark = body.classList.contains('dark');
+            const targetColor = isCurrentlyDark ? '#F6F5F2' : '#000000';
             
-            // 切換 Icon 顯示
-            if (body.classList.contains('dark')) {
-                iconMoon.classList.remove('block');
-                iconMoon.classList.add('hidden');
+            // 1. 鎖定底色：加入 class 確保動畫期間真正嘅 body 背景色唔會變
+            body.classList.add('theme-transitioning');
+            body.classList.add(isCurrentlyDark ? 'to-light' : 'to-dark');
+            
+            // 2. 解決「穿崩」：立即淡出中間嘅霧，等擴散圓圈去到中間時畫面係乾淨嘅
+            fadeMask.classList.add('hidden-fog');
+
+            // 攞掣嘅中心點
+            const rect = themeToggleBtn.getBoundingClientRect();
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height / 2;
+
+            // 計算最大半徑
+            const maxRadius = Math.hypot(
+                Math.max(x, window.innerWidth - x),
+                Math.max(y, window.innerHeight - y)
+            );
+
+            // 設定 reveal layer 嘅變數同顏色
+            revealLayer.style.setProperty('--x', `${x}px`);
+            revealLayer.style.setProperty('--y', `${y}px`);
+            revealLayer.style.setProperty('--radius', `${maxRadius}px`);
+            revealLayer.style.backgroundColor = targetColor;
+
+            // 啟動 1.5s 擴散動畫
+            revealLayer.classList.add('expanding');
+
+            // 3. 喺 750ms (動畫去到一半，圓圈掃過中間文字) 改變文字同 Icon 顏色
+            setTimeout(() => {
+                body.classList.toggle('dark');
+                const isNowDark = body.classList.contains('dark');
+                iconImg.src = isNowDark ? './assets/Light-mode.svg' : './assets/Dark-mode.svg';
+                localStorage.setItem('theme', isNowDark ? 'dark' : 'light');
+            }, 750); 
+
+            // 4. 喺 1500ms (擴散圓圈完全覆蓋全螢幕) 進行清理工作
+            setTimeout(() => {
+                revealLayer.classList.remove('expanding');
+                body.classList.remove('theme-transitioning', 'to-light', 'to-dark');
                 
-                iconSun.classList.remove('hidden');
-                iconSun.classList.add('block');
+                // 重新淡入新顏色嘅霧
+                fadeMask.classList.remove('hidden-fog'); 
                 
-                localStorage.setItem('theme', 'dark'); // 記低選擇
-            } else {
-                iconSun.classList.remove('block');
-                iconSun.classList.add('hidden');
-                
-                iconMoon.classList.remove('hidden');
-                iconMoon.classList.add('block');
-                
-                localStorage.setItem('theme', 'light'); // 記低選擇
-            }
+                isAnimatingTheme = false;
+            }, 1500);
         });
 
 
-        // === 3D Animation Logic ===
+        // === 3D Animation Logic (完全唔受干擾，繼續無縫運行) ===
         const scene = document.getElementById('scene');
         
-        // 換上橫向 (Landscape 4:3) 比例嘅圖片 URL
         const imageUrls = [
             'https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1?w=800&h=600&fit=crop',
             'https://images.unsplash.com/photo-1592928302636-c83cf1e1c887?w=800&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=800&h=600&fit=crop',
             'https://images.unsplash.com/photo-1538688525198-9b88f6f53126?w=800&h=600&fit=crop',
             'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop',
             'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=600&fit=crop',
-            'https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=800&h=600&fit=crop',
-            'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=800&h=600&fit=crop',
-            'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&h=600&fit=crop'
+            'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=800&h=600&fit=crop'
         ];
 
-        // 減少 30% 數量：原本 45 張，減到 31 張，令畫面留白多啲，更顯高級
         const numImages = 31; 
         const particles = [];
         
-        // 深度設定：將 zEnd 推後到 850，令圖片可以飛得更近鏡頭（放得更大）先完全消失
         const zStart = -4500;
         const zEnd = 850; 
         const totalDepth = zEnd - zStart;
@@ -258,31 +347,18 @@
             const img = document.createElement('img');
             img.src = imageUrls[i % imageUrls.length];
             img.className = 'image-plane';
-            
-            // 傳入 i (index) 以便作時鐘式圓形分佈
             initParticle(img, true, i);
             scene.appendChild(img);
         }
 
-        // 加入 index 參數
         function initParticle(img, isFirstLoad = false, index = 0) {
-            
-            // 12點鐘圓形放射分佈：根據圖片嘅 index 平均分配到 360 度 (2 * PI) 之中
-            // 加少少 (Math.random() - 0.5) * 0.4 嘅微小偏移，令佢睇落自然啲，唔會太過生硬
-            const angle = (index / numImages) * Math.PI * 2 + ((Math.random() - 0.5) * 0.4);
-            
-            // 避開正中心 (Radius > 800)，等啲圖從字體周圍飛出，唔會重疊
-            const radius = 800 + Math.random() * 1500; 
-            
+            const angle = (index / numImages) * Math.PI * 2 + ((Math.random() - 0.5) * 0.6);
+            const radius = 1200 + Math.random() * 2500; 
             const x = Math.cos(angle) * radius; 
             const y = Math.sin(angle) * radius;
 
             let initialZ = isFirstLoad ? zStart + (Math.random() * totalDepth) : zStart;
-
-            // 速度再加快 50%：將基礎速度由 2.25 提升至 3.375，極速穿梭！
-            const speedZ = 3.375 + Math.random() * 5.06; 
-
-            // 圖片基礎縮放比例
+            const speedZ = 5.704 + Math.random() * 8.551; 
             const scale = 0.6 + Math.random() * 0.3;
 
             const p = {
@@ -292,7 +368,7 @@
                 z: initialZ,
                 speedZ: speedZ,
                 scale: scale,
-                index: index // 儲存 index，等飛出界重置時可以保持同一條放射軌道
+                index: index 
             };
 
             if (isFirstLoad) {
@@ -305,31 +381,22 @@
         function animate() {
             for (let i = 0; i < particles.length; i++) {
                 let p = particles[i];
-                
                 p.z += p.speedZ; 
 
                 if (p.z > zEnd) {
-                    // 重置時傳入原本嘅 index，維持圓形分佈不變
                     Object.assign(p, initParticle(p.el, false, p.index));
                 }
 
-                // Opacity 邏輯改用真實 Z 軸距離計算，控制更精準
                 let opacity = 1;
                 if (p.z < -3500) {
-                    // 喺最深處 -4500 到 -3500 期間慢慢 Fade in (白霧浮現)
                     opacity = (p.z - zStart) / 1000;
                 } else if (p.z > 500) {
-                    // 當飛到 Z=500 (圖片開始變得巨大) 時先開始 Fade out，直到 Z=850 完全透明
-                    // 咁就可以確保圖放到最大 (~450px) 嗰陣仲隱約見到，唔會太早消失
                     opacity = Math.max(0, 1 - ((p.z - 500) / 350));
                 }
                 
                 p.el.style.opacity = opacity * 0.95; 
-                
-                // 套用 3D Transform
                 p.el.style.transform = `translate(-50%, -50%) translate3d(${p.x}px, ${p.y}px, ${p.z}px) scale(${p.scale})`;
             }
-
             requestAnimationFrame(animate);
         }
 
