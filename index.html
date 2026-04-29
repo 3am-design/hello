@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floema Style - Elegant 3D Flythrough</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #F6F5F2;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        #canvas-container {
+            position: relative;
+            width: 100vw;
+            max-width: 1920px;
+            aspect-ratio: 4 / 3;
+            max-height: 100vh;
+            overflow: hidden;
+            /* 1000px perspective 係最接近人眼自然透視嘅設定 */
+            perspective: 1000px; 
+            transform-style: preserve-3d;
+            background-color: #F6F5F2;
+        }
+
+        .image-plane {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-origin: center center;
+            transform-style: preserve-3d;
+            will-change: transform, opacity;
+            object-fit: cover;
+            /* 橫向 4:3 比例，整體基礎大細增加 30% (200px -> 260px) */
+            width: 260px; 
+            height: 195px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+            border-radius: 4px; 
+        }
+
+        /* 中心漸變白霧遮罩：營造從白光中誕生嘅感覺 */
+        .center-fade-mask {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 25; 
+            background: radial-gradient(circle at center, rgba(246, 245, 242, 0.95) 0%, rgba(246, 245, 242, 0.6) 20%, transparent 50%);
+        }
+
+        /* 導航欄按鈕樣式 */
+        .nav-pill {
+            background-color: white;
+            color: #1a1a1a;
+            padding: 0.4rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .nav-pill:hover {
+            background-color: #1a1a1a;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="canvas-container">
+        
+        <!-- Header -->
+        <header class="absolute top-0 left-0 w-full p-8 flex justify-between items-center z-50">
+            <div class="flex items-center gap-6">
+                <div class="text-2xl font-medium tracking-tight text-[#1a1a1a]">Floema<sup class="text-xs">®</sup></div>
+                <button class="text-[#1a1a1a] hover:opacity-70 transition-opacity">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </button>
+            </div>
+            <nav class="hidden md:flex gap-2">
+                <div class="nav-pill">PRODUCTS</div>
+                <div class="nav-pill">ABOUT</div>
+                <div class="nav-pill">SUSTAINABILITY</div>
+                <div class="nav-pill">JOURNAL</div>
+                <div class="nav-pill flex items-center gap-1">EN <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+            </nav>
+        </header>
+
+        <!-- 置中大標題 -->
+        <div class="absolute inset-0 flex items-center justify-center z-40 pointer-events-none">
+            <h1 class="text-4xl md:text-5xl lg:text-7xl xl:text-[85px] font-normal tracking-tight text-[#1a1a1a] text-center px-4 leading-tight mix-blend-multiply">
+                Spaces for people,<br>made for life.
+            </h1>
+        </div>
+
+        <div class="center-fade-mask"></div>
+
+        <!-- 3D 場景容器 -->
+        <div id="scene" class="absolute top-1/2 left-1/2 w-full h-full transform -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10" style="transform-style: preserve-3d;"></div>
+
+    </div>
+
+    <script>
+        const scene = document.getElementById('scene');
+        
+        // 換上橫向 (Landscape 4:3) 比例嘅圖片 URL
+        const imageUrls = [
+            'https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1?w=800&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1592928302636-c83cf1e1c887?w=800&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1538688525198-9b88f6f53126?w=800&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=800&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=800&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&h=600&fit=crop'
+        ];
+
+        // 減少 30% 數量：原本 45 張，減到 31 張，令畫面留白多啲，更顯高級
+        const numImages = 31; 
+        const particles = [];
+        
+        // 深度設定：將 zEnd 推後到 850，令圖片可以飛得更近鏡頭（放得更大）先完全消失
+        const zStart = -4500;
+        const zEnd = 850; 
+        const totalDepth = zEnd - zStart;
+
+        for (let i = 0; i < numImages; i++) {
+            const img = document.createElement('img');
+            img.src = imageUrls[i % imageUrls.length];
+            img.className = 'image-plane';
+            
+            // 傳入 i (index) 以便作時鐘式圓形分佈
+            initParticle(img, true, i);
+            scene.appendChild(img);
+        }
+
+        // 加入 index 參數
+        function initParticle(img, isFirstLoad = false, index = 0) {
+            
+            // 12點鐘圓形放射分佈：根據圖片嘅 index 平均分配到 360 度 (2 * PI) 之中
+            // 加少少 (Math.random() - 0.5) * 0.4 嘅微小偏移，令佢睇落自然啲，唔會太過生硬
+            const angle = (index / numImages) * Math.PI * 2 + ((Math.random() - 0.5) * 0.4);
+            
+            // 避開正中心 (Radius > 800)，等啲圖從字體周圍飛出，唔會重疊
+            const radius = 800 + Math.random() * 1500; 
+            
+            const x = Math.cos(angle) * radius; 
+            const y = Math.sin(angle) * radius;
+
+            let initialZ = isFirstLoad ? zStart + (Math.random() * totalDepth) : zStart;
+
+            // 速度再加快 50%：將基礎速度由 2.25 提升至 3.375，極速穿梭！
+            const speedZ = 3.375 + Math.random() * 5.06; 
+
+            // 圖片基礎縮放比例
+            const scale = 0.6 + Math.random() * 0.3;
+
+            const p = {
+                el: img,
+                x: x,      
+                y: y,      
+                z: initialZ,
+                speedZ: speedZ,
+                scale: scale,
+                index: index // 儲存 index，等飛出界重置時可以保持同一條放射軌道
+            };
+
+            if (isFirstLoad) {
+                particles.push(p);
+            } else {
+                return p;
+            }
+        }
+
+        function animate() {
+            for (let i = 0; i < particles.length; i++) {
+                let p = particles[i];
+                
+                p.z += p.speedZ; 
+
+                if (p.z > zEnd) {
+                    // 重置時傳入原本嘅 index，維持圓形分佈不變
+                    Object.assign(p, initParticle(p.el, false, p.index));
+                }
+
+                // Opacity 邏輯改用真實 Z 軸距離計算，控制更精準
+                let opacity = 1;
+                if (p.z < -3500) {
+                    // 喺最深處 -4500 到 -3500 期間慢慢 Fade in (白霧浮現)
+                    opacity = (p.z - zStart) / 1000;
+                } else if (p.z > 500) {
+                    // 當飛到 Z=500 (圖片開始變得巨大) 時先開始 Fade out，直到 Z=850 完全透明
+                    // 咁就可以確保圖放到最大 (~450px) 嗰陣仲隱約見到，唔會太早消失
+                    opacity = Math.max(0, 1 - ((p.z - 500) / 350));
+                }
+                
+                p.el.style.opacity = opacity * 0.95; 
+                
+                // 套用 3D Transform
+                p.el.style.transform = `translate(-50%, -50%) translate3d(${p.x}px, ${p.y}px, ${p.z}px) scale(${p.scale})`;
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
