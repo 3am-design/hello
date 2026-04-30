@@ -1,33 +1,45 @@
 <!DOCTYPE html>
-<html lang="zh-HK">
+<html lang="zh-HK" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3am.</title>
+    <title>3am. Portfolio</title>
+    <!-- 引入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <!-- 引入 Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
     <style>
-        /* 定義主題 CSS 變數 */
+        /* === 主題變數及容器邊距 === */
         :root {
             --bg-color: #F6F5F2; 
             --text-color: #000000; 
-            --nav-bg: white; 
+            --nav-bg: transparent; 
             --nav-hover-bg: #000000; 
             --nav-hover-text: white; 
-            --fog-gradient: radial-gradient(circle at center, rgba(246, 245, 242, 0.95) 0%, rgba(246, 245, 242, 0.6) 20%, transparent 60%);
+            --fog-gradient: radial-gradient(circle at center, rgba(246, 245, 242, 0.95) 0%, rgba(246, 245, 242, 0.4) 30%, transparent 70%);
             --logo-filter: brightness(0); 
             --icon-filter: brightness(0);
             --icon-hover-filter: brightness(0) invert(1);
+            
+            /* 精準對應 Container 嘅 Padding */
+            --c-px: 26px;
         }
+        @media (min-width: 820px) { :root { --c-px: 50px; } }
+        @media (min-width: 1024px) { :root { --c-px: 75px; } }
+        @media (min-width: 1280px) { :root { --c-px: 101px; } }
 
         body.dark {
             --bg-color: #000000; 
             --text-color: #ffffff; 
-            --nav-bg: #1a1a1a; 
+            --nav-bg: transparent; 
             --nav-hover-bg: #ffffff; 
             --nav-hover-text: #000000; 
-            /* 為 Dark mode 加入暗黑霧，令白字更清晰，同時過渡更自然 */
-            --fog-gradient: radial-gradient(circle at center, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.4) 30%, transparent 60%); 
+            --fog-gradient: radial-gradient(circle at center, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.4) 30%, transparent 70%); 
             --logo-filter: brightness(0) invert(1); 
             --icon-filter: brightness(0) invert(1);
             --icon-hover-filter: brightness(0);
@@ -37,234 +49,416 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
+            overflow-x: hidden;
+            cursor: none !important;
             transition: color 0.4s ease; 
         }
 
-        /* === 鎖定機制 === 
-           確保圓圈擴散期間，真正嘅底色唔會因為 body.dark 提早觸發而瞬間閃黑/閃白 
-        */
-        body.theme-transitioning.to-dark {
-            background-color: #F6F5F2 !important;
-        }
-        body.theme-transitioning.to-light {
-            background-color: #000000 !important;
+        a, button, .cursor-pointer { cursor: none !important; }
+
+        @media (max-width: 819px) {
+            #custom-cursor { display: none !important; }
+            body, a, button, .cursor-pointer { cursor: auto !important; }
         }
 
-        /* 擴散層：負責繪製放大嘅新背景色 */
+        /* 鎖定背景捲動 */
+        html.lock-scroll, body.lock-scroll { overflow: hidden !important; overscroll-behavior: none !important; }
+
+        /* 隱藏 Scrollbar */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* === 完美 Theme Toggle 圓圈擴散 === */
+        body.theme-transitioning.to-dark { background-color: #F6F5F2 !important; }
+        body.theme-transitioning.to-light { background-color: #000000 !important; }
+
         #theme-reveal-layer {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 0; 
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 9999; 
             clip-path: circle(0px at var(--x, 50%) var(--y, 50%));
             will-change: clip-path;
         }
-
-        /* 當啟動擴散時，播放動畫（時間加長至 1.5s，並使用完美嘅先慢後快曲線） */
         #theme-reveal-layer.expanding {
             animation: revealTheme 1.5s cubic-bezier(0.45, 0, 0.15, 1) forwards;
         }
-
         @keyframes revealTheme {
             0% { clip-path: circle(0px at var(--x) var(--y)); }
             100% { clip-path: circle(var(--radius) at var(--x) var(--y)); }
         }
 
-        /* 確保其他 UI 元素都會順滑轉色 */
-        .nav-pill, .dynamic-logo, .theme-toggle-btn img, .hero-title {
-            transition: all 0.4s ease;
+        /* === 自定義游標 === */
+        #custom-cursor {
+            position: fixed; top: 0; left: 0; width: 16px; height: 16px;
+            background-color: #ffffff; 
+            border-radius: 50%;
+            pointer-events: none; z-index: 3000000;
+            mix-blend-mode: difference;
+            transform: translate3d(-50%, -50%, 0);
+            transition: width 0.3s ease-out, height 0.3s ease-out, border-radius 0.3s ease-out, mix-blend-mode 0.3s;
+            display: flex; align-items: center; justify-content: center;
         }
+        #custom-cursor.active { width: 60px; height: 60px; }
+        #custom-cursor.discover { width: 110px; height: 110px; mix-blend-mode: normal; background-color: #ffffff; }
+        #custom-cursor .cursor-text { opacity: 0; color: #000; font-size: 12px; font-weight: 600; transition: opacity 0.2s; white-space: nowrap; }
+        #custom-cursor.discover .cursor-text { opacity: 1; transition-delay: 0.1s; }
 
-        #canvas-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            perspective: 1000px; 
-            transform-style: preserve-3d;
-            z-index: 1; 
+        /* === 精準 Grid System & Container === */
+        #design-grid {
+            position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+            width: 100%; max-width: 1920px; height: 100vh; padding: 0 26px;
+            display: grid; grid-template-columns: repeat(4, 1fr); column-gap: 10px;
+            pointer-events: none; z-index: 2147483647; opacity: 0; transition: opacity 0.3s ease;
         }
+        #design-grid.active { opacity: 1 !important; }
+        .grid-col-guide {
+            height: 100%; background-color: rgba(150, 150, 150, 0.05);
+            border-left: 1px dashed rgba(150, 150, 150, 0.2); border-right: 1px dashed rgba(150, 150, 150, 0.2);
+        }
+        @media (min-width: 820px) { #design-grid { padding: 0 50px; grid-template-columns: repeat(6, 1fr); column-gap: 20px; } }
+        @media (min-width: 1024px) { #design-grid { padding: 0 75px; column-gap: 30px; } }
+        @media (min-width: 1280px) { #design-grid { padding: 0 101px; column-gap: 40px; } }
 
-        .image-plane {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform-origin: center center;
-            transform-style: preserve-3d;
-            will-change: transform, opacity;
-            object-fit: cover;
-            width: 338px; 
-            height: 254px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-            border-radius: 4px; 
-        }
+        .custom-container { max-width: 1920px; margin: 0 auto; padding: 0 var(--c-px); width: 100%; }
 
-        .center-fade-mask {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            z-index: 25; 
-            background: var(--fog-gradient);
-            transition: opacity 0.3s ease, background 0.4s ease; 
+        /* === Ayoh! 出血 10px 及對齊第 5 格設定 === */
+        .ayoh-bleed {
+            margin-left: calc(-1 * var(--c-px) - 10px);
+            width: calc(100% + var(--c-px) + 10px);
+            max-width: none;
+            height: auto;
         }
-        
-        /* 隱藏霧效嘅 class，防止轉場時穿崩 */
-        .center-fade-mask.hidden-fog {
-            opacity: 0;
-        }
-
-        .nav-pill {
-            background-color: var(--nav-bg);
-            color: var(--text-color);
-            padding: 0.5rem 1.2rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            letter-spacing: 0.05em;
-            cursor: pointer;
-            border: none;
-            display: flex;
-            align-items: center;
-            height: 38px; 
-        }
-        .nav-pill:hover {
-            background-color: var(--nav-hover-bg);
-            color: var(--nav-hover-text);
-        }
-
-        .dynamic-logo {
-            filter: var(--logo-filter);
-            height: 1.2rem; 
-        }
-        @media (min-width: 768px) {
-            .dynamic-logo {
-                height: 1.6rem; 
+        @media (min-width: 1920px) {
+            .ayoh-bleed {
+                /* 對於超大螢幕，加入 auto margin 嘅距離計算 */
+                margin-left: calc(-1 * ((100vw - 1920px) / 2) - var(--c-px) - 10px);
+                width: calc(100% + ((100vw - 1920px) / 2) + var(--c-px) + 10px);
             }
         }
 
-        .hero-title {
-            color: var(--text-color);
-            z-index: 40;
-            opacity: 0; 
-            animation: fadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.8s forwards;
+        /* === 由線變面 Ayoh! 專屬動畫 === */
+        .reveal-ayoh {
+            /* 初始狀態：中央一條線 (高度 0)，微微縮細 */
+            clip-path: polygon(0 50%, 100% 50%, 100% 50%, 0 50%);
+            transform: scale(0.96) translateY(20px);
+            opacity: 0.2;
+            transition: clip-path 1.6s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 1.6s cubic-bezier(0.16, 1, 0.3, 1),
+                        opacity 1.2s ease-out;
+        }
+        .reveal-ayoh.active {
+            /* 結束狀態：向上下完全張開（預留極大空間防止截斷出血位），回復原大 */
+            clip-path: polygon(-50% -50%, 150% -50%, 150% 150%, -50% 150%);
+            transform: scale(1) translateY(0);
+            opacity: 1;
         }
 
-        /* === Landing Animation Keyframes === */
-        @keyframes fadeOut {
-            0% { opacity: 1; }
-            100% { opacity: 0; visibility: hidden; }
-        }
-        
-        @keyframes fadeUp {
-            0% { opacity: 0; transform: translateY(30px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes fadeDown {
-            0% { opacity: 0; transform: translateY(-20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        #intro-curtain {
-            background-color: var(--bg-color);
-            animation: fadeOut 1.2s ease forwards;
-        }
-
-        header {
+        /* === 手部動態：快出慢收 (Pop-up) 及 持續微動 (Sway) === */
+        .hand-up {
             opacity: 0;
-            animation: fadeDown 1s cubic-bezier(0.2, 0.8, 0.2, 1) 1.6s forwards;
+            transform: translateY(150px);
+            transition-property: opacity, transform;
+            transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1); 
+        }
+        .hand-up.active {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        .theme-toggle-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background-color: var(--nav-bg);
-            border: none;
-            cursor: pointer;
-            z-index: 60; 
+        /* 隨機搖晃動畫設定 */
+        .origin-bottom-center {
+            transform-origin: bottom center;
+            will-change: transform;
         }
-        .theme-toggle-btn:hover {
-            background-color: var(--nav-hover-bg);
+        .sway-1 { animation: swayRotate 4.5s ease-in-out infinite alternate; }
+        .sway-2 { animation: swayVertical 3.8s ease-in-out infinite alternate 0.5s; }
+        .sway-3 { animation: swayComplex 5.2s ease-in-out infinite alternate 0.2s; }
+        .sway-4 { animation: swayRotate 4.1s ease-in-out infinite alternate-reverse 1s; }
+        .sway-5 { animation: swayVertical 4.7s ease-in-out infinite alternate 0.7s; }
+        .sway-6 { animation: swayComplex 4.0s ease-in-out infinite alternate-reverse 0.4s; }
+
+        @keyframes swayRotate {
+            0% { transform: rotate(-3deg); }
+            100% { transform: rotate(3deg); }
         }
-        
-        .theme-toggle-btn img {
-            width: 18px;
-            height: 18px;
-            filter: var(--icon-filter);
+        @keyframes swayVertical {
+            0% { transform: translateY(0px) rotate(0.5deg); }
+            100% { transform: translateY(12px) rotate(-1deg); }
         }
-        
-        .theme-toggle-btn:hover img {
-            filter: var(--icon-hover-filter);
+        @keyframes swayComplex {
+            0% { transform: translateY(0px) rotate(-2deg); }
+            50% { transform: translateY(8px) rotate(1.5deg); }
+            100% { transform: translateY(2px) rotate(0deg); }
         }
+
+        /* === 3D Animation Container (加大 30%) === */
+        #animation-section {
+            position: relative; width: 100%;
+            overflow: hidden; perspective: 1000px; transform-style: preserve-3d;
+        }
+        .image-plane {
+            position: absolute; top: 50%; left: 50%;
+            transform-origin: center center; transform-style: preserve-3d;
+            will-change: transform, opacity; object-fit: cover;
+            /* 尺寸增加 30%: 由 338x254 提升至 439x330 */
+            width: 439px; height: 330px; border-radius: 4px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+        }
+        .center-fade-mask {
+            position: absolute; inset: 0; pointer-events: none; z-index: 25; 
+            background: var(--fog-gradient); transition: opacity 0.3s ease, background 0.4s ease; 
+        }
+        .center-fade-mask.hidden-fog { opacity: 0; }
+
+        /* Dynamic filters for SVGs based on theme */
+        .theme-svg { filter: var(--logo-filter); transition: filter 0.4s ease; }
+
+        /* === Entrance Animations === */
+        .reveal-up {
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1), transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal-up.active { opacity: 1; transform: translateY(0); }
     </style>
 </head>
-<body>
-    
-    <!-- 全新的獨立擴散層 -->
+<body class="antialiased selection:bg-black/20 selection:text-black dark:selection:bg-white/20 dark:selection:text-white transition-colors duration-700">
+
+    <!-- Theme Reveal Layer -->
     <div id="theme-reveal-layer"></div>
 
-    <div id="canvas-container">
-        
-        <!-- 進場動畫遮罩：用來呈現 3D 場景淡入效果 -->
-        <div id="intro-curtain" class="absolute inset-0 pointer-events-none z-30"></div>
-
-        <!-- Header -->
-        <header class="absolute top-0 left-0 w-full px-8 pt-[15px] pb-8 flex justify-between items-center z-50">
-            <div class="flex items-center gap-6 h-[38px]">
-                <img src="./assets/3amDS.svg" alt="3amDS Logo" class="object-contain dynamic-logo" onerror="this.src='https://placehold.co/100x30?text=3amDS'">
-            </div>
-            <nav class="hidden md:flex gap-2 items-center h-[38px]">
-                <div class="nav-pill">ABOUT</div>
-                <div class="nav-pill">WORKS</div>
-                <div class="nav-pill">CONTACT</div>
-                
-                <button id="themeToggleBtn" class="theme-toggle-btn ml-2" aria-label="Toggle Theme">
-                    <img id="icon-img" src="./assets/Dark-mode.svg" alt="Toggle Theme" onerror="this.src='https://placehold.co/18x18/000000/FFFFFF?text=M'">
-                </button>
-            </nav>
-        </header>
-
-        <!-- 置中大標題 -->
-        <div class="absolute inset-0 flex items-center justify-center z-40 pointer-events-none">
-            <h1 class="hero-title text-4xl md:text-5xl lg:text-7xl xl:text-[80px] font-normal tracking-tight text-center px-4 leading-[1.1]">
-                Hundreds of works,<br>
-                <span>soul in every pixel.</span>
-            </h1>
-        </div>
-
-        <div class="center-fade-mask"></div>
-
-        <!-- 3D 場景容器 -->
-        <div id="scene" class="absolute top-1/2 left-1/2 w-full h-full transform -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10" style="transform-style: preserve-3d;"></div>
-
+    <!-- Design Grid -->
+    <div id="design-grid">
+        <div class="grid-col-guide"></div><div class="grid-col-guide"></div>
+        <div class="grid-col-guide"></div><div class="grid-col-guide"></div>
+        <div class="grid-col-guide hidden min-[820px]:block"></div>
+        <div class="grid-col-guide hidden min-[820px]:block"></div>
     </div>
 
+    <!-- Custom Cursor -->
+    <div id="custom-cursor">
+        <span class="cursor-text absolute">DISCOVER</span>
+    </div>
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 w-full pt-[25px] pb-4 flex justify-between items-center z-50 mix-blend-difference text-white pointer-events-none">
+        <div class="custom-container flex justify-between items-center w-full h-full relative">
+            <div class="flex items-center h-[38px] cursor-pointer pointer-events-auto" onclick="window.scrollTo(0,0)">
+                <img src="./assets/3amDS.svg" alt="3amDS" class="h-6 object-contain" onerror="this.src='https://placehold.co/100x30/000/FFF?text=3amDS'">
+            </div>
+            
+            <nav class="hidden md:flex gap-6 lg:gap-10 items-center text-[11px] lg:text-[13px] font-bold tracking-[0.05em] pointer-events-auto absolute left-1/2 -translate-x-1/2">
+                <a href="#works" class="hover:opacity-70 transition cursor-pointer">Works</a>
+                <a href="#about" class="hover:opacity-70 transition cursor-pointer">About</a>
+                <a href="#talk" class="hover:opacity-70 transition cursor-pointer">Talk</a>
+            </nav>
+
+            <div class="flex items-center pointer-events-auto">
+                <span class="hidden md:block text-[11px] font-medium mr-2">Light mode</span>
+                <button id="themeToggleBtn" class="w-[38px] h-[38px] rounded-full border border-white/20 flex items-center justify-center hover:bg-white transition cursor-pointer group">
+                    <img id="icon-img" src="./assets/Dark-mode.svg" alt="Theme" class="w-4 h-4 brightness-0 invert group-hover:invert-0 group-hover:brightness-100 transition" onerror="this.src='https://placehold.co/18x18/FFF/000?text=M'">
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- SCREEN 1: Hero Section (Ayoh! + Hands) -->
+        <section class="custom-container h-[100svh] pt-[120px] pb-0 relative overflow-hidden">
+            
+            <!-- 1. Ayoh! 字：利用由線變面進場 (reveal-ayoh) -->
+            <div class="w-full grid grid-cols-4 min-[820px]:grid-cols-6 gap-[10px] min-[820px]:gap-[20px] lg:gap-[30px] xl:gap-[40px] mt-4 md:mt-12">
+                <div class="col-span-4 min-[820px]:col-span-5 relative reveal-ayoh">
+                    <img src="./assets/ayoh.svg" alt="Ayoh!" class="ayoh-bleed theme-svg" onerror="this.src='https://placehold.co/1800x500/transparent/000?text=Ayoh!'">
+                </div>
+            </div>
+            
+            <!-- 2. 手部微動態：尺寸加大 30% -->
+            <!-- 舊尺寸: w-[35px] md:w-[70px] lg:w-[95px] -> 新尺寸: w-[45px] md:w-[91px] lg:w-[124px] -->
+            <div class="absolute bottom-[-5px] right-[26px] min-[820px]:right-[50px] lg:right-[75px] xl:right-[101px] flex justify-end items-end gap-[15px] md:gap-[30px] lg:gap-[40px] z-10 pointer-events-none">
+                
+                <div class="hand-up w-[45px] md:w-[91px] lg:w-[124px]" style="transition-duration: 1.2s; transition-delay: 0.4s;">
+                    <img src="./assets/hand_01.svg" class="w-full h-auto origin-bottom-center sway-1" alt="hand" onerror="this.src='https://placehold.co/124x180/FFC0CB/000?text=H1'">
+                </div>
+                
+                <div class="hand-up w-[45px] md:w-[91px] lg:w-[124px]" style="transition-duration: 1.1s; transition-delay: 0.1s;">
+                    <img src="./assets/hand_02.svg" class="w-full h-auto origin-bottom-center sway-2" alt="hand" onerror="this.src='https://placehold.co/124x180/FFFF00/000?text=H2'">
+                </div>
+                
+                <div class="hand-up w-[45px] md:w-[91px] lg:w-[124px]" style="transition-duration: 1.1s; transition-delay: 0.6s;">
+                    <img src="./assets/hand_03.svg" class="w-full h-auto origin-bottom-center sway-3" alt="hand" onerror="this.src='https://placehold.co/124x180/90EE90/000?text=H3'">
+                </div>
+                
+                <div class="hand-up w-[45px] md:w-[91px] lg:w-[124px]" style="transition-duration: 1.3s; transition-delay: 0.2s;">
+                    <img src="./assets/hand_04.svg" class="w-full h-auto origin-bottom-center sway-4" alt="hand" onerror="this.src='https://placehold.co/124x180/ADD8E6/000?text=H4'">
+                </div>
+                
+                <div class="hand-up w-[45px] md:w-[91px] lg:w-[124px]" style="transition-duration: 1.4s; transition-delay: 0.5s;">
+                    <img src="./assets/hand_05.svg" class="w-full h-auto origin-bottom-center sway-5" alt="hand" onerror="this.src='https://placehold.co/124x180/FFA07A/000?text=H5'">
+                </div>
+                
+                <div class="hand-up w-[45px] md:w-[91px] lg:w-[124px]" style="transition-duration: 0.9s; transition-delay: 0.3s;">
+                    <img src="./assets/hand_06.svg" class="w-full h-auto origin-bottom-center sway-6" alt="hand" onerror="this.src='https://placehold.co/124x180/20B2AA/000?text=H6'">
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SCREEN 2: 3D Animation Text Section -->
+        <section id="animation-section" class="h-[100svh]">
+            <div class="absolute inset-0 flex flex-col items-center justify-center z-40 pointer-events-none text-center">
+                <h2 class="text-[32px] md:text-[50px] lg:text-[65px] font-medium tracking-tight mb-6 reveal-up text-black dark:text-white">
+                    Hundreds of works,<br>soul in every pixel.
+                </h2>
+                <div class="flex items-center gap-4 reveal-up" style="transition-delay: 150ms;">
+                    <span class="font-bold text-[20px] md:text-[26px] text-black dark:text-white">3am.</span>
+                    <span class="text-[10px] md:text-[13px] font-normal text-black dark:text-white text-left leading-snug tracking-wide">
+                        is a mindset, not a schedule.<br>is the vibe that clears my head.
+                    </span>
+                </div>
+            </div>
+
+            <div class="center-fade-mask"></div>
+
+            <div id="scene" class="absolute top-1/2 left-1/2 w-full h-full transform -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10" style="transform-style: preserve-3d;"></div>
+        </section>
+
+        <!-- SCREEN 3: Big Skewed Text + Awards -->
+        <section class="custom-container min-h-[100svh] flex flex-col justify-center relative py-20 lg:py-[100px]">
+            
+            <div class="w-full text-center transform -rotate-3 relative reveal-up mt-10 md:mt-0">
+                <h1 class="font-black leading-[1.05] tracking-tight text-black dark:text-white uppercase">
+                    <span class="text-[36px] md:text-[60px] lg:text-[90px]">UXUI Web & App </span><span class="text-[44px] md:text-[75px] lg:text-[110px]">Brand Identity</span><br>
+                    <span class="text-[50px] md:text-[85px] lg:text-[130px]">Visual Communication</span><br>
+                    <span class="text-[40px] md:text-[70px] lg:text-[100px]">Digital Strategy </span>
+                    <span class="text-[20px] md:text-[30px] lg:text-[40px] font-semibold lowercase tracking-normal">and more...</span>
+                </h1>
+                <img src="./assets/visual_01.svg" class="absolute -bottom-[30px] right-[2%] md:-bottom-[80px] lg:right-[12%] w-[180px] md:w-[300px] lg:w-[420px] rotate-12 z-20 hover:scale-110 transition duration-500" alt="Face" onerror="this.src='https://placehold.co/400x400/FFB6C1/000?text=Face'">
+            </div>
+
+            <!-- Awards & Intro List -->
+            <div class="mt-24 md:mt-40 grid grid-cols-4 min-[820px]:grid-cols-6 items-end gap-[10px] min-[820px]:gap-[20px] lg:gap-[30px] xl:gap-[40px]">
+                <div class="col-span-4 min-[820px]:col-span-3 text-[14px] lg:text-[15px] font-medium space-y-[12px] reveal-up">
+                    <p>• 15 years of experience</p>
+                    <p>• Hong Kong based. Work everywhere</p>
+                    <p>• 30+ awards. 10,000+ coffees</p>
+                </div>
+                <div class="col-span-4 min-[820px]:col-start-4 min-[820px]:col-span-3 flex flex-wrap gap-x-6 lg:gap-x-10 gap-y-6 items-center mt-8 min-[820px]:mt-0 reveal-up" style="transition-delay: 150ms;">
+                    <img src="./assets/HKDA.svg" alt="HKDA" class="w-[33px] lg:w-[41px] object-contain theme-svg" onerror="this.src='https://placehold.co/41x41/transparent/000?text=HKDA'">
+                    <img src="./assets/Awwwards.svg" alt="Awwwards" class="w-[96px] lg:w-[120px] object-contain theme-svg" onerror="this.src='https://placehold.co/120x30/transparent/000?text=Awwwards'">
+                    <img src="./assets/W3.svg" alt="W3" class="w-[29px] lg:w-[36px] object-contain theme-svg" onerror="this.src='https://placehold.co/36x36/transparent/000?text=W3'">
+                    <img src="./assets/Horizon.svg" alt="Horizon" class="w-[70px] lg:w-[88px] object-contain theme-svg" onerror="this.src='https://placehold.co/88x30/transparent/000?text=Horizon'">
+                    <img src="./assets/ComAward.svg" alt="ComAward" class="w-[100px] lg:w-[124px] object-contain theme-svg" onerror="this.src='https://placehold.co/124x30/transparent/000?text=Com'">
+                </div>
+            </div>
+        </section>
+
+        <!-- Portfolio Grid -->
+        <section id="works" class="custom-container pb-32 pt-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-[10px] min-[820px]:gap-[20px] lg:gap-[30px] xl:gap-[40px]">
+                
+                <!-- Row 1 -->
+                <div class="portfolio-item col-span-1 lg:col-span-4 aspect-[4/3] lg:aspect-[1132/695] w-full bg-[#e5e5e5] dark:bg-[#1a1a1a] cursor-pointer overflow-hidden group reveal-up" data-id="01">
+                    <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?w=1200&h=800&fit=crop" class="w-full h-full object-cover opacity-90 transition duration-500 group-hover:scale-105 group-hover:opacity-100" alt="Work 1">
+                </div>
+                <div class="portfolio-item col-span-1 lg:col-span-2 aspect-[4/3] lg:aspect-[546/695] w-full bg-[#e5e5e5] dark:bg-[#1a1a1a] cursor-pointer overflow-hidden group reveal-up" data-id="02" style="transition-delay: 100ms;">
+                    <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&h=800&fit=crop" class="w-full h-full object-cover opacity-90 transition duration-500 group-hover:scale-105 group-hover:opacity-100" alt="Work 2">
+                </div>
+
+                <!-- Row 2 -->
+                <div class="portfolio-item col-span-1 lg:col-span-2 aspect-[4/3] lg:aspect-[546/420] w-full bg-[#e5e5e5] dark:bg-[#1a1a1a] cursor-pointer overflow-hidden group reveal-up" data-id="03">
+                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=450&fit=crop" class="w-full h-full object-cover opacity-90 transition duration-500 group-hover:scale-105 group-hover:opacity-100" alt="Work 3">
+                </div>
+                <div class="portfolio-item col-span-1 lg:col-span-2 aspect-[4/3] lg:aspect-[546/420] w-full bg-[#e5e5e5] dark:bg-[#1a1a1a] cursor-pointer overflow-hidden group reveal-up" data-id="04" style="transition-delay: 100ms;">
+                    <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=600&h=450&fit=crop" class="w-full h-full object-cover opacity-90 transition duration-500 group-hover:scale-105 group-hover:opacity-100" alt="Work 4">
+                </div>
+                <div class="portfolio-item col-span-1 lg:col-span-2 aspect-[4/3] lg:aspect-[546/420] w-full bg-[#e5e5e5] dark:bg-[#1a1a1a] cursor-pointer overflow-hidden group reveal-up" data-id="05" style="transition-delay: 200ms;">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=450&fit=crop" class="w-full h-full object-cover opacity-90 transition duration-500 group-hover:scale-105 group-hover:opacity-100" alt="Work 5">
+                </div>
+
+                <!-- Row 3 -->
+                <div class="portfolio-item col-span-1 lg:col-span-2 aspect-[4/3] lg:aspect-[546/695] w-full bg-[#e5e5e5] dark:bg-[#1a1a1a] cursor-pointer overflow-hidden group reveal-up" data-id="06">
+                    <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=600&h=800&fit=crop" class="w-full h-full object-cover opacity-90 transition duration-500 group-hover:scale-105 group-hover:opacity-100" alt="Work 6">
+                </div>
+                <div class="portfolio-item col-span-1 lg:col-span-4 aspect-[4/3] lg:aspect-[1132/695] w-full bg-[#e5e5e5] dark:bg-[#1a1a1a] cursor-pointer overflow-hidden group reveal-up" data-id="07" style="transition-delay: 100ms;">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=800&fit=crop" class="w-full h-full object-cover opacity-90 transition duration-500 group-hover:scale-105 group-hover:opacity-100" alt="Work 7">
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Backdrop -->
+    <div id="modal-backdrop" class="fixed inset-0 z-[90000] bg-black/80 opacity-0 pointer-events-none transition-all duration-700 hidden"></div>
+
+    <!-- Project Modal -->
+    <div id="project-modal" class="fixed inset-0 z-[99999] bg-[var(--bg-color)] text-[var(--text-color)] w-full translate-y-full transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] overflow-hidden flex flex-col">
+        <!-- Modal Header -->
+        <div class="shrink-0 absolute top-0 left-0 w-full h-[80px] z-[100005] mix-blend-difference text-white">
+            <div class="custom-container flex justify-between items-center w-full h-full relative">
+                <div class="text-[10px] md:text-[12px] tracking-[0.1em] uppercase font-normal">Project Highlight</div>
+                <div class="flex gap-4 pointer-events-auto items-center">
+                    <button id="modal-prev-btn" class="hover:opacity-50 transition cursor-pointer">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-5 h-5 md:w-6 md:h-6"><path d="M15 18l-6-6 6-6"/></svg>
+                    </button>
+                    <button id="modal-next-btn" class="hover:opacity-50 transition cursor-pointer">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-5 h-5 md:w-6 md:h-6"><path d="M9 18l6-6-6-6"/></svg>
+                    </button>
+                    <button id="modal-close-btn" class="ml-2 md:ml-4 hover:opacity-50 transition cursor-pointer">
+                        <svg viewBox="0 0 14 14" fill="none" class="w-4 h-4"><path d="M13 1L1 13M1 1L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Content -->
+        <div id="modal-main-scroll" class="flex-grow w-full overflow-y-auto pt-[100px] pb-20 custom-container">
+            <div class="grid grid-cols-1 lg:grid-cols-6 gap-[10px] min-[820px]:gap-[20px] lg:gap-[30px] xl:gap-[40px]">
+                <!-- Text Area -->
+                <div class="lg:col-span-2 order-2 lg:order-1 flex flex-col text-center lg:text-left">
+                    <h2 id="modal-title" class="text-[28px] md:text-[34px] lg:text-[40px] font-bold leading-tight mb-6"></h2>
+                    <p id="modal-desc" class="text-[13px] md:text-[14px] lg:text-[15px] leading-relaxed opacity-80 whitespace-pre-wrap"></p>
+                </div>
+                <!-- Images Area -->
+                <div class="lg:col-span-4 order-1 lg:order-2 flex flex-col gap-[10px] min-[820px]:gap-[20px] lg:gap-[30px] xl:gap-[40px]" id="modal-images-container">
+                    <!-- Dynamic Images Inject Here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS Scripts -->
     <script>
-        // === Seamless Theme Toggle Logic ===
+        // === 1. Custom Cursor Logic ===
+        const cursor = document.getElementById('custom-cursor');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate3d(-50%, -50%, 0)`;
+        });
+
+        const cursorActive = () => cursor.classList.add('active');
+        const cursorInactive = () => cursor.classList.remove('active');
+        const cursorDiscover = () => cursor.classList.add('discover');
+        const cursorUndiscover = () => cursor.classList.remove('discover');
+
+        document.querySelectorAll('a, button, .cursor-pointer:not(.portfolio-item)').forEach(el => {
+            el.addEventListener('mouseenter', cursorActive);
+            el.addEventListener('mouseleave', cursorInactive);
+        });
+        document.querySelectorAll('.portfolio-item').forEach(el => {
+            el.addEventListener('mouseenter', cursorDiscover);
+            el.addEventListener('mouseleave', cursorUndiscover);
+        });
+
+        // === 2. Theme Toggle Logic (Seamless Reveal) ===
         const themeToggleBtn = document.getElementById('themeToggleBtn');
         const body = document.body;
-        const iconImg = document.getElementById('icon-img');
         const revealLayer = document.getElementById('theme-reveal-layer');
         const fadeMask = document.querySelector('.center-fade-mask');
         let isAnimatingTheme = false;
 
-        // 初始化狀態
-        const savedTheme = localStorage.getItem('theme');
+        const savedTheme = localStorage.getItem('theme') || 'light';
         if (savedTheme === 'dark') {
             body.classList.add('dark');
-            iconImg.src = './assets/Light-mode.svg';
+            document.querySelector('#themeToggleBtn').previousElementSibling.textContent = 'Dark mode';
         }
 
         themeToggleBtn.addEventListener('click', (e) => {
@@ -274,55 +468,38 @@
             const isCurrentlyDark = body.classList.contains('dark');
             const targetColor = isCurrentlyDark ? '#F6F5F2' : '#000000';
             
-            // 1. 鎖定底色：加入 class 確保動畫期間真正嘅 body 背景色唔會變
             body.classList.add('theme-transitioning');
             body.classList.add(isCurrentlyDark ? 'to-light' : 'to-dark');
-            
-            // 2. 解決「穿崩」：立即淡出中間嘅霧，等擴散圓圈去到中間時畫面係乾淨嘅
             fadeMask.classList.add('hidden-fog');
 
-            // 攞掣嘅中心點
             const rect = themeToggleBtn.getBoundingClientRect();
             const x = rect.left + rect.width / 2;
             const y = rect.top + rect.height / 2;
+            const maxRadius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
 
-            // 計算最大半徑
-            const maxRadius = Math.hypot(
-                Math.max(x, window.innerWidth - x),
-                Math.max(y, window.innerHeight - y)
-            );
-
-            // 設定 reveal layer 嘅變數同顏色
             revealLayer.style.setProperty('--x', `${x}px`);
             revealLayer.style.setProperty('--y', `${y}px`);
             revealLayer.style.setProperty('--radius', `${maxRadius}px`);
             revealLayer.style.backgroundColor = targetColor;
 
-            // 啟動 1.5s 擴散動畫
             revealLayer.classList.add('expanding');
 
-            // 3. 喺 750ms (動畫去到一半，圓圈掃過中間文字) 改變文字同 Icon 顏色
             setTimeout(() => {
                 body.classList.toggle('dark');
-                const isNowDark = body.classList.contains('dark');
-                iconImg.src = isNowDark ? './assets/Light-mode.svg' : './assets/Dark-mode.svg';
-                localStorage.setItem('theme', isNowDark ? 'dark' : 'light');
+                const isDark = body.classList.contains('dark');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                document.querySelector('#themeToggleBtn').previousElementSibling.textContent = isDark ? 'Dark mode' : 'Light mode';
             }, 750); 
 
-            // 4. 喺 1500ms (擴散圓圈完全覆蓋全螢幕) 進行清理工作
             setTimeout(() => {
                 revealLayer.classList.remove('expanding');
                 body.classList.remove('theme-transitioning', 'to-light', 'to-dark');
-                
-                // 重新淡入新顏色嘅霧
                 fadeMask.classList.remove('hidden-fog'); 
-                
                 isAnimatingTheme = false;
             }, 1500);
         });
 
-
-        // === 3D Animation Logic (完全唔受干擾，繼續無縫運行) ===
+        // === 3. 3D Image Animation Logic ===
         const scene = document.getElementById('scene');
         
         const imageUrls = [
@@ -338,7 +515,6 @@
 
         const numImages = 31; 
         const particles = [];
-        
         const zStart = -4500;
         const zEnd = 850; 
         const totalDepth = zEnd - zStart;
@@ -378,7 +554,7 @@
             }
         }
 
-        function animate() {
+        function animate3D() {
             for (let i = 0; i < particles.length; i++) {
                 let p = particles[i];
                 p.z += p.speedZ; 
@@ -397,10 +573,111 @@
                 p.el.style.opacity = opacity * 0.95; 
                 p.el.style.transform = `translate(-50%, -50%) translate3d(${p.x}px, ${p.y}px, ${p.z}px) scale(${p.scale})`;
             }
-            requestAnimationFrame(animate);
+            requestAnimationFrame(animate3D);
         }
+        
+        animate3D();
 
-        animate();
+        // === 4. Scroll & Reveal Logic ===
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+        document.querySelectorAll('.reveal-up:not(.active), .reveal-ayoh:not(.active)').forEach(el => revealObserver.observe(el));
+
+        // 用 DOMContentLoaded 確保一 load 就觸發動畫，而唔使等圖片
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.querySelectorAll('.hand-up, .reveal-ayoh').forEach(el => el.classList.add('active'));
+            }, 100);
+        });
+
+        // Grid Toggle (Press 'G')
+        window.addEventListener('keydown', (e) => {
+            if (e.key && e.key.toLowerCase() === 'g') {
+                const grid = document.getElementById('design-grid');
+                if (grid) grid.classList.toggle('active');
+            }
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // === 5. Modal Logic ===
+        const projectsData = {
+            '01': { title: 'Brand Identity Redefined', desc: 'A complete overhaul of digital strategy and visual identity.', imgPrefix: 'photo-1558655146-d09347e92766', imgs: 3 },
+            '02': { title: 'App Experience Design', desc: 'Crafting seamless user flows for modern applications.', imgPrefix: 'photo-1542744173-8e7e53415bb0', imgs: 2 },
+            '03': { title: 'Digital Campaigns', desc: 'Engaging content and interactive web experiences.', imgPrefix: 'photo-1498050108023-c5249f4df085', imgs: 2 },
+            '04': { title: 'E-Commerce Solutions', desc: 'High-conversion frontend architectures.', imgPrefix: 'photo-1507238691740-187a5b1d37b8', imgs: 2 },
+            '05': { title: 'Corporate Websites', desc: 'Enterprise level CMS integration and design.', imgPrefix: 'photo-1551288049-bebda4e38f71', imgs: 2 },
+            '06': { title: 'Interactive WebGL', desc: 'Bringing websites to life with 3D elements.', imgPrefix: 'photo-1616486338812-3dadae4b4ace', imgs: 3 },
+            '07': { title: 'Global Architecture Platform', desc: 'A large scale digital platform for architecture firms.', imgPrefix: 'photo-1460925895917-afdab827c52f', imgs: 4 },
+        };
+
+        const modal = document.getElementById('project-modal');
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        let currentProjectId = null;
+
+        const openModal = (id) => {
+            currentProjectId = id;
+            const data = projectsData[id];
+            if (!data) return;
+
+            document.getElementById('modal-title').textContent = data.title;
+            document.getElementById('modal-desc').textContent = data.desc;
+            
+            const imagesContainer = document.getElementById('modal-images-container');
+            imagesContainer.innerHTML = '';
+            for (let i = 0; i < data.imgs; i++) {
+                const img = document.createElement('img');
+                img.src = `https://images.unsplash.com/${data.imgPrefix}?w=1200&q=80&sig=${i}`;
+                img.className = 'w-full object-cover bg-gray-200 dark:bg-zinc-800 aspect-[4/3] lg:aspect-[1132/695]';
+                imagesContainer.appendChild(img);
+            }
+
+            modalBackdrop.classList.remove('hidden', 'pointer-events-none', 'opacity-0');
+            modalBackdrop.classList.add('opacity-100');
+            modal.classList.remove('translate-y-full');
+            document.body.classList.add('lock-scroll');
+            document.getElementById('modal-main-scroll').scrollTop = 0;
+        };
+
+        const closeModal = () => {
+            modal.classList.add('translate-y-full');
+            modalBackdrop.classList.remove('opacity-100');
+            modalBackdrop.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                document.body.classList.remove('lock-scroll');
+                modalBackdrop.classList.add('hidden');
+                currentProjectId = null;
+            }, 700);
+        };
+
+        document.querySelectorAll('.portfolio-item').forEach(item => {
+            item.addEventListener('click', function() {
+                openModal(this.getAttribute('data-id'));
+            });
+        });
+
+        document.getElementById('modal-close-btn').addEventListener('click', closeModal);
+        modalBackdrop.addEventListener('click', closeModal);
+
+        document.getElementById('modal-prev-btn').addEventListener('click', () => {
+            if (!currentProjectId) return;
+            const keys = Object.keys(projectsData);
+            const idx = keys.indexOf(currentProjectId);
+            openModal(keys[idx === 0 ? keys.length - 1 : idx - 1]);
+        });
+
+        document.getElementById('modal-next-btn').addEventListener('click', () => {
+            if (!currentProjectId) return;
+            const keys = Object.keys(projectsData);
+            const idx = keys.indexOf(currentProjectId);
+            openModal(keys[idx === keys.length - 1 ? 0 : idx + 1]);
+        });
     </script>
 </body>
 </html>
