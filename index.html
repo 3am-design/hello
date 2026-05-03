@@ -361,7 +361,6 @@
                 <img src="./assets/3amDS.svg" alt="3amDS" class="h-[25px] object-contain brightness-0 invert" onerror="this.src='https://placehold.co/100x25/000/FFF?text=3amDS'">
             </div>
             
-            <!-- [KARINA FIX] 根據 Figma 調整文字字重 -->
             <nav class="hidden md:flex gap-6 lg:gap-10 items-center text-[16px] font-medium leading-[40px] tracking-[0.05em] pointer-events-auto absolute left-1/2 -translate-x-1/2">
                 <a href="#about" class="header-item nav-link transition-colors duration-300 cursor-pointer" style="animation-delay: 0.1s;">About</a>
                 <a href="#works" class="header-item nav-link transition-colors duration-300 cursor-pointer" style="animation-delay: 0.2s;">Works</a>
@@ -369,8 +368,8 @@
             </nav>
 
             <button onclick="window.location.href='index-dark.html'" class="header-item flex items-center pointer-events-auto cursor-pointer group" style="animation-delay: 0.4s;">
-                <!-- [KARINA FIX] 改為 Light off，移除 uppercase，字重轉做 font-medium -->
-                <span class="hidden md:block text-[10px] font-medium mr-2 group-hover:opacity-70 transition-opacity tracking-[0.2em] leading-none -translate-y-[1px]">Light off</span>
+                <!-- [KARINA FIX] 字距變 0 (tracking-normal)，字重粗一格 (font-semibold) -->
+                <span class="hidden md:block text-[10px] font-semibold mr-2 group-hover:opacity-70 transition-opacity tracking-normal leading-none -translate-y-[1px]">Light off</span>
                 <div class="w-[38px] h-[38px] rounded-full border border-white/20 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
                     <img id="icon-img" src="./assets/Dark-mode.svg" alt="Theme" class="w-4 h-4 brightness-0 invert transition-all duration-300" onerror="this.src='https://placehold.co/18x18/FFF/000?text=M'">
                 </div>
