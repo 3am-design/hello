@@ -53,6 +53,18 @@
         @media (max-width: 819px) {
             #custom-cursor { display: none !important; }
             body, a, button, .cursor-pointer { cursor: auto !important; }
+
+            /* Hero: Ayoh! SVG - centred with slight bilateral bleed */
+            #ayoh-wrapper svg {
+                width: 155vw !important;
+                height: auto !important;
+                margin-left: calc((100vw - 155vw) / 2 - var(--c-px)) !important;
+            }
+
+            /* Footer: constrain person+cat illustration on mobile */
+            #footer-svg-img {
+                max-width: 140px;
+            }
         }
 
         /* 鎖定背景捲動 */
@@ -382,7 +394,7 @@
         <!-- SCREEN 1: Hero Section -->
         <div id="hero-spacer" class="w-full h-[100svh]"></div>
         
-        <section id="hero-section" class="fixed top-0 left-0 w-full h-[100svh] pt-[100px] pb-0 overflow-hidden z-0 transition-opacity">
+        <section id="hero-section" class="fixed top-0 left-0 w-full h-[100svh] pt-[70px] min-[820px]:pt-[100px] pb-0 overflow-hidden z-0 transition-opacity">
             <div class="custom-container relative h-full w-full">
                 
                 <div class="w-full grid grid-cols-4 min-[820px]:grid-cols-6 gap-[10px] min-[820px]:gap-[20px] lg:gap-[40px]">
@@ -394,12 +406,12 @@
                 <div class="absolute bottom-[-5px] right-[0px] flex justify-end items-end z-10 pointer-events-none w-full px-[var(--c-px)]">
                     <div class="w-full grid grid-cols-4 min-[820px]:grid-cols-6 h-full">
                         <div class="hands-wrapper col-span-4 min-[820px]:col-start-3 min-[820px]:col-span-4 flex items-end">
-                            <div class="hand-up w-1/6" style="transition-duration: 1.6s; transition-delay: 0.6s;"><img src="./assets/hand_01.svg" class="w-full h-auto origin-bottom-center sway-1" alt="hand" onerror="this.src='https://placehold.co/124x180/FFC0CB/000?text=H1'"></div>
-                            <div class="hand-up w-1/6" style="transition-duration: 1.5s; transition-delay: 0.3s;"><img src="./assets/hand_02.svg" class="w-full h-auto origin-bottom-center sway-2" alt="hand" onerror="this.src='https://placehold.co/124x180/FFFF00/000?text=H2'"></div>
-                            <div class="hand-up w-1/6" style="transition-duration: 1.5s; transition-delay: 0.8s;"><img src="./assets/hand_03.svg" class="w-full h-auto origin-bottom-center sway-3" alt="hand" onerror="this.src='https://placehold.co/124x180/90EE90/000?text=H3'"></div>
-                            <div class="hand-up w-1/6" style="transition-duration: 1.7s; transition-delay: 0.4s;"><img src="./assets/hand_04.svg" class="w-full h-auto origin-bottom-center sway-4" alt="hand" onerror="this.src='https://placehold.co/124x180/ADD8E6/000?text=H4'"></div>
-                            <div class="hand-up w-1/6" style="transition-duration: 1.8s; transition-delay: 0.7s;"><img src="./assets/hand_05.svg" class="w-full h-auto origin-bottom-center sway-5" alt="hand" onerror="this.src='https://placehold.co/124x180/FFA07A/000?text=H5'"></div>
-                            <div class="hand-up w-1/6" style="transition-duration: 1.3s; transition-delay: 0.5s;"><img src="./assets/hand_06.svg" class="w-full h-auto origin-bottom-center sway-6" alt="hand" onerror="this.src='https://placehold.co/124x180/20B2AA/000?text=H6'"></div>
+                            <div class="hand-up hidden min-[820px]:block min-[820px]:w-1/6" style="transition-duration: 1.6s; transition-delay: 0.6s;"><img src="./assets/hand_01.svg" class="w-full h-auto origin-bottom-center sway-1" alt="hand" onerror="this.src='https://placehold.co/124x180/FFC0CB/000?text=H1'"></div>
+                            <div class="hand-up w-1/4 min-[820px]:w-1/6" style="transition-duration: 1.5s; transition-delay: 0.3s;"><img src="./assets/hand_02.svg" class="w-full h-auto origin-bottom-center sway-2" alt="hand" onerror="this.src='https://placehold.co/124x180/FFFF00/000?text=H2'"></div>
+                            <div class="hand-up w-1/4 min-[820px]:w-1/6" style="transition-duration: 1.5s; transition-delay: 0.8s;"><img src="./assets/hand_03.svg" class="w-full h-auto origin-bottom-center sway-3" alt="hand" onerror="this.src='https://placehold.co/124x180/90EE90/000?text=H3'"></div>
+                            <div class="hand-up w-1/4 min-[820px]:w-1/6" style="transition-duration: 1.7s; transition-delay: 0.4s;"><img src="./assets/hand_04.svg" class="w-full h-auto origin-bottom-center sway-4" alt="hand" onerror="this.src='https://placehold.co/124x180/ADD8E6/000?text=H4'"></div>
+                            <div class="hand-up w-1/4 min-[820px]:w-1/6" style="transition-duration: 1.8s; transition-delay: 0.7s;"><img src="./assets/hand_05.svg" class="w-full h-auto origin-bottom-center sway-5" alt="hand" onerror="this.src='https://placehold.co/124x180/FFA07A/000?text=H5'"></div>
+                            <div class="hand-up hidden min-[820px]:block min-[820px]:w-1/6" style="transition-duration: 1.3s; transition-delay: 0.5s;"><img src="./assets/hand_06.svg" class="w-full h-auto origin-bottom-center sway-6" alt="hand" onerror="this.src='https://placehold.co/124x180/20B2AA/000?text=H6'"></div>
                         </div>
                     </div>
                 </div>
@@ -450,18 +462,18 @@
 
                     <!-- Skewed Typography Group -->
                     <div class="w-[200vw] transform rotate-[9deg] origin-top-left relative mt-0 font-black leading-[1.05] tracking-tight text-black flex flex-col gap-1 md:gap-3 z-20 skewed-text-trigger">
-                        <div class="slide-in-right z-30" style="transition-delay: 150ms; transition-duration: 1.4s;"><div class="text-[40px] min-[820px]:text-[75px] lg:text-[110px] xl:text-[120px] font-black whitespace-nowrap pl-[0vw]">UXUI Web & App Brand Identity</div></div>
-                        <div class="slide-in-right z-30" style="transition-delay: 0ms; transition-duration: 1.2s;"><div class="text-[45px] min-[820px]:text-[80px] lg:text-[120px] xl:text-[120px] font-black whitespace-nowrap pl-[12vw] md:pl-[15vw]">Visual Communication</div></div>
+                        <div class="slide-in-right z-30" style="transition-delay: 150ms; transition-duration: 1.4s;"><div class="text-[28px] min-[820px]:text-[75px] lg:text-[110px] xl:text-[120px] font-black whitespace-nowrap pl-[0vw]">UXUI Web & App<br class="block min-[820px]:hidden"> Brand Identity</div></div>
+                        <div class="slide-in-right z-30" style="transition-delay: 0ms; transition-duration: 1.2s;"><div class="text-[30px] min-[820px]:text-[80px] lg:text-[120px] xl:text-[120px] font-black whitespace-nowrap pl-[6vw] min-[820px]:pl-[12vw] md:pl-[15vw]">Visual Communication</div></div>
                         <div class="slide-in-right z-30" style="transition-delay: 300ms; transition-duration: 1.3s;">
-                            <div class="flex items-baseline gap-3 md:gap-6 pl-[2vw] md:pl-[4vw]">
-                                <span class="text-[40px] min-[820px]:text-[70px] lg:text-[100px] xl:text-[120px] font-black whitespace-nowrap">Digital Strategy</span>
-                                <span class="text-[20px] md:text-[35px] lg:text-[45px] xl:text-[50px] font-black lowercase tracking-normal text-black whitespace-nowrap">and more...</span>
+                            <div class="flex flex-col min-[820px]:flex-row items-baseline gap-1 md:gap-6 pl-[2vw] md:pl-[4vw]">
+                                <span class="text-[28px] min-[820px]:text-[70px] lg:text-[100px] xl:text-[120px] font-black whitespace-nowrap">Digital Strategy</span>
+                                <span class="text-[15px] md:text-[35px] lg:text-[45px] xl:text-[50px] font-black lowercase tracking-normal text-black whitespace-nowrap">and more...</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="w-full grid grid-cols-4 min-[820px]:grid-cols-6 gap-[10px] min-[820px]:gap-[20px] lg:gap-[40px] items-end -mt-[50px] md:-mt-[100px] lg:-mt-[240px] xl:-mt-[280px] relative z-40">
-                        <div class="col-span-4 min-[820px]:col-span-4 flex flex-col items-start gap-[20px] lg:gap-[30px]">
+                    <div class="w-full grid grid-cols-4 min-[820px]:grid-cols-6 gap-[10px] min-[820px]:gap-[20px] lg:gap-[40px] items-end mt-[60px] md:-mt-[100px] lg:-mt-[240px] xl:-mt-[280px] relative z-40">
+                        <div class="col-span-2 min-[820px]:col-span-4 flex flex-col items-start gap-[20px] lg:gap-[30px]">
                             
                             <div class="text-[14px] lg:text-[20px] font-normal space-y-[12px] text-black">
                                 <p class="reveal-up" style="transition-delay: 100ms;">• 15 years of experience</p>
@@ -479,7 +491,7 @@
                             </div>
                         </div>
 
-                        <div class="col-span-2 col-start-3 min-[820px]:col-span-2 min-[820px]:col-start-5 flex justify-end items-end relative reveal-solid-up top-[200px]" style="transition-delay: 0ms; transition-duration: 1.4s;">
+                        <div class="flex col-span-2 col-start-3 min-[820px]:col-span-2 min-[820px]:col-start-5 justify-end items-end relative reveal-solid-up top-0 min-[820px]:top-[200px]" style="transition-delay: 0ms; transition-duration: 1.4s;">
                             <div class="relative w-full h-auto transition duration-500 group-hover:scale-110 group-hover:-rotate-3 group origin-bottom">
                                 <img src="./assets/visual_01.svg" class="visual-layer relative w-full h-auto z-10" data-depth="0.02" alt="Face Base" onerror="this.src='https://placehold.co/400x400/FFB6C1/000?text=Base'">
                                 <img src="./assets/visual_02.svg" class="visual-layer absolute inset-0 w-full h-auto z-20" data-depth="0.06" alt="Face Sparkles 1" onerror="this.src='https://placehold.co/400x400/transparent/000?text=S1'">
@@ -511,7 +523,7 @@
                 </section>
 
                 <!-- Talk Section -->
-                <section id="talk" class="w-full pt-10 min-[820px]:pt-0 pb-[50px]">
+                <section id="talk" class="w-full pt-10 min-[820px]:pt-0 pb-0 min-[820px]:pb-[50px]">
                     <div class="relative w-full">
                         <div class="absolute inset-0 pointer-events-none z-0">
                             <div class="custom-container h-full mx-auto grid grid-cols-4 min-[820px]:grid-cols-6 gap-[10px] min-[820px]:gap-[20px] lg:gap-[40px] hidden min-[820px]:grid">
@@ -523,36 +535,42 @@
                         </div>
 
                         <div class="custom-container relative z-10 h-full">
-                            <div class="grid grid-cols-4 min-[820px]:grid-cols-6 gap-[10px] min-[820px]:gap-[20px] lg:gap-[40px] items-center min-[820px]:items-stretch h-full py-10 min-[820px]:py-0">
-                                
+                            <div class="grid grid-cols-4 min-[820px]:grid-cols-6 gap-[10px] min-[820px]:gap-[20px] lg:gap-[40px] items-center min-[820px]:items-stretch h-full pt-6 pb-6 min-[820px]:py-0">
+
                                 <div class="hidden min-[820px]:flex flex-col justify-end col-start-1 col-span-1 pb-0 h-full">
                                     <div class="text-[10px] font-medium text-black leading-normal whitespace-nowrap">Copyright © 2026 3am Design Studio. All rights reserved.</div>
                                 </div>
 
-                                <div class="col-span-4 min-[820px]:col-start-2 min-[820px]:col-span-2 flex justify-center items-center h-full reveal-up">
-                                    <img src="./assets/Footer.svg" alt="Footer Illustration" class="w-full h-auto object-contain origin-center" onerror="this.src='https://placehold.co/800x800/transparent/000?text=Footer'">
+                                <!-- Mobile: AI x Human in left 2 cols -->
+                                <div class="flex min-[820px]:hidden col-span-2 col-start-1 items-center">
+                                    <img src="./assets/aixhuman.svg" alt="AI x Human Intelligence" class="w-full h-auto" onerror="this.src='https://placehold.co/400x200/transparent/000?text=AI+x+Human'">
+                                </div>
+
+                                <!-- Person+cat SVG: right 2 cols on mobile, cols 2-3 on desktop -->
+                                <div class="col-span-2 col-start-3 min-[820px]:col-start-2 min-[820px]:col-span-2 flex justify-center items-center h-full reveal-up">
+                                    <img id="footer-svg-img" src="./assets/Footer.svg" alt="Footer Illustration" class="w-full h-auto object-contain origin-center" onerror="this.src='https://placehold.co/800x800/transparent/000?text=Footer'">
                                 </div>
 
                                 <div class="col-span-4 min-[820px]:col-start-5 min-[820px]:col-span-2 flex flex-col justify-center reveal-up h-full">
-                                    <div class="grid grid-cols-1 min-[820px]:grid-cols-2 gap-x-[10px] min-[820px]:gap-x-[20px] lg:gap-x-[40px] text-black w-full pt-[40px] min-[820px]:pt-[40px]">
-                                        
+                                    <div class="grid grid-cols-1 min-[820px]:grid-cols-2 gap-x-[10px] min-[820px]:gap-x-[20px] lg:gap-x-[40px] text-black w-full pt-[20px] min-[820px]:pt-[40px]">
+
                                         <div class="min-[820px]:col-span-1 flex flex-col">
-                                            <img src="./assets/aixhuman.svg" alt="AI x Human Intelligence" class="w-full h-auto mb-[80px]" onerror="this.src='https://placehold.co/400x200/transparent/000?text=AI+x+Human'">
-                                            <p class="font-medium text-[12px] leading-[18px] tracking-normal uppercase mb-[40px]">
+                                            <img src="./assets/aixhuman.svg" alt="AI x Human Intelligence" class="hidden min-[820px]:block w-full h-auto mb-[80px]" onerror="this.src='https://placehold.co/400x200/transparent/000?text=AI+x+Human'">
+                                            <p class="font-medium text-[12px] leading-[18px] tracking-normal uppercase mb-[30px] min-[820px]:mb-[40px]">
                                                 2026: THE YEAR OF LAUNCH.<br>WHILE OTHERS FEAR THE MACHINE,<br>I SYNCHRONIZE WITH IT.
                                             </p>
                                         </div>
                                         <div class="hidden min-[820px]:block min-[820px]:col-span-1"></div>
 
                                         <div class="min-[820px]:col-span-2 flex flex-col">
-                                            <p class="font-normal text-[20px] lg:text-[30px] leading-[1.2] tracking-normal mb-[80px]">
+                                            <p class="font-normal text-[20px] lg:text-[30px] leading-[1.2] tracking-normal mb-[30px] min-[820px]:mb-[80px]">
                                                 By mastering the latest tech, I deliver smarter, faster & more flexible design solutions that fit your budget, without compromising the soul of the craft.
                                             </p>
-                                            <div class="w-full h-[1px] bg-black mb-[80px]"></div>
+                                            <div class="w-full h-[1px] bg-black mb-[30px] min-[820px]:mb-[80px]"></div>
                                         </div>
 
-                                        <div class="min-[820px]:col-span-1 flex flex-col pb-[50px] min-[820px]:pb-[50px]">
-                                            <p class="font-medium text-[12px] leading-[18px] tracking-normal uppercase mb-[40px]">WANT TO COLLABORATE?<br>WORK WITH 3AM.</p>
+                                        <div class="min-[820px]:col-span-1 flex flex-col pb-[30px] min-[820px]:pb-[50px]">
+                                            <p class="font-medium text-[12px] leading-[18px] tracking-normal uppercase mb-[20px] min-[820px]:mb-[40px]">WANT TO COLLABORATE?<br>WORK WITH 3AM.</p>
                                             <div class="flex flex-col gap-[10px]">
                                                 <a href="mailto:ericng@hello-3am.com" class="font-medium text-[18px] lg:text-[20px] leading-[20px] hover:opacity-70 transition duration-300 -mt-[20px] mb-[20px]">ericng@hello-3am.com</a>
                                                 <a href="tel:+85263577861" class="font-medium text-[18px] lg:text-[20px] leading-[20px] hover:opacity-70 transition duration-300">+852 6357 7861</a>
@@ -562,8 +580,8 @@
                                     </div>
                                 </div>
 
-                                <div class="flex min-[820px]:hidden justify-center col-span-4 mt-6">
-                                    <div class="text-[10px] font-medium text-black leading-normal text-center">Copyright © 2026 3am Design Studio. All rights reserved.</div>
+                                <div class="flex min-[820px]:hidden col-span-2 col-start-1 mt-2">
+                                    <div class="text-[10px] font-medium text-black leading-normal">Copyright © 2026 3am Design Studio. All rights reserved.</div>
                                 </div>
                             </div>
                         </div>
