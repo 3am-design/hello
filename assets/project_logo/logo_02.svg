@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500" height="300" viewBox="0 0 500 300">
+  <defs>
+    <clipPath id="clip-logo_02">
+      <rect width="500" height="300"/>
+    </clipPath>
+  </defs>
+  <g id="logo_02" clip-path="url(#clip-logo_02)">
+    <g id="Group_6" data-name="Group 6" transform="translate(394.406 -1789.943)">
+      <path id="Layer" d="M729.181,243.3l-2.581,1.859v32.7l2.581,2.581Z" transform="translate(-878.662 1700.92)"/>
+      <path id="Layer-2" data-name="Layer" d="M760.281,281.5l-2.581,2.494v23.712l2.581,2.581Z" transform="translate(-902.96 1671.076)"/>
+      <path id="Layer-3" data-name="Layer" d="M726.6,281.5l2.384,2.581h4.528l2.472-2.581Z" transform="translate(-878.662 1671.076)"/>
+      <path id="Layer-4" data-name="Layer" d="M795.9,281.5l2.472,2.581H802.7L805.2,281.5Z" transform="translate(-932.803 1671.076)"/>
+      <path id="Layer-5" data-name="Layer" d="M795.9,281.5l2.581,2.494v23.6L795.9,310.09Z" transform="translate(-932.803 1671.076)"/>
+      <path id="Layer-6" data-name="Layer" d="M829.494,281.5,827,283.994v23.6l2.494,2.494Z" transform="translate(-957.101 1671.076)"/>
+      <path id="Layer-7" data-name="Layer" d="M795.9,403.294l2.472-2.494H802.7l2.494,2.494Z" transform="translate(-932.803 1577.872)"/>
+      <path id="Layer-8" data-name="Layer" d="M865.2,283.994l2.581-2.494v26.1L865.2,310.09Z" transform="translate(-986.945 1671.076)"/>
+      <path id="Layer-9" data-name="Layer" d="M922.481,281.5l-2.581,2.494v23.6l2.581,2.494Z" transform="translate(-1029.68 1671.076)"/>
+      <path id="Layer-10" data-name="Layer" d="M865.2,403.294l2.494-2.494h9.472l2.581,2.494Z" transform="translate(-986.945 1577.872)"/>
+      <path id="Layer-11" data-name="Layer" d="M894.681,281.5l-2.581,2.494v23.6l2.581,2.494Z" transform="translate(-1007.961 1671.076)"/>
+      <path id="Layer-12" data-name="Layer" d="M662.265,275.452c-3.3-2.581-6.606-8.662-6.606-15.793,0-7.109,3.3-13.19,6.606-15.771V241c-4.637,2.472-9.165,10.106-9.165,18.659,0,8.575,4.528,16.209,9.165,18.68Z" transform="translate(-821.24 1702.717)"/>
+      <path id="Layer-13" data-name="Layer" d="M1185.9,281.5l2.581,2.581h4.331l2.472-2.581Z" transform="translate(-1237.495 1671.076)"/>
+      <path id="Layer-14" data-name="Layer" d="M1185.9,281.5l2.581,2.494v23.6l-2.581,2.494Z" transform="translate(-1237.495 1671.076)"/>
+      <path id="Layer-15" data-name="Layer" d="M1219.581,281.5,1217,283.994V315.23l2.581,2.494Z" transform="translate(-1261.791 1671.076)"/>
+      <path id="Layer-16" data-name="Layer" d="M1185.9,402.981l2.581-2.581h4.331l2.472,2.581Z" transform="translate(-1237.495 1578.184)"/>
+      <path id="Layer-17" data-name="Layer" d="M1185.4,437.881l2.472-2.581h4.55l2.472,2.581Z" transform="translate(-1237.104 1550.918)"/>
+      <path id="Layer-18" data-name="Layer" d="M1116.6,281.5l2.559,2.494v26.293l-2.559-2.581Z" transform="translate(-1183.353 1671.076)"/>
+      <path id="Layer-19" data-name="Layer" d="M1116.6,281.5l2.472,2.581h4.419l2.494-2.581Z" transform="translate(-1183.353 1671.076)"/>
+      <path id="Layer-20" data-name="Layer" d="M1150.281,281.5l-2.581,2.494v23.6l2.581,2.494Z" transform="translate(-1207.65 1671.076)"/>
+      <path id="Layer-21" data-name="Layer" d="M1080.959,281.5l-2.559,2.494v23.6l2.559,2.494Z" transform="translate(-1153.509 1671.076)"/>
+      <path id="Layer-22" data-name="Layer" d="M1047.872,281.5l-2.472,2.581h7.306l2.472-2.581Z" transform="translate(-1127.727 1671.076)"/>
+      <path id="Layer-23" data-name="Layer" d="M1047.2,316.9l2.581,2.581v15.771l-2.581,2.494Z" transform="translate(-1129.134 1643.419)"/>
+      <path id="Layer-24" data-name="Layer" d="M1047.2,402.981l2.494-2.581h4.418l2.472,2.581Z" transform="translate(-1129.134 1578.184)"/>
+      <path id="Layer-25" data-name="Layer" d="M1047.2,316.9l2.494,2.581h4.418l2.472-2.581Z" transform="translate(-1129.134 1643.419)"/>
+      <path id="Layer-26" data-name="Layer" d="M989.8,251.637a11.175,11.175,0,0,1-2.166-4.944c-.416-2.778.306-5.162,2.887-6.387V237.2a8.948,8.948,0,0,0-5.468,10.521,15.5,15.5,0,0,0,2.8,5.469c2.056,3.084,3.915,7.022,3.194,11.046a12.709,12.709,0,0,1-5.578,8.662v2.778s.109.109.109,0a15.649,15.649,0,0,0,8.05-11.046C994.243,259.905,992.383,255.552,989.8,251.637Z" transform="translate(-1080.398 1705.686)"/>
+      <path id="Layer-27" data-name="Layer" d="M1477.3,281.5l2.472,2.581h4.331l2.472-2.581Z" transform="translate(-1465.153 1671.076)"/>
+      <path id="Layer-28" data-name="Layer" d="M1477.3,281.5l2.581,2.494v23.6l-2.581,2.494Z" transform="translate(-1465.153 1671.076)"/>
+      <path id="Layer-29" data-name="Layer" d="M1510.481,281.5l-2.581,2.494V315.23l2.581,2.494Z" transform="translate(-1489.059 1671.076)"/>
+      <path id="Layer-30" data-name="Layer" d="M1477.3,402.981l2.472-2.581h4.331l2.472,2.581Z" transform="translate(-1465.153 1578.184)"/>
+      <path id="Layer-31" data-name="Layer" d="M1476.3,437.881l2.472-2.581h4.55l2.472,2.581Z" transform="translate(-1464.371 1550.918)"/>
+      <path id="Layer-32" data-name="Layer" d="M1407.5,281.5l2.581,2.494v26.293l-2.581-2.581Z" transform="translate(-1410.621 1671.076)"/>
+      <path id="Layer-33" data-name="Layer" d="M1407.5,281.5l2.472,2.581h4.441l2.472-2.581Z" transform="translate(-1410.621 1671.076)"/>
+      <path id="Layer-34" data-name="Layer" d="M1441.181,281.5l-2.581,2.494v23.6l2.581,2.494Z" transform="translate(-1434.918 1671.076)"/>
+      <path id="Layer-35" data-name="Layer" d="M1371.881,281.5l-2.581,2.494v23.6l2.581,2.494Z" transform="translate(-1380.777 1671.076)"/>
+      <path id="Layer-36" data-name="Layer" d="M1338.772,281.5l-2.472,2.581h7.328l2.472-2.581Z" transform="translate(-1354.995 1671.076)"/>
+      <path id="Layer-37" data-name="Layer" d="M1338.2,316.9l2.581,2.581v15.771l-2.581,2.494Z" transform="translate(-1356.48 1643.419)"/>
+      <path id="Layer-38" data-name="Layer" d="M1338.2,403.294l2.472-2.494h4.44l2.472,2.494Z" transform="translate(-1356.48 1577.872)"/>
+      <path id="Layer-39" data-name="Layer" d="M1338.2,316.9l2.472,2.581h4.44l2.472-2.581Z" transform="translate(-1356.48 1643.419)"/>
+      <path id="Layer-40" data-name="Layer" d="M1280.266,251.637a10.7,10.7,0,0,1-2.166-4.944c-.416-2.778.306-5.162,2.887-6.387V237.2a8.9,8.9,0,0,0-5.469,10.521,15.428,15.428,0,0,0,2.778,5.469c2.078,3.084,3.916,7.022,3.194,11.046a12.683,12.683,0,0,1-5.556,8.662v2.778s.109.109.109,0a15.572,15.572,0,0,0,7.94-11.046C1284.794,259.905,1282.935,255.552,1280.266,251.637Z" transform="translate(-1307.318 1705.686)"/>
+      <path id="Layer-41" data-name="Layer" d="M241.4,171.7l2.056,4.637H263.69l1.859-4.637Z" transform="translate(-499.596 1756.858)"/>
+      <path id="Layer-42" data-name="Layer" d="M219.506,296.6l-3.106,4.747h35.064l-3.39-4.747Z" transform="translate(-480.064 1659.279)"/>
+      <path id="Layer-43" data-name="Layer" d="M290.134,0,285.3,2.166V64.879l4.834,4.747Z" transform="translate(-533.893 1891)"/>
+      <path id="Layer-44" data-name="Layer" d="M57.1,75.9l1.947,4.331H74.118L75.956,75.9Z" transform="translate(-355.61 1831.702)"/>
+      <path id="Layer-45" data-name="Layer" d="M157.437,0V69.516L152.8,64.879V4.637Z" transform="translate(-430.376 1891)"/>
+      <path id="Layer-46" data-name="Layer" d="M119.3,296.6h4.747l4.637,4.637H116Z" transform="translate(-401.626 1659.279)"/>
+      <path id="Layer-47" data-name="Layer" d="M61.3,121.2l1.75,3.916h13.3l2.078-3.916Z" transform="translate(-358.891 1796.311)"/>
+      <path id="Layer-48" data-name="Layer" d="M94.94,31.6,90.5,34.072V51.615L94.94,54.7Z" transform="translate(-381.704 1866.312)"/>
+      <path id="Layer-49" data-name="Layer" d="M68.8,155.6l4.331,4.44H78.4l4.025-4.44Z" transform="translate(-364.751 1769.436)"/>
+      <path id="Layer-50" data-name="Layer" d="M68.8,155.6l4.331,4.331V175.09L68.8,179.333Z" transform="translate(-364.751 1769.436)"/>
+      <path id="Layer-51" data-name="Layer" d="M115.944,155.6l-4.244,4.331V175.09l4.244,4.244Z" transform="translate(-398.267 1769.436)"/>
+      <path id="Layer-52" data-name="Layer" d="M68.8,248.944l4.244-4.244h5.25l4.134,4.244Z" transform="translate(-364.751 1699.826)"/>
+      <path id="Layer-53" data-name="Layer" d="M26.4,0H58.686L54.049,4.637H31.037Z" transform="translate(-331.625 1891)"/>
+      <path id="Layer-54" data-name="Layer" d="M5.775.5V36.811c0,7.94-.109,21.962-5.775,29.814l3.3,3.194c7.109-7.131,7.022-25.7,7.022-33.008V.5Z" transform="translate(-311 1890.609)"/>
+      <path id="Layer-55" data-name="Layer" d="M255.7,30.5H232.49a64.777,64.777,0,0,0-.2-16.8l-4.44,1.859c.722,6.693.613,16.078-1.553,19.6h27.343Z" transform="translate(-487.799 1880.297)"/>
+      <path id="Layer-56" data-name="Layer" d="M425.3,171.7l2.056,4.637H447.59l1.837-4.637Z" transform="translate(-643.269 1756.858)"/>
+      <path id="Layer-57" data-name="Layer" d="M403.406,296.6l-3.106,4.747h34.977l-3.3-4.747Z" transform="translate(-623.738 1659.279)"/>
+      <path id="Layer-58" data-name="Layer" d="M474.034,0,469.2,2.166V64.879l4.834,4.747Z" transform="translate(-677.566 1891)"/>
+      <path id="Layer-59" data-name="Layer" d="M440.1,30.5H416.89a63.774,63.774,0,0,0-.219-16.8l-4.419,1.859c.722,6.693.613,16.078-1.553,19.6h27.321Z" transform="translate(-631.863 1880.297)"/>
+    </g>
+  </g>
+</svg>

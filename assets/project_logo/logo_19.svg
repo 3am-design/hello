@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500" height="300" viewBox="0 0 500 300">
+  <defs>
+    <clipPath id="clip-logo_19">
+      <rect width="500" height="300"/>
+    </clipPath>
+  </defs>
+  <g id="logo_19" clip-path="url(#clip-logo_19)">
+    <g id="Group_16" data-name="Group 16" transform="translate(125 126.066)">
+      <path id="Path_2018" data-name="Path 2018" d="M236.447,53.517h26.837V57.97H242.722V72.286h17.942v4.528H242.726v16.64h23.545L263.4,97.911H236.447Z" transform="translate(-236.447 -51.598)"/>
+      <path id="Path_2019" data-name="Path 2019" d="M248,53.511h6.766l28.964,30.713V53.511h5.956V98.652l-35.742-37V97.927H248Z" transform="translate(-185.739 -51.625)"/>
+      <path id="Path_2020" data-name="Path 2020" d="M302.4,93.426l-2.8,4.5H261.7V93.786L292.322,58.05H263.741V53.511h36.141v4.464L269.37,93.426Z" transform="translate(-125.586 -51.623)"/>
+      <path id="Path_2021" data-name="Path 2021" d="M297.71,53.161a23.934,23.934,0,1,0,23.932,23.931A23.934,23.934,0,0,0,297.71,53.161m0,42.435a18.5,18.5,0,1,1,18.5-18.51,18.5,18.5,0,0,1-18.5,18.51" transform="translate(-72.583 -53.161)"/>
+    </g>
+  </g>
+</svg>
