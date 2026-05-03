@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="color-scheme" content="dark">
+    <title>3am Design Studio</title>
+
+    <!-- 載入外部庫 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.2/dist/lenis.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        if ("scrollRestoration" in history) {
+            history.scrollRestoration = "manual";
+        }
+    </script>
+
+    <style>
+        html, body {
+            width: 100%;
+            max-width: 100vw;
+            min-height: 100%;
+            overflow-x: clip;
+            background-color: #000;
+        }
+
+        body {
+            color: #fff;
+            font-family: "Inter", sans-serif;
+        }
+
+        html.lenis, html.lenis body {
+            height: auto;
+        }
+        .lenis.lenis-smooth {
+            scroll-behavior: auto !important;
+        }
+        .lenis.lenis-smooth [data-lenis-prevent] {
+            overscroll-behavior: contain;
+        }
+        .lenis.lenis-stopped {
+            overflow: hidden;
+        }
+        .lenis.lenis-smooth iframe {
+            pointer-events: none;
+        }
+
+        .fouc-protect { opacity: 0; visibility: hidden; }
+
+        #preloader-logo-container svg, #header-logo-container svg { height: 100%; width: auto; display: block; }
+        #logo-wrapper svg { width: 100%; height: auto; display: block; }
+        #rocket-svg-container svg { width: 100%; height: auto; display: block; }
+        
+        #intro-3am-container svg { height: 60px; width: auto; display: block; }
+        @media (min-width: 768px) { #intro-3am-container svg { height: 119px; } }
+        
+        .awards-logo svg { width: 100%; height: auto; display: block; }
+        
+        #cta-title-container svg { width: 100%; height: auto; display: block; }
+        #astronaut-container svg { width: 100%; height: auto; display: block; }
+
+        #logo-wrapper svg path, #intro-3am-container svg path, 
+        #cta-title-container svg path, #cta-title-container svg text,
+        #cta-title-container svg rect, #cta-title-container svg polygon, 
+        #cta-title-container svg circle, #cta-title-container svg polyline, 
+        #cta-title-container svg line {
+            fill: #ffffff !important;
+            stroke: #ffffff !important;
+            stroke-width: 2px !important;
+            stroke-linecap: round !important;
+            stroke-linejoin: round !important;
+            will-change: fill-opacity, stroke-opacity, stroke-dashoffset;
+        }
+        #rocket-wrapper svg path { fill: #ffffff; }
+
+        .nav-link { position: relative; transition: color 0.3s ease; }
+        .nav-link::after {
+            content: ""; position: absolute; width: 5px; height: 5px;
+            bottom: -10px; left: 50%; border-radius: 50%; background-color: #fff;
+            opacity: 0; transform: translateX(-50%) translateY(3px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .nav-link:hover::after { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        .hover-underline-link { position: relative; transition: color 0.3s ease; }
+        .hover-underline-link::after {
+            content: ""; position: absolute; width: 0; height: 2px;
+            bottom: 0; left: 0; background-color: currentColor;
+            transition: width 0.3s ease-out;
+        }
+        .hover-underline-link:hover::after { width: 100%; }
+
+        #logo-wrapper {
+            position: fixed; z-index: 40; transform-origin: center center;
+            pointer-events: none; backface-visibility: hidden; transform: translateZ(0);
+        }
+
+        #launch-ui-wrapper {
+            position: fixed; z-index: 55; display: flex; flex-direction: column;
+            will-change: transform, opacity; pointer-events: none;
+        }
+
+        #rocket-wrapper {
+            position: fixed; z-index: 50; display: flex; flex-direction: column;
+            align-items: center; will-change: bottom; pointer-events: none;
+            mix-blend-mode: difference;
+        }
+
+        #summary-wrapper {
+            position: fixed; z-index: 45; display: flex; flex-direction: column;
+            align-items: center; will-change: bottom, transform; pointer-events: none;
+        }
+
+        #trail-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 10;
+        }
+
+        .circle-particle {
+            position: absolute; border-radius: 50%; border: 2px solid;
+            background: transparent; opacity: 0; will-change: transform, opacity, width, height;
+        }
+
+        @media (pointer: fine) {
+            body, a, button, .cursor-pointer { cursor: none !important; }
+        }
+
+        #custom-cursor {
+            position: fixed; top: 0; left: 0; width: 20px; height: 20px;
+            border: 1.5px solid #fff; border-radius: 50%; pointer-events: none;
+            z-index: 9999; display: flex; justify-content: center; align-items: center;
+            mix-blend-mode: difference; will-change: transform;
+            transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+        }
+        #custom-cursor.hover-nav { width: 60px; height: 60px; background-color: #fff; border-color: #fff; }
+        #custom-cursor.hover-img { width: 100px; height: 100px; background-color: #fff; border-color: #fff; mix-blend-mode: normal; }
+        #custom-cursor span {
+            color: #000; font-size: 10px; font-weight: 600; opacity: 0;
+            text-transform: uppercase; letter-spacing: 0.04em; transition: opacity 0.3s ease;
+        }
+        #custom-cursor.hover-img span { opacity: 1; }
+
+        .awards-marquee { overflow: visible; white-space: nowrap; width: 100%; position: relative; }
+        .awards-marquee-track {
+            display: inline-flex; align-items: center; gap: 20px;
+            width: max-content; will-change: transform;
+        }
+        @media (min-width: 768px) {
+            .awards-marquee-track { gap: 34px; }
+        }
+
+        /* 📍 Karina Fix: 將太空人移低多 30px (原本 -160px -> -190px)，加強出血 */
+        #astronaut-container {
+            position: absolute;
+            right: -6vw; 
+            width: 65vw;
+            bottom: -190px; 
+        }
+        @media (min-width: 768px) {
+            #astronaut-container {
+                width: 80%;
+                right: 0;
+                bottom: 0; 
+            }
+        }
+    </style>
+</head>
+
+<body class="antialiased selection:bg-gray-700 selection:text-white">
+
+    <div id="bg-grid" class="fixed top-0 left-0 w-full min-h-[100lvh] h-[100lvh] pointer-events-none z-0 px-[30px] md:px-[5.26vw] transition-opacity duration-300 opacity-0">
+        <div class="w-full h-full grid grid-cols-4 md:grid-cols-6 gap-[15px] md:gap-[2.08vw]">
+            <div class="bg-[#0b3834] w-full h-full"></div>
+            <div class="bg-[#0b3834] w-full h-full"></div>
+            <div class="bg-[#0b3834] w-full h-full"></div>
+            <div class="bg-[#0b3834] w-full h-full"></div>
+            <div class="bg-[#0b3834] hidden md:block w-full h-full"></div>
+            <div class="bg-[#0b3834] hidden md:block w-full h-full"></div>
+        </div>
+    </div>
+
+    <img id="shared-moon" src="assets/home/moon.webp" alt="Moon" class="fixed top-[-80vh] md:top-[-150vh] left-[-20vw] md:left-[-20vw] w-[90vw] md:w-[70vw] max-w-none z-10 pointer-events-none mix-blend-screen opacity-80" onerror="this.style.display='none'">
+
+    <div id="preloader" class="fixed top-0 left-0 w-full h-[100lvh] bg-[#000] z-[99999] flex justify-center items-center pointer-events-auto">
+        <div id="preloader-logo-container" class="h-[20px] md:h-[26px]"></div>
+    </div>
+
+    <!-- Cursor -->
+    <div id="custom-cursor"><span>Discover</span></div>
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 w-full px-[30px] pt-[30px] md:px-[5.26vw] md:pt-[35px] z-[999] flex justify-between items-end pointer-events-none fouc-protect">
+        <a href="index.html" id="header-logo-container" class="h-[20px] md:h-[26px] pointer-events-auto cursor-pointer flex items-end opacity-0"></a>
+        <nav class="flex gap-6 md:gap-[35px] text-sm md:text-[15px] font-bold tracking-[0.04em] h-[20px] md:h-[26px] items-end pointer-events-auto">
+            <a href="#" class="nav-link cursor-pointer leading-none opacity-0">Works</a>
+            <a href="#" class="nav-link cursor-pointer leading-none opacity-0">About</a>
+            <a href="#" class="nav-link cursor-pointer leading-none opacity-0">Talk</a>
+        </nav>
+    </header>
+
+    <!-- Logo SVG Container -->
+    <div id="logo-wrapper" class="fouc-protect"></div>
+
+    <!-- Launch UI -->
+    <div id="launch-ui-wrapper" class="pointer-events-none fouc-protect">
+        <div id="launch-ui" class="flex flex-col items-center transition-opacity duration-300">
+            <p class="launch-text text-[#999999] text-[11px] md:text-[12px] font-medium tracking-[0.08em] leading-none uppercase m-0">Scroll to launch</p>
+            <div class="h-[8px]"></div>
+            <p class="launch-text text-white text-[11px] md:text-[12px] font-medium tracking-[0.08em] leading-none uppercase m-0">Absolutions</p>
+            <div class="h-[12px]"></div>
+            <div class="flex flex-col items-center w-[7px]">
+                <div class="launch-line-bg w-[1px] h-[80px] md:h-[104px] bg-[#999999] relative opacity-60 origin-top">
+                    <div id="launch-line-active" class="w-full bg-white absolute top-0 left-0 h-0">
+                        <div id="launch-circle" class="w-[7px] h-[7px] rounded-full border-[1.5px] border-white bg-[#000] absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[50%] z-10"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rocket -->
+    <div id="rocket-wrapper" class="fouc-protect">
+        <div id="rocket-drift">
+            <div id="rocket-svg-container" class="w-16 md:w-20 relative z-20"></div>
+        </div>
+    </div>
+
+    <!-- Summary Text -->
+    <div id="summary-wrapper" class="fouc-protect">
+        <div id="vehicle-summary" class="absolute bottom-[150px] left-[50%] ml-[50px] md:left-auto md:-right-[6.59vw] md:ml-0 w-max text-left">
+            <div class="summary-line font-extrabold text-[5px] tracking-[0.04em] text-white mb-[4px] leading-none uppercase">VEHICLE SUMMARY</div>
+            <div class="summary-line font-medium text-[5px] tracking-[0.04em] text-white leading-[1.6] uppercase">240mH / 18mW</div>
+            <div class="summary-line font-medium text-[5px] tracking-[0.04em] text-white leading-[1.6] uppercase">BOOSTER 4050t</div>
+            <div class="summary-line font-medium text-[5px] tracking-[0.04em] text-white leading-[1.6] uppercase">PAYLOAD 200+t</div>
+        </div>
+    </div>
+
+    <!-- Scrollable Content Container -->
+    <div class="relative w-full overflow-x-clip">
+        <div id="trail-container"></div>
+
+        <!-- Intro Section -->
+        <div id="intro-trigger" class="absolute w-full top-[1140px] md:top-[1400px] z-20 pointer-events-none">
+            <div id="intro-section" class="relative w-full h-[100lvh] flex justify-center items-center overflow-hidden pointer-events-none">
+                <div class="relative z-20 w-full mx-auto px-[30px] md:px-[5.26vw] -translate-y-[10vh] md:translate-y-0">
+                    <div class="grid grid-cols-4 md:grid-cols-6 gap-[15px] md:gap-[2.08vw] items-end">
+                        <div id="intro-3am-container" class="col-span-4 md:col-span-2 md:col-start-1 flex justify-center md:justify-end mt-[65px] md:mt-0 mb-0 md:mb-[10px]"></div>
+                        <div class="col-span-4 md:col-span-3 md:col-start-3 text-center md:text-left mt-[20px] md:mt-0">
+                            <p class="intro-fade text-[20px] md:text-[30px] font-normal leading-[36px] md:leading-[50px] tracking-[0] text-white m-0">is the vibe that clears my head.</p>
+                            <p class="intro-fade text-[20px] md:text-[30px] font-normal leading-[36px] md:leading-[50px] tracking-[0] text-white m-0">A mindset, not a schedule.</p>
+                            <p class="intro-fade text-[20px] md:text-[30px] font-normal leading-[36px] md:leading-[50px] tracking-[0] text-white m-0">For sharp, functional &amp; striking work.</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-4 md:grid-cols-6 gap-[15px] md:gap-[2.08vw] mt-[42px] md:mt-[75px]">
+                        <div class="col-span-4 md:col-span-3 md:col-start-3 text-center md:text-left">
+                            <p class="intro-fade text-[12px] font-medium leading-[18px] tracking-[0.04em] uppercase text-white m-0">DONE BY 5PM. NOT ALL-NIGHTERS.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Awards Section -->
+        <div id="awards-trigger" class="absolute w-full top-[3200px] md:top-[4800px] z-20 pointer-events-none">
+            <div id="awards-section" class="relative w-full h-[100lvh] flex items-center overflow-hidden pointer-events-none">
+                <div class="relative z-20 w-full mx-auto px-[30px] md:px-[5.26vw] grid grid-cols-4 md:grid-cols-6 gap-[15px] md:gap-[2.08vw] items-start">
+                    <div class="col-span-4 md:col-span-6 md:-mx-[8vw] pt-[7vh] md:pt-[8vh]">
+                        <div class="awards-marquee mt-[140px] md:mt-[180px]">
+                            <div class="awards-marquee-track text-[40px] md:text-[100px] font-bold leading-[1.2] tracking-[-0.05em] text-white">
+                                <span>UXUI</span>
+                                <div class="w-[8px] h-[8px] md:w-[16px] md:h-[16px] bg-[#999999] rounded-full shrink-0"></div>
+                                <span>Web &amp; App</span>
+                                <div class="w-[8px] h-[8px] md:w-[16px] md:h-[16px] bg-[#999999] rounded-full shrink-0"></div>
+                                <span>Brand Identity</span>
+                                <div class="w-[8px] h-[8px] md:w-[16px] md:h-[16px] bg-[#999999] rounded-full shrink-0"></div>
+                                <span>Visual Communication</span>
+                                <div class="w-[8px] h-[8px] md:w-[16px] md:h-[16px] bg-[#999999] rounded-full shrink-0"></div>
+                                <span>Digital Strategy</span>
+                                <div class="w-[8px] h-[8px] md:w-[16px] md:h-[16px] bg-[#999999] rounded-full shrink-0"></div>
+                                <span>and more...</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-span-4 md:col-span-4 md:col-start-3 pt-[40px] md:pt-[133px] text-center md:text-left">
+                        <div class="awards-fade flex items-center justify-center md:justify-start gap-[12px]">
+                            <div class="w-[6px] h-[6px] md:w-[10px] md:h-[10px] rounded-full bg-white shrink-0 -translate-y-[1px] md:-translate-y-[2px]"></div>
+                            <p class="text-[20px] md:text-[30px] font-normal leading-[1.15] text-white text-left">15 years of experience</p>
+                        </div>
+                        <div class="h-[18px] md:h-[28px]"></div>
+                        <div class="awards-fade flex items-center justify-center md:justify-start gap-[12px]">
+                            <div class="w-[6px] h-[6px] md:w-[10px] md:h-[10px] rounded-full bg-white shrink-0 -translate-y-[1px] md:-translate-y-[2px]"></div>
+                            <p class="text-[20px] md:text-[30px] font-normal leading-[1.15] text-white text-left">Hong Kong based. Work everywhere</p>
+                        </div>
+                        <div class="h-[18px] md:h-[28px]"></div>
+                        <div class="awards-fade flex items-center justify-center md:justify-start gap-[12px]">
+                            <div class="w-[6px] h-[6px] md:w-[10px] md:h-[10px] rounded-full bg-white shrink-0 -translate-y-[1px] md:-translate-y-[2px]"></div>
+                            <p class="text-[20px] md:text-[30px] font-normal leading-[1.15] text-white text-left">30+ awards. 10,000+ coffees</p>
+                        </div>
+                        
+                        <div class="h-[28px] md:h-[42px]"></div>
+                        <div class="flex flex-col gap-y-[22px] md:gap-y-[34px] items-center md:items-start">
+                            <div class="grid grid-cols-3 md:flex md:flex-nowrap justify-items-center md:justify-start items-center gap-y-[40px] gap-x-[15px] md:gap-x-[52px] md:gap-y-[0px] w-full">
+                                <div id="award-hkda" class="awards-logo w-[33px] md:w-[41px] shrink-0"></div>
+                                <div id="award-awwwards" class="awards-logo w-[96px] md:w-[120px] shrink-0"></div>
+                                <div id="award-w3" class="awards-logo w-[29px] md:w-[36px] shrink-0"></div>
+                                <div id="award-horizon" class="awards-logo w-[70px] md:w-[88px] shrink-0"></div>
+                                <div id="award-webaward" class="awards-logo w-[33px] md:w-[41px] shrink-0"></div>
+                                <div id="award-comaward" class="awards-logo w-[99px] md:w-[124px] shrink-0"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Portfolio Section -->
+        <div id="portfolio-section" class="absolute w-full top-[7500px] md:top-[11000px] z-30 pb-0">
+            <div class="w-full mx-auto px-[30px] md:px-[5.26vw] grid grid-cols-4 md:grid-cols-6 gap-[15px] md:gap-[2.08vw] items-start">
+                
+                <!-- Item 1 -->
+                <div class="portfolio-item group relative z-30 col-span-4 md:col-span-4 bg-zinc-800 aspect-[16/10] w-full cursor-pointer rounded-sm overflow-hidden">
+                    <img src="assets/home/Home_01.webp" alt="Project 1" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.style.display='none'">
+                </div>
+
+                <!-- Item 2 -->
+                <div class="portfolio-item group relative z-30 col-span-2 md:col-span-2 md:col-start-5 bg-zinc-800 aspect-square md:aspect-[3/4] w-full mt-0 md:mt-[8vw] cursor-pointer rounded-sm overflow-hidden">
+                    <video src="assets/home/Home_02.mp4" autoplay loop muted playsinline class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"></video>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="portfolio-item group relative z-30 col-span-2 md:col-span-2 md:col-start-2 bg-zinc-800 aspect-square w-full mt-0 md:-mt-[6vw] cursor-pointer rounded-sm overflow-hidden">
+                    <img src="assets/home/Home_03.jpg" alt="Project 3" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.style.display='none'">
+                </div>
+
+                <!-- Item 4 -->
+                <div class="portfolio-item group relative z-30 col-span-4 md:col-span-3 md:col-start-4 bg-zinc-800 aspect-[16/10] md:aspect-[4/3] w-full mt-0 md:mt-[2vw] cursor-pointer rounded-sm overflow-hidden">
+                    <img src="assets/home/Home_04.webp" alt="Project 4" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.style.display='none'">
+                </div>
+
+                <!-- Item 5 -->
+                <div class="portfolio-item group relative z-30 col-span-4 md:col-span-3 md:col-start-1 bg-zinc-800 aspect-[16/10] w-full mt-0 md:-mt-[10vw] cursor-pointer rounded-sm overflow-hidden">
+                    <img src="assets/home/Home_05.webp" alt="Project 5" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.style.display='none'">
+                </div>
+
+                <!-- View All Projects -->
+                <div class="col-span-full mt-[15px] md:-mt-[10px] flex justify-center items-center h-[76px] z-30 relative">
+                    <a href="#" class="text-white text-[16px] md:text-[20px] font-bold transition-colors hover-underline-link inline-block pb-[2px]">View all projects</a>
+                </div>
+
+                <div class="col-span-full mt-[50px] md:mt-[200px] relative w-full pb-[10px] md:pb-[calc(85px+env(safe-area-inset-bottom,0px))]">
+                    
+                    <div class="absolute inset-0 grid grid-cols-4 md:grid-cols-6 gap-[15px] md:gap-[2.08vw] pointer-events-none z-0">
+                        <div class="col-span-2 col-start-3 md:col-start-5 md:col-span-2 relative w-full h-full">
+                            <!-- Astronaut -->
+                            <div id="astronaut-container"></div>
+                        </div>
+                    </div>
+
+                    <!-- 📍 Karina Fix: 整體文字移低 50px (用 top-[50px] 視覺下移，確保唔增加 scroll 高度) -->
+                    <div class="grid grid-cols-4 md:grid-cols-6 gap-[15px] md:gap-[2.08vw] items-start relative z-10 pointer-events-none top-[50px] md:top-0">
+                        
+                        <div id="cta-title-container" class="col-span-2 col-start-2 md:col-span-2 md:col-start-2 flex justify-center md:justify-start items-center md:items-start pointer-events-auto scale-[1.5] md:scale-100 origin-center md:origin-left"></div>
+                        
+                        <div class="col-span-4 md:col-span-2 md:col-start-4 mt-[15px] md:mt-0 flex flex-col items-center text-center md:items-start md:text-left justify-start pointer-events-auto">
+                            <p class="cta-fade-text text-[10px] md:text-[12px] font-medium tracking-[0.04em] leading-[20px] uppercase mb-[20px] md:mb-[30px]">
+                                <span class="text-white">2026: The year of launch.</span><br>
+                                <span class="text-[#999999]">While others fear the machine,<br>I synchronize with it.</span>
+                            </p>
+                            <p class="cta-fade-text text-white text-[20px] md:text-[30px] font-normal leading-[36px] md:leading-[50px] w-[90%] md:w-full mx-auto md:mx-0">
+                                By mastering the latest tech, I deliver smarter, faster &amp; more flexible design solutions that fit your budget, without compromising the soul of the craft.
+                            </p>
+                        </div>
+
+                        <div class="col-span-4 md:col-span-2 md:col-start-3 mt-[25px] md:mt-[168px] flex flex-col items-center text-center pointer-events-auto">
+                            <p class="text-[9px] md:text-[10px] font-bold tracking-[0.08em] leading-[1.8] uppercase mb-[20px]">
+                                <span class="text-white">Want to collaborate?</span><br>
+                                <span class="text-[#999999]">Work with 3am.</span>
+                            </p>
+                            <a href="mailto:ericng@hello-3am.com" class="text-white text-[16px] md:text-[18px] font-bold leading-[1.6] tracking-[0.02em] transition-colors mb-[5px] hover-underline-link inline-block pb-[2px]">ericng@hello-3am.com</a>
+                            <a href="tel:+85263577861" class="text-white text-[16px] md:text-[18px] font-bold leading-[1.6] tracking-[0.02em] transition-colors hover-underline-link inline-block pb-[2px]">+852 6357 7861</a>
+                        </div>
+
+                        <!-- 📍 Karina Fix: Copyright 額外移低多 30px (加埋 parent 的 50px = 移低 80px) -->
+                        <div class="col-span-full text-center mt-[15px] md:mt-[110px] pointer-events-auto relative top-[30px] md:top-0">
+                            <p class="text-[#999999] text-[9px] md:text-[10px] font-medium tracking-[0.04em]">Copyright © 2026 3am Design Studio. All rights reserved.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Section -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            const fallbackSVGs = {
+                'assets/home/3amDS.svg': '<svg viewBox="0 0 114 25"><text x="0" y="20" fill="#fff" font-size="20" font-weight="bold" font-family="sans-serif">3am.</text></svg>',
+                'assets/home/ayoh.svg': '<svg viewBox="0 0 1427 794" preserveAspectRatio="xMidYMid meet"><path d="M400,397 L1027,397" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/><text x="713" y="380" fill="#fff" font-size="40" text-anchor="middle" font-family="sans-serif">AYOH (Preview)</text></svg>',
+                'assets/home/rocket.svg': '<svg viewBox="0 0 81 232"><path d="M40.5,0 C55,40 75,180 81,232 L0,232 C6,180 26,40 40.5,0 Z" fill="#ffffff"/></svg>',
+                'assets/home/3am.svg': '<svg viewBox="0 0 413 131" preserveAspectRatio="xMidYMid meet"><path d="M50,100 L363,100" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round"/><text x="206" y="80" fill="#fff" font-size="30" text-anchor="middle" font-family="sans-serif">3am. (Preview)</text></svg>',
+                'assets/home/HKDA.svg': '<svg viewBox="0 0 41 63"><rect width="41" height="63" fill="none" stroke="#555"/><text x="20.5" y="35" fill="#fff" font-size="10" text-anchor="middle" font-family="sans-serif">HKDA</text></svg>',
+                'assets/home/Awwwards.svg': '<svg viewBox="0 0 120 19"><rect width="120" height="19" fill="none" stroke="#555"/><text x="60" y="14" fill="#fff" font-size="10" text-anchor="middle" font-family="sans-serif">AWWWARDS</text></svg>',
+                'assets/home/W3.svg': '<svg viewBox="0 0 36 35"><rect width="36" height="35" fill="none" stroke="#555"/><text x="18" y="22" fill="#fff" font-size="10" text-anchor="middle" font-family="sans-serif">W3</text></svg>',
+                'assets/home/Horizon.svg': '<svg viewBox="0 0 88 22"><rect width="88" height="22" fill="none" stroke="#555"/><text x="44" y="15" fill="#fff" font-size="10" text-anchor="middle" font-family="sans-serif">HORIZON</text></svg>',
+                'assets/home/WebAward.svg': '<svg viewBox="0 0 41 33"><rect width="41" height="33" fill="none" stroke="#555"/><text x="20.5" y="20" fill="#fff" font-size="10" text-anchor="middle" font-family="sans-serif">WEB</text></svg>',
+                'assets/home/ComAward.svg': '<svg viewBox="0 0 124 30"><rect width="124" height="30" fill="none" stroke="#555"/><text x="62" y="19" fill="#fff" font-size="10" text-anchor="middle" font-family="sans-serif">COMAWARD</text></svg>',
+                'assets/home/aixhuman.svg': '<svg viewBox="0 0 500 150"><text x="0" y="50" fill="#fff" font-size="48" font-weight="bold" font-family="sans-serif">AI × Human</text><text x="0" y="110" fill="#fff" font-size="48" font-weight="bold" font-family="sans-serif">Intelligence.</text></svg>',
+                'assets/home/Astronaut.svg': '<svg viewBox="0 0 400 500"><path d="M200,100 C150,100 100,150 100,250 C100,350 150,450 200,450 C250,450 300,350 300,250 C300,150 250,100 200,100 Z" fill="none" stroke="#fff" stroke-width="2"/><text x="200" y="280" fill="#fff" font-size="20" text-anchor="middle">Astronaut</text></svg>'
+            };
+
+            async function fetchSVG(url, containerId) {
+                try {
+                    if (window.location.protocol === 'blob:' || window.location.protocol === 'data:') {
+                        throw new Error("預覽環境無法直接 fetch 本地檔案");
+                    }
+                    const response = await fetch(url);
+                    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                    const svgData = await response.text();
+                    const container = document.getElementById(containerId);
+                    if (container) {
+                        container.innerHTML = svgData;
+                    }
+                } catch (error) {
+                    console.warn(`[Canvas 預覽模式] 無法加載 ${url}，已自動使用 Fallback SVG。`);
+                    const container = document.getElementById(containerId);
+                    if (container && fallbackSVGs[url]) {
+                        container.innerHTML = fallbackSVGs[url];
+                    }
+                }
+            }
+
+            async function loadAllSVGs() {
+                await Promise.all([
+                    fetchSVG('assets/home/3amDS.svg', 'preloader-logo-container'),
+                    fetchSVG('assets/home/3amDS.svg', 'header-logo-container'),
+                    fetchSVG('assets/home/ayoh.svg', 'logo-wrapper'),
+                    fetchSVG('assets/home/rocket.svg', 'rocket-svg-container'),
+                    fetchSVG('assets/home/3am.svg', 'intro-3am-container'),
+                    fetchSVG('assets/home/HKDA.svg', 'award-hkda'),
+                    fetchSVG('assets/home/Awwwards.svg', 'award-awwwards'),
+                    fetchSVG('assets/home/W3.svg', 'award-w3'),
+                    fetchSVG('assets/home/Horizon.svg', 'award-horizon'),
+                    fetchSVG('assets/home/WebAward.svg', 'award-webaward'),
+                    fetchSVG('assets/home/ComAward.svg', 'award-comaward'),
+                    fetchSVG('assets/home/aixhuman.svg', 'cta-title-container'),
+                    fetchSVG('assets/home/Astronaut.svg', 'astronaut-container')
+                ]);
+                initGSAPAnimations();
+            }
+
+            function initGSAPAnimations() {
+                gsap.registerPlugin(ScrollTrigger);
+                ScrollTrigger.config({ ignoreMobileResize: true });
+
+                const lenis = new Lenis({
+                    duration: 1.6,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                    smoothWheel: true
+                });
+
+                lenis.stop();
+                window.scrollTo(0, 0);
+
+                lenis.on("scroll", ScrollTrigger.update);
+                gsap.ticker.add((time) => lenis.raf(time * 1000));
+                gsap.ticker.lagSmoothing(0, 0);
+
+                const setBodyHeight = () => {
+                    const portfolio = document.getElementById("portfolio-section");
+                    if (portfolio) {
+                        let totalHeight = portfolio.offsetTop + portfolio.offsetHeight;
+                        // 📍 Karina Fix: 手動強制裁切 (Hard Crop) 頁底多餘的 25px 滾動空間，配合排版擠壓，令成個 page 更早完結兼逼出太空人出血效果！
+                        if (window.innerWidth < 768) {
+                            totalHeight -= 25; 
+                        }
+                        document.body.style.height = totalHeight + "px";
+                        ScrollTrigger.refresh();
+                    }
+                };
+                
+                setBodyHeight();
+                window.addEventListener("load", () => {
+                    setBodyHeight();
+                    setTimeout(setBodyHeight, 500); 
+                });
+                
+                let currentWindowWidth = window.innerWidth;
+                window.addEventListener("resize", () => {
+                    if (window.innerWidth !== currentWindowWidth) {
+                        currentWindowWidth = window.innerWidth;
+                        setBodyHeight();
+                    }
+                });
+
+                const logoPaths = gsap.utils.toArray("#logo-wrapper svg path");
+                logoPaths.forEach((path) => {
+                    const dash = Math.ceil(path.getTotalLength()) + 10;
+                    path.dataset.dash = String(dash);
+                    gsap.set(path, { strokeDasharray: `${dash} ${dash}`, strokeDashoffset: dash, strokeWidth: 2, fillOpacity: 0, strokeOpacity: 1 });
+                });
+
+                const intro3amPaths = gsap.utils.toArray("#intro-3am-container svg path");
+                intro3amPaths.forEach((path) => {
+                    const dash = Math.ceil(path.getTotalLength()) + 10;
+                    path.dataset.dash = String(dash);
+                    gsap.set(path, { strokeDasharray: `${dash} ${dash}`, strokeDashoffset: dash, strokeWidth: 2, fillOpacity: 0, strokeOpacity: 1 });
+                });
+
+                const ctaPaths = gsap.utils.toArray("#cta-title-container svg path, #cta-title-container svg text, #cta-title-container svg rect, #cta-title-container svg polygon, #cta-title-container svg circle, #cta-title-container svg polyline, #cta-title-container svg line");
+                ctaPaths.forEach((path) => {
+                    const dash = Math.ceil(path.getTotalLength ? path.getTotalLength() : 500) + 10;
+                    path.dataset.dash = String(dash);
+                    gsap.set(path, { strokeDasharray: `${dash} ${dash}`, strokeDashoffset: dash, strokeWidth: 2, fillOpacity: 0, strokeOpacity: 1 });
+                });
+
+                gsap.set(".fouc-protect", { autoAlpha: 1 });
+                gsap.set(".nav-link, .launch-text, #launch-circle, .summary-line", { opacity: 0 });
+                gsap.set(".intro-fade", { opacity: 0, y: 24 });
+                gsap.set(".awards-fade, .awards-logo", { opacity: 0, y: 34, filter: "blur(10px)" });
+                
+                gsap.set(".cta-fade-text", { opacity: 0, y: 24 });
+                
+                gsap.set(".awards-marquee-track", { x: "130vw", xPercent: 0 });
+
+                if (window.matchMedia("(pointer: fine)").matches) {
+                    const cursor = document.getElementById("custom-cursor");
+                    if (cursor) {
+                        gsap.set(cursor, { xPercent: -50, yPercent: -50 });
+                        const xTo = gsap.quickTo(cursor, "x", { duration: 0.15, ease: "power3" });
+                        const yTo = gsap.quickTo(cursor, "y", { duration: 0.15, ease: "power3" });
+
+                        window.addEventListener("mousemove", (e) => { xTo(e.clientX); yTo(e.clientY); });
+                        document.querySelectorAll(".nav-link, .hover-underline-link, #header-logo-container").forEach((link) => {
+                            link.addEventListener("mouseenter", () => cursor.classList.add("hover-nav"));
+                            link.addEventListener("mouseleave", () => cursor.classList.remove("hover-nav"));
+                        });
+                        document.querySelectorAll(".portfolio-item").forEach((item) => {
+                            item.addEventListener("mouseenter", () => cursor.classList.add("hover-img"));
+                            item.addEventListener("mouseleave", () => cursor.classList.remove("hover-img"));
+                        });
+                    }
+                } else {
+                    const cursor = document.getElementById("custom-cursor");
+                    if (cursor) cursor.style.display = "none";
+                }
+
+                const pulseTween = gsap.fromTo("#launch-circle", { opacity: 1 }, { opacity: 0, repeat: -1, yoyo: true, duration: 0.6, ease: "power1.inOut", paused: true });
+                let isScrolled = false;
+
+                window.addEventListener("scroll", () => {
+                    if (window.scrollY > 10 && !isScrolled) {
+                        isScrolled = true; pulseTween.pause(); gsap.to("#launch-circle", { opacity: 1, duration: 0.2 });
+                    } else if (window.scrollY <= 10 && isScrolled) {
+                        isScrolled = false; pulseTween.play();
+                    }
+                });
+
+                const initTl = gsap.timeline({ paused: true, onComplete: () => { if (!isScrolled) pulseTween.play(); } });
+                
+                if (logoPaths.length > 0) {
+                    initTl.to(logoPaths, { strokeDashoffset: 0, duration: 2.4, ease: "none", stagger: 0.03 }, 0);
+                    initTl.to(logoPaths, { fillOpacity: 1, strokeOpacity: 0, duration: 0.8, ease: "power2.out", stagger: 0.03 }, 2.45);
+                }
+
+                initTl.fromTo(".launch-text", { y: 15, filter: "blur(4px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.2, stagger: 0.2, ease: "power3.out" }, 1.5);
+                initTl.fromTo(".launch-line-bg", { scaleY: 0 }, { scaleY: 1, duration: 1.5, ease: "power3.inOut" }, 2.0);
+                
+                initTl.fromTo(".summary-line", { x: 15 }, { x: 0, opacity: 1, duration: 1.2, stagger: 0.15, ease: "power3.out" }, 2.2);
+                initTl.fromTo(".nav-link", { y: -10 }, { y: 0, opacity: 1, duration: 1.2, stagger: 0.15, ease: "power3.out" }, 2.2);
+                
+                initTl.fromTo("#launch-circle", { scale: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: "back.out(1.7)" }, 3.0);
+
+                const preloaderTl = gsap.timeline({ onComplete: () => { document.getElementById("preloader").style.display = "none"; lenis.start(); } });
+                preloaderTl.to("#preloader-logo-container", { opacity: 0, duration: 0.8, delay: 1.5, ease: "power2.inOut" })
+                           .to("#preloader", { opacity: 0, duration: 0.8, ease: "power2.inOut", onStart: () => initTl.play() }, "-=0.2");
+
+                const mm = gsap.matchMedia();
+                mm.add({
+                    isMobile: "(max-width: 767px)",
+                    isTablet: "(min-width: 768px) and (max-width: 1023px)",
+                    isDesktop: "(min-width: 1024px)"
+                }, (context) => {
+                    const { isMobile, isTablet, isDesktop } = context.conditions;
+                    const trailContainer = document.getElementById("trail-container");
+                    if (trailContainer) trailContainer.innerHTML = "";
+
+                    const rocketStartBottomNum = 0;
+                    const rocketMidBottomNum = isMobile ? 18 : 50;
+                    const rocketAwardsOffset = isMobile ? 400 : 200;
+                    
+                    const moonScrollDistance = isMobile ? "135vh" : "210vh";
+
+                    if (isDesktop) {
+                        gsap.set("#logo-wrapper", { top: "50dvh", left: "-5.52vw", width: "85vw", yPercent: -50, scale: 1, xPercent: 0 });
+                        gsap.set("#rocket-wrapper, #launch-ui-wrapper, #summary-wrapper", { left: "88.15%", right: "auto", xPercent: -50 });
+                        gsap.set("#launch-ui-wrapper", { top: "50dvh", bottom: "auto", yPercent: -50 });
+                        gsap.set("#rocket-wrapper, #summary-wrapper", { bottom: "0%" });
+                    } else if (isTablet) {
+                        gsap.set("#logo-wrapper", { top: "50dvh", left: "-8vw", width: "98vw", yPercent: -50, scale: 1, xPercent: 0 });
+                        gsap.set("#rocket-wrapper, #launch-ui-wrapper, #summary-wrapper", { left: "88.15%", right: "auto", xPercent: -50 });
+                        gsap.set("#launch-ui-wrapper", { top: "50dvh", bottom: "auto", yPercent: -50 });
+                        gsap.set("#rocket-wrapper, #summary-wrapper", { bottom: "0%" });
+                    } else {
+                        gsap.set("#logo-wrapper", { top: "30dvh", left: "50%", width: "115vw", yPercent: -50, scale: 1, xPercent: -50 });
+                        gsap.set("#rocket-wrapper, #launch-ui-wrapper, #summary-wrapper", { left: "50%", right: "auto", xPercent: -50 });
+                        gsap.set("#launch-ui-wrapper", { top: "60dvh", bottom: "auto", yPercent: -50 });
+                        gsap.set("#rocket-wrapper, #summary-wrapper", { bottom: "0%" });
+                    }
+
+                    const masterTl = gsap.timeline({ scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 1 } });
+                    
+                    masterTl.to({}, { duration: 120 });
+
+                    masterTl.to("#summary-wrapper", { y: "100vh", duration: 10, ease: "power2.in" }, 10);
+                    masterTl.to("#launch-line-active", { height: "100%", duration: 10, ease: "none" }, 0); 
+                    masterTl.to("#launch-ui-wrapper", { autoAlpha: 0, duration: 5, ease: "power2.in" }, 5);
+                    
+                    masterTl.to("#rocket-wrapper", { bottom: `${rocketMidBottomNum}%`, ease: "none", duration: 15 }, 10);
+                    masterTl.to("#rocket-wrapper", { bottom: `calc(${rocketMidBottomNum}% + ${rocketAwardsOffset}px)`, ease: "none", duration: 6 }, 36);
+                    masterTl.to("#rocket-wrapper", { bottom: "150%", ease: "none", duration: 10 }, 85);
+
+                    const colors = ["#EF4444", "#10B981", "#3B82F6", "#F59E0B", "#FFFFFF"];
+                    const numBubbles = 100;
+                    let rocketCenterPos = isDesktop ? { left: "88.15%", xPercent: -50 } : isTablet ? { left: "88.15%", xPercent: -50 } : { left: "50%", xPercent: -50 };
+                    
+                    const particleOffset = isMobile ? 35 : 60;
+
+                    const getRocketBottomStr = (t) => {
+                        if (t <= 10) return `${rocketStartBottomNum}%`; 
+                        if (t <= 25) return `${rocketStartBottomNum + ((t - 10) / 15) * (rocketMidBottomNum - rocketStartBottomNum)}%`;
+                        if (t <= 36) return `${rocketMidBottomNum}%`;
+                        if (t <= 42) return `calc(${rocketMidBottomNum}% + ${rocketAwardsOffset * ((t - 36) / 6)}px)`;
+                        if (t <= 85) return `calc(${rocketMidBottomNum}% + ${rocketAwardsOffset}px)`; 
+                        if (t <= 95) return `calc(${rocketMidBottomNum}% + ${rocketAwardsOffset}px + ${(150 - rocketMidBottomNum) * ((t - 85) / 10)}%)`;
+                        return "150%"; 
+                    };
+
+                    for (let i = 0; i < numBubbles; i++) {
+                        const circle = document.createElement("div");
+                        circle.className = "circle-particle";
+                        let targetSize = Math.random() * 30 + 15;
+                        const rand = Math.random();
+                        if (rand > 0.6) targetSize += 40;
+                        if (rand > 0.85) targetSize += 100;
+                        if (rand > 0.95) targetSize += 150 + Math.random() * 100;
+                        circle.style.borderColor = colors[Math.floor(Math.random() * colors.length)];
+                        if (trailContainer) trailContainer.appendChild(circle);
+
+                        const spawnTime = 10 + (i / numBubbles) * 85;
+                        const rBottomStr = getRocketBottomStr(spawnTime);
+                        const initialOffsetX = (Math.random() - 0.5) * 40;
+                        const lifeDuration = 12 + Math.random() * 12; 
+                        const finalOffsetX = initialOffsetX + (Math.random() - 0.5) * 400;
+
+                        const isHighUp = spawnTime > 80; 
+                        const dropY = isHighUp ? (Math.random() * 800 + 1000) : (Math.random() * 500 + 400);
+
+                        masterTl.set(circle, { bottom: `calc(${rBottomStr} - ${particleOffset}px)`, y: 0, x: initialOffsetX, width: 0, height: 0, opacity: 0, ...rocketCenterPos }, spawnTime);
+                        masterTl.to(circle, { opacity: 1, width: targetSize * 0.15, height: targetSize * 0.15, duration: lifeDuration * 0.05, ease: "power2.out" }, spawnTime);
+                        masterTl.to(circle, { y: dropY, x: finalOffsetX, width: targetSize, height: targetSize, duration: lifeDuration * 0.95, ease: "power1.out" }, spawnTime + lifeDuration * 0.05);
+                        masterTl.to(circle, { opacity: 0, duration: lifeDuration * 0.25, ease: "power2.inOut" }, spawnTime + Math.max(0, lifeDuration * 0.75));
+                    }
+
+                    if (logoPaths.length > 0) {
+                        masterTl.to(logoPaths, { fillOpacity: 0, strokeOpacity: 1, duration: 1.5, ease: "power2.out", stagger: 0.01 }, 5);
+                        masterTl.to(logoPaths, { strokeDashoffset: (_, target) => Number(target.dataset.dash), duration: 3.5, stagger: -0.02, ease: "power2.inOut" }, 6);
+                    }
+                    masterTl.to("#logo-wrapper", { autoAlpha: 0, duration: 0.5 }, 10);
+                    masterTl.to("#header-logo-container", { opacity: 1, duration: 3, ease: "power2.inOut" }, 11);
+                    
+                    masterTl.fromTo("#shared-moon", { y: "0vh" }, { y: moonScrollDistance, duration: 120, ease: "none" }, 0);
+
+                    masterTl.to("#rocket-drift", { keyframes: { "0%": { y: 0, ease: "sine.inOut" }, "50%": { y: 30, ease: "sine.inOut" }, "100%": { y: 0, ease: "sine.inOut" } }, duration: 32 }, 10);
+                    masterTl.to("#rocket-drift", { keyframes: { "0%": { y: 0, ease: "sine.inOut" }, "50%": { y: 15, ease: "sine.inOut" }, "100%": { y: 0, ease: "sine.inOut" } }, duration: 26 }, 48);
+
+                    // --- Introduction Section Pinned Timeline ---
+                    const introPinEnd = isMobile ? "+=2000" : "+=3400";
+                    const introTl = gsap.timeline({ scrollTrigger: { trigger: "#intro-trigger", start: "center center", end: introPinEnd, pin: true, pinSpacing: false, scrub: 1 } });
+                    
+                    if (intro3amPaths.length > 0) {
+                        introTl.to(intro3amPaths, { strokeDashoffset: 0, duration: 2.3, ease: "none", stagger: 0.08 }, 0);
+                        introTl.to(intro3amPaths, { fillOpacity: 1, strokeOpacity: 0, duration: 0.9, ease: "power2.out" }, 1.9);
+                    }
+                    
+                    introTl.to(".intro-fade", { opacity: 1, y: 0, duration: 1.4, stagger: 0.18, ease: "power3.out" }, 0.05);
+                    introTl.to({}, { duration: 3.0 }); 
+                    
+                    const exitLabel = "introExit";
+                    introTl.addLabel(exitLabel);
+                    
+                    introTl.to(".intro-fade", { opacity: 0, y: -90, duration: 1.5, ease: "power2.in" }, exitLabel);
+                    introTl.to("#intro-3am-container", { y: -90, duration: 1.5, ease: "power2.in" }, exitLabel);
+                    
+                    if (intro3amPaths.length > 0) {
+                        introTl.to(intro3amPaths, { fillOpacity: 0, strokeOpacity: 1, duration: 0.5, ease: "power2.in" }, exitLabel);
+                        introTl.to(intro3amPaths, { strokeDashoffset: (_, target) => Number(target.dataset.dash), duration: 1.5, ease: "none", stagger: -0.05 }, exitLabel);
+                    }
+                    introTl.to("#intro-section", { opacity: 0, duration: 1.5, ease: "power2.in" }, exitLabel);
+
+                    // --- Awards Section Pinned Timeline ---
+                    const awardsPinEnd = isMobile ? "+=3500" : "+=5000";
+                    const awardsTl = gsap.timeline({ scrollTrigger: { trigger: "#awards-trigger", start: "center center", end: awardsPinEnd, pin: true, pinSpacing: false, scrub: 1 } });
+                    
+                    awardsTl.to(".awards-marquee-track", { x: "-20vw", xPercent: -100, duration: 10, ease: "none" }, 0);
+                    awardsTl.to(".awards-fade", { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.5, stagger: 0.2, ease: "power3.out" }, 1.0);
+                    awardsTl.to(".awards-logo", { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.5, stagger: 0.1, ease: "power3.out" }, 2.0);
+                    
+                    awardsTl.to("#awards-section", { opacity: 0, y: -90, duration: 1.5, ease: "power2.in" }, 8.5);
+
+                    return () => { if (trailContainer) trailContainer.innerHTML = ""; };
+                });
+
+                const shakeTween = gsap.to("#rocket-svg-container", { x: () => Math.random() * 4 - 2, y: () => Math.random() * 4 - 2, rotation: () => Math.random() * 2 - 1, duration: 0.1, repeat: -1, yoyo: true, ease: "none", paused: true });
+                ScrollTrigger.create({ trigger: "body", start: "500px top", end: "9000px top", onEnter: () => shakeTween.play(), onLeave: () => shakeTween.pause(), onEnterBack: () => shakeTween.play(), onLeaveBack: () => shakeTween.pause() });
+
+                const aiTitle = document.getElementById("cta-title-container");
+                if (aiTitle) {
+                    let tl = gsap.timeline({ 
+                        scrollTrigger: { 
+                            trigger: aiTitle, 
+                            start: "top 85%", 
+                            toggleActions: "play none none reverse" 
+                        } 
+                    });
+                    
+                    const paths = gsap.utils.toArray("svg path, svg text, svg rect, svg polygon, svg circle, svg polyline, svg line", aiTitle);
+                    if (paths.length > 0) {
+                        tl.to(paths, { strokeDashoffset: 0, duration: 1.2, ease: "power2.inOut", stagger: 0.05 }, 0.2);
+                        tl.to(paths, { fillOpacity: 1, strokeOpacity: 0, duration: 0.6, ease: "power2.out", stagger: 0.05 }, "-=0.6");
+                    }
+                    
+                    const fadeTexts = gsap.utils.toArray(".cta-fade-text");
+                    if (fadeTexts.length > 0) {
+                        tl.to(fadeTexts, { opacity: 1, y: 0, duration: 1.4, stagger: 0.18, ease: "power3.out" }, 0.4);
+                    }
+                }
+            }
+
+            // --- 3. Grid Toggle Hotkey ---
+            document.addEventListener('keydown', (e) => {
+                if (e.key.toLowerCase() === 'g' && !e.ctrlKey && !e.metaKey) {
+                    const grid = document.getElementById('bg-grid');
+                    if (grid) grid.classList.toggle('opacity-0');
+                }
+            });
+
+            // 啟直第一步：加載所有 SVG
+            loadAllSVGs();
+        });
+    </script>
+</body>
+</html>
