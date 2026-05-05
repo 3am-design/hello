@@ -3,7 +3,15 @@
     "allow": [
       "Bash(git checkout *)",
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "mcp__Figma__get_metadata",
+      "mcp__Figma__get_screenshot",
+      "mcp__2d3b1a2c-3408-494b-b89d-32eea2e550b8__get_metadata",
+      "mcp__2d3b1a2c-3408-494b-b89d-32eea2e550b8__get_screenshot",
+      "Bash(curl -s -o /tmp/mobile_design.png \"https://www.figma.com/api/mcp/asset/bb04a534-fd03-4ada-a6e5-0a598af6d6aa\")",
+      "Read(//tmp/**)",
+      "mcp__2d3b1a2c-3408-494b-b89d-32eea2e550b8__get_design_context",
+      "mcp__2d3b1a2c-3408-494b-b89d-32eea2e550b8__get_variable_defs"
     ]
   }
 }
