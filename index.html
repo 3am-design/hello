@@ -39,11 +39,16 @@
         @media (min-width: 1024px) { :root { --c-px: 75px; } }
         @media (min-width: 1280px) { :root { --c-px: 101px; } }
 
+        /* [KARINA FIX] 徹底鎖死 html, body 寬度，杜絕移動端左右 Scroll */
+        html, body {
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
+
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
             font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
             cursor: none !important;
             transition: color 0.4s ease, background-color 0.4s ease; 
         }
@@ -390,7 +395,7 @@
         </div>
     </header>
 
-    <main>
+    <main class="w-full relative overflow-x-hidden">
         <!-- SCREEN 1: Hero Section -->
         <div id="hero-spacer" class="w-full h-[100svh]"></div>
         
@@ -456,48 +461,99 @@
                 
                 <section class="custom-container flex flex-col justify-center relative pt-[100px] pb-0 lg:pt-[140px] lg:pb-[20px]">
                     
-                    <div class="absolute top-[100px] lg:top-[140px] left-0 right-0 flex justify-center z-40 pointer-events-none">
-                        <p class="text-[12px] min-[820px]:text-[14px] font-normal tracking-wide text-black whitespace-nowrap reveal-up" style="transition-delay: 0ms;">What we do.</p>
+                    <div class="absolute top-[80px] lg:top-[140px] left-0 right-0 flex justify-center z-40 pointer-events-none">
+                        <p class="text-[12px] min-[820px]:text-[14px] font-normal tracking-wide text-black whitespace-nowrap reveal-up ml-[60px] min-[820px]:ml-0" style="transition-delay: 0ms;">What we do.</p>
                     </div>
 
-                    <!-- Skewed Typography Group -->
-                    <div class="w-[200vw] transform rotate-[9deg] origin-top-left relative mt-0 font-black leading-[1.05] tracking-tight text-black flex flex-col gap-1 md:gap-3 z-20 skewed-text-trigger">
-                        <div class="slide-in-right z-30" style="transition-delay: 150ms; transition-duration: 1.4s;"><div class="text-[28px] min-[820px]:text-[75px] lg:text-[110px] xl:text-[120px] font-black whitespace-nowrap pl-[0vw]">UXUI Web & App<br class="block min-[820px]:hidden"> Brand Identity</div></div>
-                        <div class="slide-in-right z-30" style="transition-delay: 0ms; transition-duration: 1.2s;"><div class="text-[30px] min-[820px]:text-[80px] lg:text-[120px] xl:text-[120px] font-black whitespace-nowrap pl-[6vw] min-[820px]:pl-[12vw] md:pl-[15vw]">Visual Communication</div></div>
-                        <div class="slide-in-right z-30" style="transition-delay: 300ms; transition-duration: 1.3s;">
-                            <div class="flex flex-col min-[820px]:flex-row items-baseline gap-1 md:gap-6 pl-[2vw] md:pl-[4vw]">
-                                <span class="text-[28px] min-[820px]:text-[70px] lg:text-[100px] xl:text-[120px] font-black whitespace-nowrap">Digital Strategy</span>
-                                <span class="text-[15px] md:text-[35px] lg:text-[45px] xl:text-[50px] font-black lowercase tracking-normal text-black whitespace-nowrap">and more...</span>
+                    <!-- [KARINA FIX] 徹底分拆 Desktop 同 Mobile 代碼，保證互不干擾 -->
+                    <div class="w-[200vw] transform rotate-[9deg] origin-top-left relative mt-0 font-black tracking-tight text-black flex flex-col z-20 skewed-text-trigger font-['Inter']">
+                        
+                        <!-- ================= MOBILE ONLY ================= -->
+                        <div class="flex min-[820px]:hidden flex-col gap-[12px] w-full">
+                            <!-- Line 1 & 2: UXUI (Col 1 左開始) & Brand Identity (Col 1 中間開始) -->
+                            <div class="slide-in-right z-30" style="transition-delay: 150ms; transition-duration: 1.4s;">
+                                <div class="text-[35px] font-black whitespace-nowrap pl-[0px] leading-none">UXUI &nbsp;&nbsp;&nbsp;&nbsp;Web & App</div>
+                                <!-- 精準計算 Col 1 中間位: calc((100vw - 左右Padding 52px - 3個Gap 30px) / 8) -->
+                                <div class="text-[35px] font-black whitespace-nowrap pl-[calc((100vw-82px)/8)] mt-[12px] leading-none">Brand Identity</div>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="w-full grid grid-cols-4 min-[820px]:grid-cols-6 gap-[10px] min-[820px]:gap-[20px] lg:gap-[40px] items-end mt-[60px] md:-mt-[100px] lg:-mt-[240px] xl:-mt-[280px] relative z-40">
-                        <div class="col-span-2 min-[820px]:col-span-4 flex flex-col items-start gap-[20px] lg:gap-[30px]">
                             
-                            <div class="text-[14px] lg:text-[20px] font-normal space-y-[12px] text-black">
-                                <p class="reveal-up" style="transition-delay: 100ms;">• 15 years of experience</p>
-                                <p class="reveal-up" style="transition-delay: 200ms;">• Hong Kong based. Work everywhere</p>
-                                <p class="reveal-up" style="transition-delay: 300ms;">• 30+ awards. 10,000+ coffees</p>
+                            <!-- Line 3: Visual Communication (Col 1 左開始) -->
+                            <div class="slide-in-right z-30" style="transition-delay: 0ms; transition-duration: 1.2s;">
+                                <div class="text-[35px] font-black whitespace-nowrap pl-[0px] leading-none">Visual Communication</div>
                             </div>
-
-                            <div class="flex flex-wrap gap-x-6 lg:gap-x-12 gap-y-6 items-center">
-                                <img src="./assets/HKDA.svg" alt="HKDA" class="reveal-up w-[33px] lg:w-[41px] object-contain theme-svg" style="transition-delay: 400ms;" onerror="this.src='https://placehold.co/41x41/transparent/000?text=HKDA'">
-                                <img src="./assets/Awwwards.svg" alt="Awwwards" class="reveal-up w-[96px] lg:w-[120px] object-contain theme-svg" style="transition-delay: 450ms;" onerror="this.src='https://placehold.co/120x30/transparent/000?text=Awwwards'">
-                                <img src="./assets/W3.svg" alt="W3" class="reveal-up w-[29px] lg:w-[36px] object-contain theme-svg" style="transition-delay: 500ms;" onerror="this.src='https://placehold.co/36x36/transparent/000?text=W3'">
-                                <img src="./assets/Horizon.svg" alt="Horizon" class="reveal-up w-[70px] lg:w-[88px] object-contain theme-svg" style="transition-delay: 550ms;" onerror="this.src='https://placehold.co/88x30/transparent/000?text=Horizon'">
-                                <img src="./assets/WebAward.svg" alt="WebAward" class="reveal-up w-[33px] lg:w-[41px] object-contain theme-svg" style="transition-delay: 600ms;" onerror="this.src='https://placehold.co/41x41/transparent/000?text=WebAward'">
-                                <img src="./assets/ComAward.svg" alt="ComAward" class="reveal-up w-[100px] lg:w-[124px] object-contain theme-svg" style="transition-delay: 650ms;" onerror="this.src='https://placehold.co/124x30/transparent/000?text=ComAward'">
+                            
+                            <!-- Line 4 & 5: Digital Strategy (Col 1 中間開始) & and more... (Col 1 左開始) -->
+                            <div class="slide-in-right z-30" style="transition-delay: 300ms; transition-duration: 1.3s;">
+                                <div class="text-[35px] font-black whitespace-nowrap pl-[calc((100vw-82px)/8)] leading-none">Digital Strategy</div>
+                                <div class="text-[35px] font-black lowercase tracking-normal text-black whitespace-nowrap pl-[0px] mt-[12px] leading-none">and more...</div>
                             </div>
                         </div>
 
-                        <div class="flex col-span-2 col-start-3 min-[820px]:col-span-2 min-[820px]:col-start-5 justify-end items-end relative reveal-solid-up top-0 min-[820px]:top-[200px]" style="transition-delay: 0ms; transition-duration: 1.4s;">
+                        <!-- ================= DESKTOP ONLY (100% 原始復原) ================= -->
+                        <div class="hidden min-[820px]:flex flex-col gap-1 md:gap-3 leading-[1.05]">
+                            <div class="slide-in-right z-30" style="transition-delay: 150ms; transition-duration: 1.4s;">
+                                <div class="text-[75px] lg:text-[110px] xl:text-[120px] font-black whitespace-nowrap pl-[0vw]">UXUI Web & App Brand Identity</div>
+                            </div>
+                            <div class="slide-in-right z-30" style="transition-delay: 0ms; transition-duration: 1.2s;">
+                                <div class="text-[80px] lg:text-[120px] xl:text-[120px] font-black whitespace-nowrap pl-[12vw] md:pl-[15vw]">Visual Communication</div>
+                            </div>
+                            <div class="slide-in-right z-30" style="transition-delay: 300ms; transition-duration: 1.3s;">
+                                <div class="flex flex-row items-baseline gap-6 pl-[4vw]">
+                                    <span class="text-[70px] lg:text-[100px] xl:text-[120px] font-black whitespace-nowrap">Digital Strategy</span>
+                                    <span class="text-[35px] lg:text-[45px] xl:text-[50px] font-black lowercase tracking-normal text-black whitespace-nowrap">and more...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="w-full grid grid-cols-4 min-[820px]:grid-cols-6 gap-[10px] min-[820px]:gap-[20px] lg:gap-[40px] items-end mt-[40px] md:-mt-[100px] lg:-mt-[240px] xl:-mt-[280px] relative z-40">
+                        
+                        <!-- [KARINA FIX] 手部插圖：Mobile 放 Col 3 & 4 (order-1)，負 Margin 向上推接觸字體；Desktop 原有排位 -->
+                        <div class="flex relative min-[820px]:relative w-full col-span-2 col-start-3 min-[820px]:col-span-2 min-[820px]:col-start-5 justify-end items-end reveal-solid-up z-10 pointer-events-none order-1 min-[820px]:order-2 -mt-[110px] min-[820px]:mt-0 min-[820px]:top-[200px]" style="transition-delay: 0ms; transition-duration: 1.4s;">
                             <div class="relative w-full h-auto transition duration-500 group-hover:scale-110 group-hover:-rotate-3 group origin-bottom">
                                 <img src="./assets/visual_01.svg" class="visual-layer relative w-full h-auto z-10" data-depth="0.02" alt="Face Base" onerror="this.src='https://placehold.co/400x400/FFB6C1/000?text=Base'">
                                 <img src="./assets/visual_02.svg" class="visual-layer absolute inset-0 w-full h-auto z-20" data-depth="0.06" alt="Face Sparkles 1" onerror="this.src='https://placehold.co/400x400/transparent/000?text=S1'">
                                 <img src="./assets/visual_03.svg" class="visual-layer absolute inset-0 w-full h-auto z-30" data-depth="0.10" alt="Face Sparkles 2" onerror="this.src='https://placehold.co/400x400/transparent/000?text=S2'">
                             </div>
                         </div>
+                        
+                        <!-- [KARINA FIX] 15 Years List 同 Logos：Mobile 放手部下方 (order-2) -->
+                        <div class="col-span-4 flex flex-col items-start gap-[20px] lg:gap-[30px] relative z-20 order-2 min-[820px]:order-1 mt-[20px] min-[820px]:mt-0">
+                            
+                            <!-- 15 Years List: 16px, 圓點 5px, 距離 8px, 水平垂直置中對齊 -->
+                            <div class="text-[16px] lg:text-[20px] font-normal space-y-[16px] text-black leading-normal font-['Inter']">
+                                <div class="reveal-up flex items-center gap-[8px]" style="transition-delay: 100ms;">
+                                    <div class="w-[5px] h-[5px] bg-black rounded-full shrink-0"></div>
+                                    <span class="leading-normal pt-[1px]">15 years of experience</span>
+                                </div>
+                                <div class="reveal-up flex items-center gap-[8px]" style="transition-delay: 200ms;">
+                                    <div class="w-[5px] h-[5px] bg-black rounded-full shrink-0"></div>
+                                    <span class="leading-normal pt-[1px]">Hong Kong based. Work everywhere</span>
+                                </div>
+                                <div class="reveal-up flex items-center gap-[8px]" style="transition-delay: 300ms;">
+                                    <div class="w-[5px] h-[5px] bg-black rounded-full shrink-0"></div>
+                                    <span class="leading-normal pt-[1px]">30+ awards. 10,000+ coffees</span>
+                                </div>
+                            </div>
+
+                            <!-- 獎項 Logos: 完美置中 4-Column Grid -->
+                            <div class="w-full grid grid-cols-4 min-[820px]:flex min-[820px]:flex-wrap gap-x-[10px] min-[820px]:gap-x-6 lg:gap-x-12 gap-y-[24px] min-[820px]:gap-y-6 items-center mt-[10px] min-[820px]:mt-[30px]">
+                                <img src="./assets/HKDA.svg" alt="HKDA" class="col-span-1 justify-self-center min-[820px]:justify-self-start reveal-up h-[45px] min-[820px]:h-auto min-[820px]:w-[33px] lg:w-[41px] object-contain theme-svg" style="transition-delay: 400ms;" onerror="this.src='https://placehold.co/41x41/transparent/000?text=HKDA'">
+                                <img src="./assets/Awwwards.svg" alt="Awwwards" class="col-span-1 justify-self-center min-[820px]:justify-self-start reveal-up h-[14px] min-[820px]:h-auto min-[820px]:w-[96px] lg:w-[120px] object-contain theme-svg" style="transition-delay: 450ms;" onerror="this.src='https://placehold.co/120x30/transparent/000?text=Awwwards'">
+                                <img src="./assets/W3.svg" alt="W3" class="col-span-1 justify-self-center min-[820px]:justify-self-start reveal-up h-[26px] min-[820px]:h-auto min-[820px]:w-[29px] lg:w-[36px] object-contain theme-svg" style="transition-delay: 500ms;" onerror="this.src='https://placehold.co/36x36/transparent/000?text=W3'">
+                                
+                                <div class="col-span-1 block min-[820px]:hidden"></div> <!-- Mobile 空白格頂位 -->
+                                
+                                <img src="./assets/Horizon.svg" alt="Horizon" class="col-span-1 justify-self-center min-[820px]:justify-self-start reveal-up h-[20px] min-[820px]:h-auto min-[820px]:w-[70px] lg:w-[88px] object-contain theme-svg" style="transition-delay: 550ms;" onerror="this.src='https://placehold.co/88x30/transparent/000?text=Horizon'">
+                                <img src="./assets/WebAward.svg" alt="WebAward" class="col-span-1 justify-self-center min-[820px]:justify-self-start reveal-up h-[28px] min-[820px]:h-auto min-[820px]:w-[33px] lg:w-[41px] object-contain theme-svg" style="transition-delay: 600ms;" onerror="this.src='https://placehold.co/41x41/transparent/000?text=WebAward'">
+                                <img src="./assets/ComAward.svg" alt="ComAward" class="col-span-1 justify-self-center min-[820px]:justify-self-start reveal-up h-[22px] min-[820px]:h-auto min-[820px]:w-[100px] lg:w-[124px] object-contain theme-svg" style="transition-delay: 650ms;" onerror="this.src='https://placehold.co/124x30/transparent/000?text=ComAward'">
+                                
+                                <div class="col-span-1 block min-[820px]:hidden"></div> <!-- Mobile 空白格頂位 -->
+                            </div>
+
+                        </div>
+                        
                     </div>
                 </section>
 
