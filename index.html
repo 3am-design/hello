@@ -344,6 +344,128 @@
             pointer-events: none !important;
         }
 
+        /* ============================================================
+           === FIGMA MOBILE SPEC (Node 95:906 — 00_Home_01_Mobile) ===
+           Canvas: 440px wide × 5305 tall
+           Margin: 20px L/R (≈4.55%)
+           Grid: 4 columns, 10px column gap
+           These rules ONLY override mobile (≤768px) — desktop untouched.
+           ============================================================ */
+        @media (max-width: 768px) {
+
+            /* --- Container padding: Figma 20px (was 26px on mobile) --- */
+            :root { --c-px: 20px; }
+
+            /* --- Hero "Ayoh!" SVG: re-anchor to 20px container ---
+               Original mobile rule (max-width:819px) used 155vw bleed; tighten to
+               match Figma where Ayoh sits 24px outside the canvas left edge. */
+            #ayoh-wrapper svg {
+                width: 113vw !important;
+                height: auto !important;
+                margin-left: calc((100vw - 113vw) / 2 - var(--c-px)) !important;
+            }
+
+            /* --- HEADER ---------------------------------------------------
+               Figma: Logo 57×18, nav 13px Medium, toggle 38×38 circle      */
+            #site-header img[src*="3amDS"] {
+                height: 18px;
+            }
+            #site-header nav {
+                gap: 24px;
+            }
+            #site-header nav a {
+                font-size: 13px;
+                line-height: 1;
+                letter-spacing: 0;
+            }
+            #site-header button .w-\[38px\] {
+                width: 38px;
+                height: 38px;
+            }
+
+            /* --- ABOUT / INTRO CARD ---------------------------------------
+               Figma: 400×650 card, 40px radius
+               Title  "Hundreds of works…" : 30px Medium, centered
+               Sub    "is a mindset…"      : 15px Regular / 22px lh, centered
+               3am.svg sits between them, group is centered (not left)      */
+            #about h2 {
+                font-size: 30px;
+                line-height: 1.2;
+                text-align: center;
+                margin-bottom: 18px;
+            }
+            #about .text-left {
+                text-align: center;
+            }
+            #about .flex.flex-col.items-start {
+                align-items: center;
+            }
+            #about span.text-\[12px\] {
+                font-size: 15px;
+                line-height: 22px;
+                text-align: center;
+            }
+
+            /* --- SKILLS SECTION --------------------------------------------
+               "What we do." label: 12px Regular (matches existing)
+               Big text rotated -9°: 35px Black (already), "and more…" 30px
+               15-yr list: 16px Regular, 5px dot, 14px gap (already aligned)*/
+            section .text-\[35px\].lowercase {
+                /* "and more..." line */
+                font-size: 30px;
+            }
+
+            /* --- PORTFOLIO GRID --------------------------------------------
+               Figma: 7 cards × 400×280 (10:7 ratio), 10px vertical gap,
+                      10px corner radius                                    */
+            #works .grid {
+                gap: 10px;
+            }
+            #works .portfolio-item {
+                aspect-ratio: 10 / 7;
+                border-radius: 10px;
+            }
+
+            /* --- CLIENTS — "More & more" label ----------------------------
+               Figma: 12px Regular, no tracking, sentence-case             */
+            #clients p {
+                font-size: 12px;
+                font-weight: 400;
+                letter-spacing: 0;
+                text-transform: none;
+            }
+
+            /* --- FOOTER / TALK SECTION ------------------------------------
+               Figma typography spec (mobile):
+                 • "2026: THE YEAR…" + "WANT TO COLLABORATE?" : 10px / 16px
+                 • Body paragraph "By mastering the latest tech…"  : 16px / 24px
+                 • Email + Phone                                   : 20px Medium
+                 • Copyright                                       : 10px Medium */
+            #talk p.uppercase {
+                font-size: 10px;
+                line-height: 16px;
+            }
+            #talk p.text-\[20px\] {
+                font-size: 16px;
+                line-height: 24px;
+            }
+            #talk a[href^="mailto:"],
+            #talk a[href^="tel:"] {
+                font-size: 20px;
+                line-height: 24px;
+            }
+            #talk .text-\[10px\] {
+                font-size: 10px;
+            }
+
+            /* AI x Human + cat illustrations: equal widths in 2-col band  */
+            #talk img[alt="AI x Human Intelligence"],
+            #talk #footer-svg-img {
+                width: 100%;
+                height: auto;
+            }
+        }
+
     </style>
 </head>
 <body class="antialiased selection:bg-black/20 selection:text-black transition-colors duration-700">
