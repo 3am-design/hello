@@ -543,10 +543,10 @@
             }
 
             /* Footer copyright row — span full 4 cols */
-            #talk .min-\[820px\]\:hidden.col-span-2.col-start-1.mt-2 {
+            #talk .lg\:hidden.col-span-2.col-start-1.mt-2 {
                 grid-column: 1 / -1;
             }
-            #talk .min-\[820px\]\:hidden.col-span-2.col-start-1.mt-2 > div {
+            #talk .lg\:hidden.col-span-2.col-start-1.mt-2 > div {
                 white-space: nowrap;
             }
         }
@@ -567,6 +567,11 @@
 
             /* About — bump heading to match proportional desktop scale */
             #about h2 { font-size: 56px; line-height: 1.1; }
+
+            /* Footer — mobile layout at this range; copyright spans full width */
+            #talk .lg\:hidden.col-span-2.col-start-1.mt-2 {
+                grid-column: 1 / -1;
+            }
         }
 
     </style>
@@ -804,64 +809,64 @@
                 </section>
 
                 <!-- Talk Section -->
-                <section id="talk" class="w-full pt-10 min-[820px]:pt-0 pb-0 min-[820px]:pb-[50px]">
+                <section id="talk" class="w-full pt-10 lg:pt-0 pb-0 lg:pb-[50px]">
                     <div class="relative w-full">
                         <div class="absolute inset-0 pointer-events-none z-0">
-                            <div class="custom-container h-full mx-auto grid grid-cols-4 min-[820px]:grid-cols-6 gap-[10px] min-[820px]:gap-[20px] lg:gap-[40px] hidden min-[820px]:grid">
+                            <div class="custom-container h-full mx-auto grid grid-cols-4 lg:grid-cols-6 gap-[10px] lg:gap-[40px] hidden lg:grid">
                                 <div class="col-start-5 col-span-2 relative h-full">
                                     <div class="absolute inset-y-0 -left-[20px] lg:-left-[40px] w-[50vw] bg-white"></div>
                                 </div>
                             </div>
-                            <div class="block min-[820px]:hidden absolute inset-y-0 left-0 w-full bg-white"></div>
+                            <div class="block lg:hidden absolute inset-y-0 left-0 w-full bg-white"></div>
                         </div>
 
                         <div class="custom-container relative z-10 h-full">
-                            <div class="grid grid-cols-4 min-[820px]:grid-cols-6 gap-[10px] min-[820px]:gap-[20px] lg:gap-[40px] items-center min-[820px]:items-stretch h-full pt-6 pb-6 min-[820px]:py-0">
+                            <div class="grid grid-cols-4 lg:grid-cols-6 gap-[10px] lg:gap-[40px] items-center lg:items-stretch h-full pt-6 pb-6 lg:py-0">
 
-                                <div class="hidden min-[820px]:flex flex-col justify-end col-start-1 col-span-1 pb-0 h-full">
+                                <div class="hidden lg:flex flex-col justify-end col-start-1 col-span-1 pb-0 h-full">
                                     <div class="text-[10px] font-medium text-black leading-normal whitespace-nowrap">Copyright © 2026 3am Design Studio. All rights reserved.</div>
                                 </div>
 
                                 <!-- Mobile: AI x Human in left 2 cols -->
-                                <div class="flex min-[820px]:hidden col-span-2 col-start-1 items-center">
+                                <div class="flex lg:hidden col-span-2 col-start-1 items-center">
                                     <img src="./assets/aixhuman.svg" alt="AI x Human Intelligence" class="w-full h-auto" onerror="this.src='https://placehold.co/400x200/transparent/000?text=AI+x+Human'">
                                 </div>
 
                                 <!-- Person+cat SVG: right 2 cols on mobile, cols 2-3 on desktop -->
-                                <div class="col-span-2 col-start-3 min-[820px]:col-start-2 min-[820px]:col-span-2 flex justify-center items-center h-full reveal-up">
+                                <div class="col-span-2 col-start-3 lg:col-start-2 lg:col-span-2 flex justify-center items-center h-full reveal-up">
                                     <img id="footer-svg-img" src="./assets/Footer.svg" alt="Footer Illustration" class="w-full h-auto object-contain origin-center" onerror="this.src='https://placehold.co/800x800/transparent/000?text=Footer'">
                                 </div>
 
-                                <div class="col-span-4 min-[820px]:col-start-5 min-[820px]:col-span-2 flex flex-col justify-center reveal-up h-full">
-                                    <div class="grid grid-cols-1 min-[820px]:grid-cols-2 gap-x-[10px] min-[820px]:gap-x-[20px] lg:gap-x-[40px] text-black w-full pt-[20px] min-[820px]:pt-[40px]">
+                                <div class="col-span-4 lg:col-start-5 lg:col-span-2 flex flex-col justify-center reveal-up h-full">
+                                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-[10px] lg:gap-x-[40px] text-black w-full pt-[20px] lg:pt-[40px]">
 
-                                        <div class="min-[820px]:col-span-1 flex flex-col">
-                                            <img src="./assets/aixhuman.svg" alt="AI x Human Intelligence" class="hidden min-[820px]:block w-full h-auto mb-[80px]" onerror="this.src='https://placehold.co/400x200/transparent/000?text=AI+x+Human'">
-                                            <p class="font-medium text-[12px] leading-[18px] tracking-normal uppercase mb-[30px] min-[820px]:mb-[40px]">
+                                        <div class="lg:col-span-1 flex flex-col">
+                                            <img src="./assets/aixhuman.svg" alt="AI x Human Intelligence" class="hidden lg:block w-full h-auto mb-[80px]" onerror="this.src='https://placehold.co/400x200/transparent/000?text=AI+x+Human'">
+                                            <p class="font-medium text-[12px] leading-[18px] tracking-normal uppercase mb-[30px] lg:mb-[40px]">
                                                 2026: THE YEAR OF LAUNCH.<br>WHILE OTHERS FEAR THE MACHINE,<br>I SYNCHRONIZE WITH IT.
                                             </p>
                                         </div>
-                                        <div class="hidden min-[820px]:block min-[820px]:col-span-1"></div>
+                                        <div class="hidden lg:block lg:col-span-1"></div>
 
-                                        <div class="min-[820px]:col-span-2 flex flex-col">
-                                            <p class="font-normal text-[20px] lg:text-[30px] leading-[1.2] min-[820px]:leading-[1.5] tracking-normal mb-[30px] min-[820px]:mb-[80px]">
+                                        <div class="lg:col-span-2 flex flex-col">
+                                            <p class="font-normal text-[20px] lg:text-[30px] leading-[1.2] lg:leading-[1.5] tracking-normal mb-[30px] lg:mb-[80px]">
                                                 By mastering the latest tech, I deliver smarter, faster & more flexible design solutions that fit your budget, without compromising the soul of the craft.
                                             </p>
-                                            <div class="w-full h-[1px] bg-black mb-[30px] min-[820px]:mb-[80px]"></div>
+                                            <div class="w-full h-[1px] bg-black mb-[30px] lg:mb-[80px]"></div>
                                         </div>
 
-                                        <div class="min-[820px]:col-span-1 flex flex-col pb-[30px] min-[820px]:pb-[50px]">
-                                            <p class="font-medium text-[12px] leading-[18px] tracking-normal uppercase mb-[20px] min-[820px]:mb-[40px]">WANT TO COLLABORATE?<br>WORK WITH 3AM.</p>
+                                        <div class="lg:col-span-1 flex flex-col pb-[30px] lg:pb-[50px]">
+                                            <p class="font-medium text-[12px] leading-[18px] tracking-normal uppercase mb-[20px] lg:mb-[40px]">WANT TO COLLABORATE?<br>WORK WITH 3AM.</p>
                                             <div class="flex flex-col gap-[10px]">
                                                 <a href="mailto:ericng@hello-3am.com" class="font-medium text-[18px] lg:text-[20px] leading-[20px] hover:opacity-70 transition duration-300 -mt-[20px] mb-[20px]">ericng@hello-3am.com</a>
                                                 <a href="tel:+85263577861" class="font-medium text-[18px] lg:text-[20px] leading-[20px] hover:opacity-70 transition duration-300">+852 6357 7861</a>
                                             </div>
                                         </div>
-                                        <div class="hidden min-[820px]:block min-[820px]:col-span-1"></div>
+                                        <div class="hidden lg:block lg:col-span-1"></div>
                                     </div>
                                 </div>
 
-                                <div class="flex min-[820px]:hidden col-span-2 col-start-1 mt-2">
+                                <div class="flex lg:hidden col-span-2 col-start-1 mt-2">
                                     <div class="text-[10px] font-medium text-black leading-normal">Copyright © 2026 3am Design Studio. All rights reserved.</div>
                                 </div>
                             </div>
