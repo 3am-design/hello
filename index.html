@@ -542,11 +542,18 @@
                 text-transform: none;
             }
 
-            /* Footer copyright row — span full 4 cols */
-            #talk .lg\:hidden.col-span-2.col-start-1.mt-2 {
-                grid-column: 1 / -1;
+            /* Footer: 2-col split (person+cat left / text right) */
+            #talk .grid-cols-4 {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 20px !important;
+                align-items: start !important;
             }
-            #talk .lg\:hidden.col-span-2.col-start-1.mt-2 > div {
+            #talk .col-span-2.col-start-1.items-center { display: none !important; }
+            #talk .col-span-2.col-start-3 { grid-column: 1 !important; grid-row: 1 !important; }
+            #talk .col-span-4 { grid-column: 2 !important; grid-row: 1 !important; }
+            #talk .col-span-2.col-start-1.mt-2 {
+                grid-column: 1 / -1 !important;
+                grid-row: 2 !important;
                 white-space: nowrap;
             }
         }
@@ -558,19 +565,28 @@
            ================================================================ */
         @media (min-width: 820px) and (max-width: 1023px) {
 
-            /* Skills — rotated text: scale down from 75–80px base to fit
-               smaller viewport; lg: (1024px) restores the larger sizes */
-            .hidden.min-\[820px\]\:flex .text-\[75px\] { font-size: 58px; }
-            .hidden.min-\[820px\]\:flex .text-\[80px\] { font-size: 62px; }
-            .hidden.min-\[820px\]\:flex .text-\[70px\] { font-size: 54px; }
-            .hidden.min-\[820px\]\:flex .text-\[35px\] { font-size: 28px; }
+            /* Skills — rotated text: scale down; !important overrides Tailwind utility */
+            .hidden.min-\[820px\]\:flex .text-\[75px\] { font-size: 58px !important; }
+            .hidden.min-\[820px\]\:flex .text-\[80px\] { font-size: 62px !important; }
+            .hidden.min-\[820px\]\:flex .text-\[70px\] { font-size: 54px !important; }
+            .hidden.min-\[820px\]\:flex .text-\[35px\] { font-size: 28px !important; }
 
             /* About — bump heading to match proportional desktop scale */
             #about h2 { font-size: 56px; line-height: 1.1; }
 
-            /* Footer — mobile layout at this range; copyright spans full width */
-            #talk .lg\:hidden.col-span-2.col-start-1.mt-2 {
-                grid-column: 1 / -1;
+            /* Footer: 2-col split (person+cat left / text right) */
+            #talk .grid-cols-4 {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 20px !important;
+                align-items: start !important;
+            }
+            #talk .col-span-2.col-start-1.items-center { display: none !important; }
+            #talk .col-span-2.col-start-3 { grid-column: 1 !important; grid-row: 1 !important; }
+            #talk .col-span-4 { grid-column: 2 !important; grid-row: 1 !important; }
+            #talk .col-span-2.col-start-1.mt-2 {
+                grid-column: 1 / -1 !important;
+                grid-row: 2 !important;
+                white-space: nowrap;
             }
         }
 
@@ -858,8 +874,8 @@
                                         <div class="lg:col-span-1 flex flex-col pb-[30px] lg:pb-[50px]">
                                             <p class="font-medium text-[12px] leading-[18px] tracking-normal uppercase mb-[20px] lg:mb-[40px]">WANT TO COLLABORATE?<br>WORK WITH 3AM.</p>
                                             <div class="flex flex-col gap-[10px]">
-                                                <a href="mailto:ericng@hello-3am.com" class="font-medium text-[18px] lg:text-[20px] leading-[20px] hover:opacity-70 transition duration-300 -mt-[20px] mb-[20px]">ericng@hello-3am.com</a>
-                                                <a href="tel:+85263577861" class="font-medium text-[18px] lg:text-[20px] leading-[20px] hover:opacity-70 transition duration-300">+852 6357 7861</a>
+                                                <a href="mailto:ericng@hello-3am.com" class="font-medium text-[18px] lg:text-[20px] leading-[20px] hover:opacity-70 transition duration-300 -mt-[20px] mb-[20px] whitespace-nowrap">ericng@hello-3am.com</a>
+                                                <a href="tel:+85263577861" class="font-medium text-[18px] lg:text-[20px] leading-[20px] hover:opacity-70 transition duration-300 whitespace-nowrap">+852 6357 7861</a>
                                             </div>
                                         </div>
                                         <div class="hidden lg:block lg:col-span-1"></div>
