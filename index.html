@@ -59,13 +59,6 @@
             #custom-cursor { display: none !important; }
             body, a, button, .cursor-pointer { cursor: auto !important; }
 
-            /* Hero: Ayoh! SVG - centred with slight bilateral bleed */
-            #ayoh-wrapper svg {
-                width: 155vw !important;
-                height: auto !important;
-                margin-left: calc((100vw - 155vw) / 2 - var(--c-px)) !important;
-            }
-
             /* Footer: person+cat fills its column on mobile */
             #footer-svg-img {
                 width: 100%;
@@ -423,7 +416,7 @@
             .skewed-text-trigger {
                 width: 100% !important;
             }
-            .skewed-text-trigger .flex.min-\[820px\]\:hidden .text-\[35px\] {
+            .skewed-text-trigger .flex.lg\:hidden .text-\[35px\] {
                 font-size: clamp(26px, 8vw, 35px);
             }
 
@@ -499,6 +492,51 @@
             }
         }
 
+        /* ============================================================
+           === BRIDGE ZONE (769–1023px) — tablet / small laptop ======
+           Hero + Skills keep the MOBILE layout (per design decision:
+           "stretch mobile up to 1023, switch desktop at lg: 1024").
+           The DOM already switches at lg: 1024; these rules just scale
+           the stretched-mobile layout up so it fills the wider canvas.
+           ============================================================ */
+        @media (min-width: 769px) and (max-width: 1023px) {
+
+            /* Hero "Ayoh!" SVG: full-bleed 100vw, centered on viewport */
+            #ayoh-wrapper svg,
+            #ayoh-wrapper img {
+                width: 100vw !important;
+                height: auto !important;
+                margin-left: calc(-1 * var(--c-px)) !important;
+                max-width: none !important;
+            }
+
+            /* Skills big rotated text: constrain wrapper + scale type with
+               the viewport so the 5 mobile lines fill the wider width
+               (35px @ 440 → up to 64px on a ~915px tablet). */
+            .skewed-text-trigger {
+                width: 100% !important;
+            }
+            .skewed-text-trigger .flex.lg\:hidden .text-\[35px\] {
+                font-size: clamp(40px, 7vw, 64px);
+            }
+        }
+
+        /* ============================================================
+           === SKILLS desktop (≥1024px) ==============================
+           The rotated big text scales fluidly with vw (see markup
+           clamp() font sizes), so the negative margin that tucks the
+           "15 years…" list + award logos under it must scale with vw
+           too — a fixed px value overlaps the text at narrow desktop
+           widths (1024–1280) and detaches at 1920. -14vw tracks the
+           rotated text's height across the whole range.
+           ============================================================ */
+        @media (min-width: 1024px) {
+            /* [OVERLAP FIX] -14vw 喺闊螢幕會過度上拉令大字撞落 15-years/logos。
+               用 clamp 封頂 -180px,減少 overlap;剩低嘅交疊由大字嘅
+               mix-blend-difference 反白兜底(over 黑嘢自動轉白,似 menu/logo)。 */
+            #skills-grid { margin-top: clamp(-180px, -14vw, -120px); }
+        }
+
     </style>
 </head>
 <body class="antialiased selection:bg-black/20 selection:text-black transition-colors duration-700">
@@ -554,24 +592,24 @@
         <!-- SCREEN 1: Hero Section -->
         <div id="hero-spacer" class="w-full h-[100svh]"></div>
         
-        <section id="hero-section" class="fixed top-0 left-0 w-full h-[100svh] pt-[70px] min-[820px]:pt-[100px] pb-0 overflow-hidden z-0 transition-opacity">
+        <section id="hero-section" class="fixed top-0 left-0 w-full h-[100svh] pt-[70px] lg:pt-[100px] pb-0 overflow-hidden z-0 transition-opacity">
             <div class="custom-container relative h-full w-full">
-                
-                <div class="w-full grid grid-cols-4 min-[820px]:grid-cols-6 gap-[10px] min-[820px]:gap-[20px] lg:gap-[40px]">
-                    <div id="ayoh-wrapper" class="col-span-4 min-[820px]:col-span-5 relative">
+
+                <div class="w-full grid grid-cols-4 lg:grid-cols-6 gap-[10px] lg:gap-[40px]">
+                    <div id="ayoh-wrapper" class="col-span-4 lg:col-span-5 relative">
                         <img id="ayoh-fallback" src="./assets/ayoh.svg" alt="Ayoh!" class="ayoh-bleed opacity-0 transition-opacity duration-300" onerror="this.src='https://placehold.co/1800x500/transparent/000?text=Ayoh!'">
                     </div>
                 </div>
                 
                 <div class="absolute bottom-[-5px] right-[0px] flex justify-end items-end z-10 pointer-events-none w-full px-[var(--c-px)]">
-                    <div class="w-full grid grid-cols-4 min-[820px]:grid-cols-6 h-full">
-                        <div class="hands-wrapper col-span-4 min-[820px]:col-start-3 min-[820px]:col-span-4 flex items-end">
-                            <div class="hand-up hidden min-[820px]:block min-[820px]:w-1/6" style="transition-duration: 1.6s; transition-delay: 0.6s;"><img src="./assets/hand_01.svg" class="w-full h-auto origin-bottom-center sway-1" alt="hand" onerror="this.src='https://placehold.co/124x180/FFC0CB/000?text=H1'"></div>
-                            <div class="hand-up w-1/4 min-[820px]:w-1/6" style="transition-duration: 1.5s; transition-delay: 0.3s;"><img src="./assets/hand_02.svg" class="w-full h-auto origin-bottom-center sway-2" alt="hand" onerror="this.src='https://placehold.co/124x180/FFFF00/000?text=H2'"></div>
-                            <div class="hand-up w-1/4 min-[820px]:w-1/6" style="transition-duration: 1.5s; transition-delay: 0.8s;"><img src="./assets/hand_03.svg" class="w-full h-auto origin-bottom-center sway-3" alt="hand" onerror="this.src='https://placehold.co/124x180/90EE90/000?text=H3'"></div>
-                            <div class="hand-up w-1/4 min-[820px]:w-1/6" style="transition-duration: 1.7s; transition-delay: 0.4s;"><img src="./assets/hand_04.svg" class="w-full h-auto origin-bottom-center sway-4" alt="hand" onerror="this.src='https://placehold.co/124x180/ADD8E6/000?text=H4'"></div>
-                            <div class="hand-up w-1/4 min-[820px]:w-1/6" style="transition-duration: 1.8s; transition-delay: 0.7s;"><img src="./assets/hand_05.svg" class="w-full h-auto origin-bottom-center sway-5" alt="hand" onerror="this.src='https://placehold.co/124x180/FFA07A/000?text=H5'"></div>
-                            <div class="hand-up hidden min-[820px]:block min-[820px]:w-1/6" style="transition-duration: 1.3s; transition-delay: 0.5s;"><img src="./assets/hand_06.svg" class="w-full h-auto origin-bottom-center sway-6" alt="hand" onerror="this.src='https://placehold.co/124x180/20B2AA/000?text=H6'"></div>
+                    <div class="w-full grid grid-cols-4 lg:grid-cols-6 h-full">
+                        <div class="hands-wrapper col-span-4 lg:col-start-3 lg:col-span-4 flex items-end">
+                            <div class="hand-up hidden lg:block lg:w-1/6" style="transition-duration: 1.6s; transition-delay: 0.6s;"><img src="./assets/hand_01.svg" class="w-full h-auto origin-bottom-center sway-1" alt="hand" onerror="this.src='https://placehold.co/124x180/FFC0CB/000?text=H1'"></div>
+                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 1.5s; transition-delay: 0.3s;"><img src="./assets/hand_02.svg" class="w-full h-auto origin-bottom-center sway-2" alt="hand" onerror="this.src='https://placehold.co/124x180/FFFF00/000?text=H2'"></div>
+                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 1.5s; transition-delay: 0.8s;"><img src="./assets/hand_03.svg" class="w-full h-auto origin-bottom-center sway-3" alt="hand" onerror="this.src='https://placehold.co/124x180/90EE90/000?text=H3'"></div>
+                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 1.7s; transition-delay: 0.4s;"><img src="./assets/hand_04.svg" class="w-full h-auto origin-bottom-center sway-4" alt="hand" onerror="this.src='https://placehold.co/124x180/ADD8E6/000?text=H4'"></div>
+                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 1.8s; transition-delay: 0.7s;"><img src="./assets/hand_05.svg" class="w-full h-auto origin-bottom-center sway-5" alt="hand" onerror="this.src='https://placehold.co/124x180/FFA07A/000?text=H5'"></div>
+                            <div class="hand-up hidden lg:block lg:w-1/6" style="transition-duration: 1.3s; transition-delay: 0.5s;"><img src="./assets/hand_06.svg" class="w-full h-auto origin-bottom-center sway-6" alt="hand" onerror="this.src='https://placehold.co/124x180/20B2AA/000?text=H6'"></div>
                         </div>
                     </div>
                 </div>
@@ -617,14 +655,14 @@
                 <section class="custom-container flex flex-col justify-center relative pt-[100px] pb-0 lg:pt-[140px] lg:pb-[20px]">
                     
                     <div class="absolute top-[80px] lg:top-[140px] left-0 right-0 flex justify-center z-40 pointer-events-none">
-                        <p class="text-[12px] min-[820px]:text-[14px] font-normal tracking-wide text-black whitespace-nowrap reveal-up ml-[60px] min-[820px]:ml-0" style="transition-delay: 0ms;">What we do.</p>
+                        <p class="text-[12px] lg:text-[14px] font-normal tracking-wide text-black whitespace-nowrap reveal-up" style="transition-delay: 0ms;">What we do.</p>
                     </div>
 
                     <!-- [KARINA FIX] 徹底分拆 Desktop 同 Mobile 代碼，保證互不干擾 -->
-                    <div class="w-[200vw] transform rotate-[9deg] origin-top-left relative mt-0 font-black tracking-tight text-black flex flex-col z-20 skewed-text-trigger font-['Inter']">
+                    <div class="w-[200vw] transform rotate-[9deg] origin-top-left relative mt-0 font-black tracking-tight text-white mix-blend-difference flex flex-col z-50 skewed-text-trigger font-['Inter']">
                         
-                        <!-- ================= MOBILE ONLY ================= -->
-                        <div class="flex min-[820px]:hidden flex-col gap-[12px] w-full">
+                        <!-- ================= MOBILE ONLY (≤1023px) ================= -->
+                        <div class="flex lg:hidden flex-col gap-[12px] w-full">
                             <!-- Line 1 & 2: UXUI (Col 1 左開始) & Brand Identity (Col 1 中間開始) -->
                             <div class="slide-in-right z-30" style="transition-delay: 150ms; transition-duration: 1.4s;">
                                 <div class="text-[35px] font-black whitespace-nowrap pl-[0px] leading-none">UXUI &nbsp;&nbsp;&nbsp;&nbsp;Web & App</div>
@@ -640,32 +678,34 @@
                             <!-- Line 4 & 5: Digital Strategy (Col 1 中間開始) & and more... (Col 1 左開始) -->
                             <div class="slide-in-right z-30" style="transition-delay: 300ms; transition-duration: 1.3s;">
                                 <div class="text-[35px] font-black whitespace-nowrap pl-[calc((100vw-82px)/8)] leading-none">Digital Strategy</div>
-                                <div class="text-[35px] font-black lowercase tracking-normal text-black whitespace-nowrap pl-[0px] mt-[12px] leading-none">and more...</div>
+                                <div class="text-[35px] font-black lowercase tracking-normal text-white whitespace-nowrap pl-[0px] mt-[12px] leading-none">and more...</div>
                             </div>
                         </div>
 
-                        <!-- ================= DESKTOP ONLY (100% 原始復原) ================= -->
-                        <div class="hidden min-[820px]:flex flex-col gap-1 md:gap-3 leading-[1.05]">
+                        <!-- ================= DESKTOP ONLY (≥1024px) ================= -->
+                        <div class="hidden lg:flex flex-col gap-1 md:gap-3 leading-[1.05]">
                             <div class="slide-in-right z-30" style="transition-delay: 150ms; transition-duration: 1.4s;">
-                                <div class="text-[75px] lg:text-[110px] xl:text-[120px] font-black whitespace-nowrap pl-[0vw]">UXUI Web & App Brand Identity</div>
+                                <div class="text-[clamp(64px,6.25vw,120px)] font-black whitespace-nowrap pl-[0vw]">UXUI Web & App Brand Identity</div>
                             </div>
                             <div class="slide-in-right z-30" style="transition-delay: 0ms; transition-duration: 1.2s;">
-                                <div class="text-[80px] lg:text-[120px] xl:text-[120px] font-black whitespace-nowrap pl-[12vw] md:pl-[15vw]">Visual Communication</div>
+                                <div class="text-[clamp(64px,6.25vw,120px)] font-black whitespace-nowrap pl-[12vw] lg:pl-[14vw]">Visual Communication</div>
                             </div>
                             <div class="slide-in-right z-30" style="transition-delay: 300ms; transition-duration: 1.3s;">
                                 <div class="flex flex-row items-baseline gap-6 pl-[4vw]">
-                                    <span class="text-[70px] lg:text-[100px] xl:text-[120px] font-black whitespace-nowrap">Digital Strategy</span>
-                                    <span class="text-[35px] lg:text-[45px] xl:text-[50px] font-black lowercase tracking-normal text-black whitespace-nowrap">and more...</span>
+                                    <span class="text-[clamp(64px,6.25vw,120px)] font-black whitespace-nowrap">Digital Strategy</span>
+                                    <span class="text-[clamp(28px,2.6vw,50px)] font-black lowercase tracking-normal text-white whitespace-nowrap">and more...</span>
                                 </div>
                             </div>
                         </div>
 
                     </div>
 
-                    <div class="w-full grid grid-cols-4 min-[820px]:grid-cols-6 gap-[10px] min-[820px]:gap-[20px] lg:gap-[40px] items-end mt-[40px] md:-mt-[100px] lg:-mt-[240px] xl:-mt-[280px] relative z-40">
-                        
-                        <!-- [KARINA FIX] 手部插圖：Mobile 放 Col 3 & 4 (order-1)，負 Margin 向上推接觸字體；Desktop 原有排位 -->
-                        <div class="flex relative min-[820px]:relative w-full col-span-2 col-start-3 min-[820px]:col-span-2 min-[820px]:col-start-5 justify-end items-end reveal-solid-up z-10 pointer-events-none order-1 min-[820px]:order-2 -mt-[110px] min-[820px]:mt-0 min-[820px]:top-[200px]" style="transition-delay: 0ms; transition-duration: 1.4s;">
+                    <!-- [OVERLAP FIX] 移走 z-40:唔再令成個 grid 困住自己嘅 stacking context,
+                         咁隻手(face)先升得過大字(z-50)、list 留喺大字下面俾佢反白兜底 -->
+                    <div id="skills-grid" class="w-full grid grid-cols-4 lg:grid-cols-6 gap-[10px] lg:gap-[40px] items-end mt-[40px] relative">
+
+                        <!-- 手部插圖：Mobile/Bridge 放 Col 3 & 4 (order-1)，負 Margin 向上推接觸字體；Desktop (≥1024) 原有排位 -->
+                        <div class="flex relative w-full col-span-2 col-start-3 lg:col-span-2 lg:col-start-5 justify-end items-end reveal-solid-up z-[60] pointer-events-none order-1 lg:order-2 -mt-[110px] lg:mt-0 lg:top-[200px]" style="transition-delay: 0ms; transition-duration: 1.4s;">
                             <div class="relative w-full h-auto transition duration-500 group-hover:scale-110 group-hover:-rotate-3 group origin-bottom">
                                 <img src="./assets/visual_01.svg" class="visual-layer relative w-full h-auto z-10" data-depth="0.02" alt="Face Base" onerror="this.src='https://placehold.co/400x400/FFB6C1/000?text=Base'">
                                 <img src="./assets/visual_02.svg" class="visual-layer absolute inset-0 w-full h-auto z-20" data-depth="0.06" alt="Face Sparkles 1" onerror="this.src='https://placehold.co/400x400/transparent/000?text=S1'">
@@ -673,8 +713,10 @@
                             </div>
                         </div>
                         
-                        <!-- [KARINA FIX] 15 Years List 同 Logos：Mobile 放手部下方 (order-2) -->
-                        <div class="col-span-4 flex flex-col items-start gap-[20px] lg:gap-[30px] relative z-20 order-2 min-[820px]:order-1 mt-[20px] min-[820px]:mt-0">
+                        <!-- 15 Years List 同 Logos：Mobile/Bridge 放手部下方 (order-2) -->
+                        <!-- [OVERLAP FIX] lg:top 將 list+logos 向下推離大字底行,開返空隙唔再 overlay;
+                             用 clamp 跟 viewport 縮放(大字字級都係 vw),數值可按 breakpoint 微調 -->
+                        <div class="col-span-4 flex flex-col items-start gap-[20px] lg:gap-[30px] relative z-20 order-2 lg:order-1 mt-[20px] lg:mt-0 lg:top-[clamp(40px,5vw,90px)]">
                             
                             <!-- 15 Years List: 16px, 圓點 5px, 距離 8px, 水平垂直置中對齊 -->
                             <div class="text-[16px] lg:text-[20px] font-normal space-y-[16px] text-black leading-normal font-['Inter']">
@@ -692,19 +734,14 @@
                                 </div>
                             </div>
 
-                            <!-- 獎項 Logos: 完美置中 4-Column Grid -->
-                            <div class="w-full grid grid-cols-4 min-[820px]:flex min-[820px]:flex-wrap gap-x-[10px] min-[820px]:gap-x-6 lg:gap-x-12 gap-y-[24px] min-[820px]:gap-y-6 items-center mt-[10px] min-[820px]:mt-[30px]">
-                                <img src="./assets/HKDA.svg" alt="HKDA" class="col-span-1 justify-self-center min-[820px]:justify-self-start reveal-up h-[45px] min-[820px]:h-auto min-[820px]:w-[33px] lg:w-[41px] object-contain theme-svg" style="transition-delay: 400ms;" onerror="this.src='https://placehold.co/41x41/transparent/000?text=HKDA'">
-                                <img src="./assets/Awwwards.svg" alt="Awwwards" class="col-span-1 justify-self-center min-[820px]:justify-self-start reveal-up h-[14px] min-[820px]:h-auto min-[820px]:w-[96px] lg:w-[120px] object-contain theme-svg" style="transition-delay: 450ms;" onerror="this.src='https://placehold.co/120x30/transparent/000?text=Awwwards'">
-                                <img src="./assets/W3.svg" alt="W3" class="col-span-1 justify-self-center min-[820px]:justify-self-start reveal-up h-[26px] min-[820px]:h-auto min-[820px]:w-[29px] lg:w-[36px] object-contain theme-svg" style="transition-delay: 500ms;" onerror="this.src='https://placehold.co/36x36/transparent/000?text=W3'">
-                                
-                                <div class="col-span-1 block min-[820px]:hidden"></div> <!-- Mobile 空白格頂位 -->
-                                
-                                <img src="./assets/Horizon.svg" alt="Horizon" class="col-span-1 justify-self-center min-[820px]:justify-self-start reveal-up h-[20px] min-[820px]:h-auto min-[820px]:w-[70px] lg:w-[88px] object-contain theme-svg" style="transition-delay: 550ms;" onerror="this.src='https://placehold.co/88x30/transparent/000?text=Horizon'">
-                                <img src="./assets/WebAward.svg" alt="WebAward" class="col-span-1 justify-self-center min-[820px]:justify-self-start reveal-up h-[28px] min-[820px]:h-auto min-[820px]:w-[33px] lg:w-[41px] object-contain theme-svg" style="transition-delay: 600ms;" onerror="this.src='https://placehold.co/41x41/transparent/000?text=WebAward'">
-                                <img src="./assets/ComAward.svg" alt="ComAward" class="col-span-1 justify-self-center min-[820px]:justify-self-start reveal-up h-[22px] min-[820px]:h-auto min-[820px]:w-[100px] lg:w-[124px] object-contain theme-svg" style="transition-delay: 650ms;" onerror="this.src='https://placehold.co/124x30/transparent/000?text=ComAward'">
-                                
-                                <div class="col-span-1 block min-[820px]:hidden"></div> <!-- Mobile 空白格頂位 -->
+                            <!-- 獎項 Logos: Mobile/Bridge 2 行 × 3 欄 (Figma)；Desktop (≥1024) 單行 flex -->
+                            <div class="w-full grid grid-cols-3 lg:flex lg:flex-wrap gap-x-[10px] lg:gap-x-12 gap-y-[24px] lg:gap-y-6 items-center mt-[10px] lg:mt-[30px]">
+                                <img src="./assets/HKDA.svg" alt="HKDA" class="justify-self-center lg:justify-self-start reveal-up h-[45px] lg:h-auto lg:w-[41px] object-contain theme-svg" style="transition-delay: 400ms;" onerror="this.src='https://placehold.co/41x41/transparent/000?text=HKDA'">
+                                <img src="./assets/Awwwards.svg" alt="Awwwards" class="justify-self-center lg:justify-self-start reveal-up h-[14px] lg:h-auto lg:w-[120px] object-contain theme-svg" style="transition-delay: 450ms;" onerror="this.src='https://placehold.co/120x30/transparent/000?text=Awwwards'">
+                                <img src="./assets/W3.svg" alt="W3" class="justify-self-center lg:justify-self-start reveal-up h-[26px] lg:h-auto lg:w-[36px] object-contain theme-svg" style="transition-delay: 500ms;" onerror="this.src='https://placehold.co/36x36/transparent/000?text=W3'">
+                                <img src="./assets/Horizon.svg" alt="Horizon" class="justify-self-center lg:justify-self-start reveal-up h-[20px] lg:h-auto lg:w-[88px] object-contain theme-svg" style="transition-delay: 550ms;" onerror="this.src='https://placehold.co/88x30/transparent/000?text=Horizon'">
+                                <img src="./assets/WebAward.svg" alt="WebAward" class="justify-self-center lg:justify-self-start reveal-up h-[28px] lg:h-auto lg:w-[41px] object-contain theme-svg" style="transition-delay: 600ms;" onerror="this.src='https://placehold.co/41x41/transparent/000?text=WebAward'">
+                                <img src="./assets/ComAward.svg" alt="ComAward" class="justify-self-center lg:justify-self-start reveal-up h-[22px] lg:h-auto lg:w-[124px] object-contain theme-svg" style="transition-delay: 650ms;" onerror="this.src='https://placehold.co/124x30/transparent/000?text=ComAward'">
                             </div>
 
                         </div>
