@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3am. Portfolio</title>
+    <meta name="description" content="3am Design Studio — Hong Kong based UX/UI, brand identity, visual communication and digital strategy portfolio.">
+    <meta name="theme-color" content="#F6F5F2">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="3am. Portfolio">
+    <meta property="og:description" content="Selected UX/UI, branding and visual communication work by 3am Design Studio.">
+    <link rel="icon" href="./assets/3am.svg" type="image/svg+xml">
     <!-- 引入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- 引入 Lenis Smooth Scroll 引擎 -->
@@ -138,8 +144,8 @@
             height: 100%; background-color: rgba(150, 150, 150, 0.05);
             border-left: 1px dashed rgba(150, 150, 150, 0.2); border-right: 1px dashed rgba(150, 150, 150, 0.2);
         }
-        @media (min-width: 820px) { #design-grid { grid-template-columns: repeat(6, 1fr); column-gap: 20px; } }
-        @media (min-width: 1024px) { #design-grid { column-gap: 30px; } }
+        @media (min-width: 820px) { #design-grid { column-gap: 20px; } }
+        @media (min-width: 1024px) { #design-grid { grid-template-columns: repeat(6, 1fr); column-gap: 30px; } }
         @media (min-width: 1280px) { #design-grid { column-gap: 40px; } }
 
         .custom-container { max-width: 1920px; margin: 0 auto; padding: 0 var(--c-px); width: 100%; }
@@ -421,10 +427,9 @@
             }
 
             /* --- PORTFOLIO GRID --------------------------------------------
-               Figma: 7 cards × 400×280 (10:7 ratio), 10px corner radius
-               Gap bumped from 10→20px for more breathing room              */
+               Figma: 7 cards × 400×280 (10:7 ratio), 10px gap/radius       */
             #works .grid {
-                gap: 20px;
+                gap: 10px;
             }
             #works .portfolio-item {
                 aspect-ratio: 10 / 7;
@@ -490,6 +495,24 @@
                 width: 100%;
                 height: auto;
             }
+        }
+
+        /* Compact phones: keep the centred nav clear of the logo and toggle. */
+        @media (max-width: 359px) {
+            #site-header img[src*="3amDS"] { height: 16px; }
+            #site-header nav { gap: 12px; }
+            #site-header nav a { font-size: 11px; }
+            #site-header button .w-\[38px\] { width: 34px; height: 34px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html:focus-within { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            #scene { display: none; }
         }
 
         /* ============================================================
@@ -752,13 +775,13 @@
                 <!-- Portfolio Grid -->
                 <section id="works" class="custom-container pt-[90px] pb-[100px] lg:pt-[130px] lg:pb-[150px]">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-[10px] min-[820px]:gap-[20px] lg:gap-[30px] xl:gap-[40px]">
-                        <div class="portfolio-item col-span-1 lg:col-span-4 aspect-[4/3] lg:aspect-[1132/695] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px]" data-id="01"><img src="./assets/works/01/01_image_01.webp" alt="Work 01" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.src='https://images.unsplash.com/photo-1558655146-d09347e92766?w=1200&h=800&fit=crop'"></div>
-                        <div class="portfolio-item col-span-1 lg:col-span-2 aspect-[4/3] lg:aspect-[546/695] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px]" data-id="02" style="transition-delay: 100ms;"><img src="./assets/works/02/02_image_01.webp" alt="Work 02" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.src='https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&h=800&fit=crop'"></div>
-                        <div class="portfolio-item col-span-1 lg:col-span-2 aspect-[4/3] lg:aspect-[546/420] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px]" data-id="03"><img src="./assets/works/03/03_image_01.webp" alt="Work 03" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.src='https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=450&fit=crop'"></div>
-                        <div class="portfolio-item col-span-1 lg:col-span-2 aspect-[4/3] lg:aspect-[546/420] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px]" data-id="04" style="transition-delay: 100ms;"><img src="./assets/works/04/04_image_01.webp" alt="Work 04" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.src='https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=600&h=450&fit=crop'"></div>
-                        <div class="portfolio-item col-span-1 lg:col-span-2 aspect-[4/3] lg:aspect-[546/420] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px]" data-id="05" style="transition-delay: 200ms;"><img src="./assets/works/05/05_image_01.webp" alt="Work 05" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=450&fit=crop'"></div>
-                        <div class="portfolio-item col-span-1 lg:col-span-2 aspect-[4/3] lg:aspect-[546/695] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px]" data-id="06"><img src="./assets/works/06/06_image_01.webp" alt="Work 06" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.src='https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=600&h=800&fit=crop'"></div>
-                        <div class="portfolio-item col-span-1 lg:col-span-4 aspect-[4/3] lg:aspect-[1132/695] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px]" data-id="07" style="transition-delay: 100ms;"><img src="./assets/works/07/07_image_01.webp" alt="Work 07" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=800&fit=crop'"></div>
+                        <button type="button" aria-label="Open Hong Kong Palace Museum project" class="portfolio-item col-span-1 lg:col-span-4 aspect-[4/3] lg:aspect-[1132/695] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px] appearance-none border-0 p-0 text-left" data-id="01"><img loading="lazy" decoding="async" src="./assets/works/01/01_image_01.webp" alt="Hong Kong Palace Museum project" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.src='https://images.unsplash.com/photo-1558655146-d09347e92766?w=1200&h=800&fit=crop'"></button>
+                        <button type="button" aria-label="Open Chow Sang Sang Sustainability Internal Hub project" class="portfolio-item col-span-1 lg:col-span-2 aspect-[4/3] lg:aspect-[546/695] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px] appearance-none border-0 p-0 text-left" data-id="02" style="transition-delay: 100ms;"><img loading="lazy" decoding="async" src="./assets/works/02/02_image_01.webp" alt="Chow Sang Sang Sustainability Internal Hub project" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.src='https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&h=800&fit=crop'"></button>
+                        <button type="button" aria-label="Open Harbour Plaza Hotels and Resorts project" class="portfolio-item col-span-1 lg:col-span-2 aspect-[4/3] lg:aspect-[546/420] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px] appearance-none border-0 p-0 text-left" data-id="03"><img loading="lazy" decoding="async" src="./assets/works/03/03_image_01.webp" alt="Harbour Plaza Hotels and Resorts project" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.src='https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=450&fit=crop'"></button>
+                        <button type="button" aria-label="Open Chow Sang Sang Digital Ecosystem project" class="portfolio-item col-span-1 lg:col-span-2 aspect-[4/3] lg:aspect-[546/420] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px] appearance-none border-0 p-0 text-left" data-id="04" style="transition-delay: 100ms;"><img loading="lazy" decoding="async" src="./assets/works/04/04_image_01.webp" alt="Chow Sang Sang Digital Ecosystem project" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.src='https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=600&h=450&fit=crop'"></button>
+                        <button type="button" aria-label="Open HKICL website project" class="portfolio-item col-span-1 lg:col-span-2 aspect-[4/3] lg:aspect-[546/420] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px] appearance-none border-0 p-0 text-left" data-id="05" style="transition-delay: 200ms;"><img loading="lazy" decoding="async" src="./assets/works/05/05_image_01.webp" alt="HKICL website project" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=450&fit=crop'"></button>
+                        <button type="button" aria-label="Open Bangadang Farm project" class="portfolio-item col-span-1 lg:col-span-2 aspect-[4/3] lg:aspect-[546/695] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px] appearance-none border-0 p-0 text-left" data-id="06"><img loading="lazy" decoding="async" src="./assets/works/06/06_image_01.webp" alt="Bangadang Farm project" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.src='https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=600&h=800&fit=crop'"></button>
+                        <button type="button" aria-label="Open Emphasis Jewellery project" class="portfolio-item col-span-1 lg:col-span-4 aspect-[4/3] lg:aspect-[1132/695] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px] appearance-none border-0 p-0 text-left" data-id="07" style="transition-delay: 100ms;"><img loading="lazy" decoding="async" src="./assets/works/07/07_image_01.webp" alt="Emphasis Jewellery project" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=800&fit=crop'"></button>
                     </div>
                 </section>
 
@@ -843,7 +866,7 @@
     <div id="modal-backdrop" class="fixed inset-0 z-[90000] bg-black/80 opacity-0 pointer-events-none transition-all duration-700 hidden"></div>
 
     <!-- Project Modal -->
-    <div id="project-modal" class="fixed inset-0 z-[99999] bg-[var(--bg-color)] text-[var(--text-color)] w-full translate-y-full transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] overflow-hidden flex flex-col">
+    <div id="project-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true" inert class="fixed inset-0 z-[99999] bg-[var(--bg-color)] text-[var(--text-color)] w-full translate-y-full transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] overflow-hidden flex flex-col">
         <div class="shrink-0 absolute top-[33px] left-0 w-full h-[36px] z-[100005] pointer-events-none mix-blend-difference text-white">
             <div class="custom-container flex justify-between items-center w-full h-full relative">
                 <div></div>
@@ -869,7 +892,7 @@
                         </button>
                     </div>
                     
-                    <button id="modal-close-btn" class="p-2 -mr-2 flex items-center justify-center hover:opacity-50 transition duration-300 cursor-pointer transform-gpu">
+                    <button id="modal-close-btn" type="button" aria-label="Close project details" class="p-2 -mr-2 flex items-center justify-center hover:opacity-50 transition duration-300 cursor-pointer transform-gpu">
                         <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-[14px] h-[14px] min-[820px]:w-[16px] min-[820px]:h-[16px] pointer-events-none">
                             <path d="M13 1L1 13M1 1L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
@@ -900,11 +923,12 @@
     <!-- JS Scripts -->
     <script>
         // === 0. Initialize Lenis Smooth Scroll ===
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const lenis = new Lenis({
-            lerp: 0.07, 
-            smoothWheel: true,
+            lerp: prefersReducedMotion ? 1 : 0.07,
+            smoothWheel: !prefersReducedMotion,
             wheelMultiplier: 1,
-            touchMultiplier: 2
+            touchMultiplier: prefersReducedMotion ? 1 : 2
         });
 
         function raf(time) {
@@ -952,6 +976,10 @@
             document.body.classList.add('lock-scroll');
             window.scrollTo(0, 0);
 
+            const holdDuration = prefersReducedMotion ? 0 : 1500;
+            const logoFadeDuration = prefersReducedMotion ? 0 : 600;
+            const screenFadeDuration = prefersReducedMotion ? 0 : 800;
+
             setTimeout(() => {
                 const logo = document.getElementById('preloader-logo');
                 if(logo) logo.style.opacity = '0';
@@ -965,9 +993,9 @@
                         document.body.classList.remove('lock-scroll');
                         lenis.start();
                         startHeroAnimations();
-                    }, 800); 
-                }, 600); 
-            }, 1500); 
+                    }, screenFadeDuration);
+                }, logoFadeDuration);
+            }, holdDuration);
         }
 
         function startHeroAnimations() {
@@ -1154,7 +1182,7 @@
             'https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=800&h=600&fit=crop'
         ];
 
-        const numImages = 31; 
+        const numImages = prefersReducedMotion ? 0 : 31;
         const particles = [];
         const zStart = -4500;
         const zEnd = 850; 
@@ -1209,7 +1237,7 @@
             requestAnimationFrame(animate3D);
         }
         
-        animate3D();
+        if (!prefersReducedMotion) animate3D();
 
         // === 4. Client Logos Marquee Logic ===
         function initClientLogos() {
@@ -1242,7 +1270,7 @@
                     loopLogos.forEach(logoId => {
                         html += `
                             <div class="client-logo-wrapper flex items-center justify-center aspect-[3/2]">
-                                <img src="./assets/project_logo/logo_${String(logoId).padStart(2, '0')}.svg" alt="Client Logo" class="w-full h-full object-contain brightness-0 scale-125 min-[820px]:scale-100 min-[1600px]:max-[1699px]:scale-110 pointer-events-none opacity-80 hover:opacity-100 transition-opacity duration-300">
+                                <img loading="lazy" decoding="async" src="./assets/project_logo/logo_${String(logoId).padStart(2, '0')}.svg" alt="Client Logo" class="w-full h-full object-contain brightness-0 scale-125 min-[820px]:scale-100 min-[1600px]:max-[1699px]:scale-110 pointer-events-none opacity-80 hover:opacity-100 transition-opacity duration-300">
                             </div>
                         `;
                     });
@@ -1271,6 +1299,15 @@
             initAyohAnimation();
             initClientLogos();
             runPreloader();
+
+            const requestedProject = new URLSearchParams(window.location.search).get('project');
+            if (requestedProject && projectsData[requestedProject]) {
+                const preloaderDuration = prefersReducedMotion ? 50 : 3000;
+                setTimeout(() => {
+                    lenis.scrollTo('#works', { immediate: true });
+                    openModal(requestedProject);
+                }, preloaderDuration);
+            }
         });
 
         window.addEventListener('keydown', (e) => {
@@ -1323,7 +1360,9 @@
         const modal = document.getElementById('project-modal');
         const modalBackdrop = document.getElementById('modal-backdrop');
         const modalMainScroll = document.getElementById('modal-main-scroll');
+        const modalCloseButton = document.getElementById('modal-close-btn');
         let currentProjectId = null;
+        let lastFocusedElement = null;
 
         if (modalMainScroll) {
             modalMainScroll.addEventListener('mousemove', handleScrollCursorMove);
@@ -1335,6 +1374,10 @@
             const data = projectsData[id];
             if (!data) return;
 
+            lastFocusedElement = document.activeElement;
+            modal.removeAttribute('inert');
+            modal.setAttribute('aria-hidden', 'false');
+
             document.getElementById('modal-title').textContent = data.title;
             document.getElementById('modal-desc').textContent = data.desc;
             
@@ -1343,6 +1386,9 @@
             for (let i = 1; i <= data.imagesCount; i++) {
                 const img = document.createElement('img');
                 img.src = `./assets/works/${id}/${id}_image_${i.toString().padStart(2, '0')}.webp`;
+                img.alt = `${data.title} — image ${i}`;
+                img.loading = 'lazy';
+                img.decoding = 'async';
                 
                 // [KARINA FIX] 移除底色、固定比例同 object-contain。改為 w-full h-auto 俾佢自然闊度撐滿、高度等比出晒
                 img.className = 'w-full h-auto reveal-up active shrink-0'; 
@@ -1364,6 +1410,7 @@
             const rightPanel = document.getElementById('modal-right-panel');
             if (rightPanel) rightPanel.scrollTop = 0;
             if (imagesContainer) imagesContainer.scrollTop = 0;
+            requestAnimationFrame(() => modalCloseButton?.focus());
         };
 
         const closeModal = () => {
@@ -1378,13 +1425,34 @@
             setTimeout(() => {
                 lenis.start();
                 modalBackdrop.classList.add('hidden');
+                modal.setAttribute('aria-hidden', 'true');
+                modal.setAttribute('inert', '');
                 currentProjectId = null;
                 
                 // [KARINA FIX] 關閉 Modal 後，移除 .header-hidden 恢復顯示及點擊
                 const siteHeader = document.getElementById('site-header');
                 if (siteHeader) siteHeader.classList.remove('header-hidden');
+
+                if (lastFocusedElement instanceof HTMLElement) lastFocusedElement.focus();
+                lastFocusedElement = null;
             }, 700);
         };
+
+        modal.addEventListener('keydown', (e) => {
+            if (e.key !== 'Tab' || modal.getAttribute('aria-hidden') === 'true') return;
+            const focusable = [...modal.querySelectorAll('button, a[href], [tabindex]:not([tabindex="-1"])')]
+                .filter((el) => !el.hasAttribute('disabled') && el.getClientRects().length > 0);
+            if (!focusable.length) return;
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+            }
+        });
 
         document.querySelectorAll('.portfolio-item').forEach(item => {
             item.addEventListener('click', function() {
