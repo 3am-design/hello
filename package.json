@@ -1,0 +1,11 @@
+{
+  "name": "3am-portfolio",
+  "private": true,
+  "scripts": {
+    "build": "npm run build:css",
+    "build:css": "tailwindcss -i ./styles/tailwind.input.css -o ./assets/css/tailwind.min.css --content ./index.html,./index-dark.html --minify"
+  },
+  "devDependencies": {
+    "tailwindcss": "3.4.19"
+  }
+}
