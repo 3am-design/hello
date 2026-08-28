@@ -564,6 +564,247 @@
             #skills-grid { margin-top: clamp(-180px, -14vw, -120px); }
         }
 
+        /* === Figma-bounded Intro + Skills ==================================
+           Intro frames: 400×650 mobile / 1820×900 desktop.
+           Skills frames: 440×719 mobile / 1920×887 desktop.
+           Both sections own an explicit visual height so rotated artwork can
+           never inflate the document or escape into the following section. */
+        #about {
+            height: auto;
+            max-height: none;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        #about .card-shadow-wrapper {
+            flex-grow: 0;
+            height: auto;
+            aspect-ratio: 400 / 650;
+            max-height: 650px;
+        }
+
+        #skills-section {
+            height: 719px;
+            padding-top: 0;
+            padding-bottom: 0;
+            overflow: hidden;
+            isolation: isolate;
+        }
+        .skills-kicker {
+            position: absolute;
+            top: 52px;
+            left: 0;
+            right: 0;
+            z-index: 30;
+            text-align: center;
+            font-size: 12px;
+            line-height: 15px;
+            color: #000;
+            pointer-events: none;
+        }
+        .skills-words {
+            position: absolute;
+            top: 62px;
+            left: 20px;
+            right: 20px;
+            z-index: 40;
+            transform: rotate(9deg);
+            transform-origin: left top;
+            color: #000;
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(28px, 8vw, 35px);
+            font-weight: 900;
+            letter-spacing: -0.035em;
+            line-height: 1.12;
+        }
+        .skills-row { white-space: nowrap; }
+        .skills-row-1 {
+            display: flex;
+            flex-wrap: wrap;
+            column-gap: 30px;
+        }
+        .skills-row-1 .skills-brand {
+            flex-basis: 100%;
+            margin-left: 35px;
+        }
+        .skills-row-2 { margin-top: 2px; }
+        .skills-row-3 {
+            display: flex;
+            flex-direction: column;
+            margin-left: 35px;
+        }
+        .skills-row-3 small {
+            margin-left: -35px;
+            font: inherit;
+        }
+        .skills-face {
+            position: absolute;
+            top: 217px;
+            right: 20px;
+            width: min(52%, 208px);
+            z-index: 50;
+            pointer-events: none;
+        }
+        .skills-face-art { position: relative; width: 100%; }
+        .skills-meta {
+            position: absolute;
+            left: 20px;
+            right: 20px;
+            bottom: 40px;
+            z-index: 20;
+            color: #000;
+        }
+        .skills-facts {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 16px;
+            line-height: 20px;
+        }
+        .skills-fact {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .skills-fact::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            flex: 0 0 auto;
+            border-radius: 50%;
+            background: #000;
+        }
+        .skills-awards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            align-items: center;
+            justify-items: center;
+            gap: 24px 10px;
+            margin-top: 26px;
+        }
+        .skills-awards img:nth-child(1) { height: 45px; }
+        .skills-awards img:nth-child(2) { height: 14px; }
+        .skills-awards img:nth-child(3) { height: 26px; }
+        .skills-awards img:nth-child(4) { height: 20px; }
+        .skills-awards img:nth-child(5) { height: 28px; }
+        .skills-awards img:nth-child(6) { height: 22px; }
+
+        @media (min-width: 769px) and (max-width: 1023px) {
+            #about .card-shadow-wrapper {
+                height: clamp(450px, calc(1327px - 88vw), 650px);
+                aspect-ratio: auto;
+                max-height: none;
+            }
+            #skills-section { height: clamp(650px, calc(926px - 27vw), 719px); }
+            .skills-words {
+                top: 70px;
+                left: 0;
+                right: 0;
+                font-size: clamp(42px, 6.1vw, 58px);
+            }
+            .skills-row-1 { column-gap: 48px; }
+            .skills-row-1 .skills-brand { margin-left: 70px; }
+            .skills-row-3 { margin-left: 70px; }
+            .skills-row-3 small { margin-left: -70px; }
+            .skills-face {
+                top: 250px;
+                right: 0;
+                width: min(38%, 300px);
+            }
+            .skills-meta { left: 0; right: 0; bottom: 50px; }
+            .skills-awards { max-width: 520px; }
+        }
+
+        @media (min-width: 1024px) {
+            #about .card-shadow-wrapper {
+                aspect-ratio: 1820 / 900;
+                max-height: none;
+            }
+            #about h2 {
+                font-size: clamp(40px, 3.65vw, 70px);
+                line-height: 1.14;
+            }
+            #skills-section {
+                height: clamp(650px, 46.2vw, 887px);
+                max-width: 1920px;
+            }
+            .skills-kicker {
+                top: 45px;
+                font-size: 15px;
+                line-height: 19px;
+            }
+            .skills-words {
+                top: clamp(52px, 3.2vw, 62px);
+                left: 2.4%;
+                right: -5%;
+                font-size: clamp(64px, 6.25vw, 120px);
+                line-height: 1.03;
+            }
+            .skills-row-1 {
+                flex-wrap: nowrap;
+                column-gap: 0.22em;
+            }
+            .skills-row-1 .skills-brand {
+                flex-basis: auto;
+                margin-left: 0;
+            }
+            .skills-row-2 { margin: -0.02em 0 0 24%; }
+            .skills-row-3 {
+                flex-direction: row;
+                align-items: baseline;
+                gap: 0.28em;
+                margin: -0.02em 0 0 4%;
+            }
+            .skills-row-3 small {
+                margin-left: 0;
+                font-size: 0.42em;
+                letter-spacing: -0.02em;
+            }
+            .skills-face {
+                top: auto;
+                right: 4.8%;
+                bottom: -1.5%;
+                width: min(28%, 540px);
+            }
+            .skills-meta {
+                left: 2.6%;
+                right: auto;
+                bottom: 7.3%;
+                width: 45%;
+            }
+            .skills-facts {
+                gap: 14px;
+                font-size: clamp(16px, 1.05vw, 20px);
+                line-height: 1.25;
+            }
+            .skills-awards {
+                display: flex;
+                justify-content: flex-start;
+                justify-items: initial;
+                gap: 0 clamp(26px, 2.5vw, 48px);
+                margin-top: clamp(24px, 2.2vw, 42px);
+            }
+            .skills-awards img:nth-child(1) { width: 41px; height: auto; }
+            .skills-awards img:nth-child(2) { width: 120px; height: auto; }
+            .skills-awards img:nth-child(3) { width: 36px; height: auto; }
+            .skills-awards img:nth-child(4) { width: 88px; height: auto; }
+            .skills-awards img:nth-child(5) { width: 41px; height: auto; }
+            .skills-awards img:nth-child(6) { width: 124px; height: auto; }
+        }
+
+        /* Modal must always own the top UI layer. */
+        body.modal-open #site-header {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+        html.project-embed main,
+        html.project-embed #site-header,
+        html.project-embed #preloader,
+        html.project-embed #design-grid,
+        html.project-embed #custom-cursor {
+            display: none !important;
+        }
+
     </style>
 </head>
 <body class="antialiased selection:bg-black/20 selection:text-black transition-colors duration-700">
@@ -679,100 +920,44 @@
             <!-- SOLID BACKGROUND -->
             <div class="w-full bg-[var(--bg-color)] relative z-20 pointer-events-auto -mt-[40px] pt-[40px] transition-colors duration-700 overflow-x-hidden">
                 
-                <section class="custom-container flex flex-col justify-center relative pt-[100px] pb-0 lg:pt-[140px] lg:pb-[20px]">
-                    
-                    <div class="absolute top-[80px] lg:top-[140px] left-0 right-0 flex justify-center z-40 pointer-events-none">
-                        <p class="text-[12px] lg:text-[14px] font-normal tracking-wide text-black whitespace-nowrap reveal-up" style="transition-delay: 0ms;">What we do.</p>
+                <section id="skills-section" class="custom-container relative">
+                    <p class="skills-kicker reveal-up">What we do.</p>
+
+                    <div class="skills-words skewed-text-trigger" aria-label="UXUI, Web and App, Brand Identity, Visual Communication, Digital Strategy and more">
+                        <div class="skills-row skills-row-1 slide-in-right" style="transition-delay: 150ms; transition-duration: 1.4s;">
+                            <span>UXUI</span>
+                            <span>Web &amp; App</span>
+                            <span class="skills-brand">Brand Identity</span>
+                        </div>
+                        <div class="skills-row skills-row-2 slide-in-right" style="transition-delay: 0ms; transition-duration: 1.2s;">Visual Communication</div>
+                        <div class="skills-row skills-row-3 slide-in-right" style="transition-delay: 300ms; transition-duration: 1.3s;">
+                            <span>Digital Strategy</span>
+                            <small>and more...</small>
+                        </div>
                     </div>
 
-                    <!-- [KARINA FIX] 徹底分拆 Desktop 同 Mobile 代碼，保證互不干擾 -->
-                    <div class="w-[200vw] transform rotate-[9deg] origin-top-left relative mt-0 font-black tracking-tight text-white mix-blend-difference flex flex-col z-50 skewed-text-trigger font-['Inter']">
-                        
-                        <!-- ================= MOBILE ONLY (≤1023px) ================= -->
-                        <div class="flex lg:hidden flex-col gap-[12px] w-full">
-                            <!-- Line 1 & 2: UXUI (Col 1 左開始) & Brand Identity (Col 1 中間開始) -->
-                            <div class="slide-in-right z-30" style="transition-delay: 150ms; transition-duration: 1.4s;">
-                                <div class="text-[35px] font-black whitespace-nowrap pl-[0px] leading-none">UXUI &nbsp;&nbsp;&nbsp;&nbsp;Web & App</div>
-                                <!-- 精準計算 Col 1 中間位: calc((100vw - 左右Padding 52px - 3個Gap 30px) / 8) -->
-                                <div class="text-[35px] font-black whitespace-nowrap pl-[calc((100vw-82px)/8)] mt-[12px] leading-none">Brand Identity</div>
-                            </div>
-                            
-                            <!-- Line 3: Visual Communication (Col 1 左開始) -->
-                            <div class="slide-in-right z-30" style="transition-delay: 0ms; transition-duration: 1.2s;">
-                                <div class="text-[35px] font-black whitespace-nowrap pl-[0px] leading-none">Visual Communication</div>
-                            </div>
-                            
-                            <!-- Line 4 & 5: Digital Strategy (Col 1 中間開始) & and more... (Col 1 左開始) -->
-                            <div class="slide-in-right z-30" style="transition-delay: 300ms; transition-duration: 1.3s;">
-                                <div class="text-[35px] font-black whitespace-nowrap pl-[calc((100vw-82px)/8)] leading-none">Digital Strategy</div>
-                                <div class="text-[35px] font-black lowercase tracking-normal text-white whitespace-nowrap pl-[0px] mt-[12px] leading-none">and more...</div>
-                            </div>
+                    <div class="skills-face reveal-solid-up" style="transition-delay: 0ms; transition-duration: 1.4s;">
+                        <div class="skills-face-art">
+                            <img src="./assets/visual_01.svg" class="visual-layer relative w-full h-auto z-10" data-depth="0.02" alt="Face Base" onerror="this.src='https://placehold.co/400x400/FFB6C1/000?text=Base'">
+                            <img src="./assets/visual_02.svg" class="visual-layer absolute inset-0 w-full h-auto z-20" data-depth="0.06" alt="Face Sparkles 1" onerror="this.src='https://placehold.co/400x400/transparent/000?text=S1'">
+                            <img src="./assets/visual_03.svg" class="visual-layer absolute inset-0 w-full h-auto z-30" data-depth="0.10" alt="Face Sparkles 2" onerror="this.src='https://placehold.co/400x400/transparent/000?text=S2'">
                         </div>
-
-                        <!-- ================= DESKTOP ONLY (≥1024px) ================= -->
-                        <div class="hidden lg:flex flex-col gap-1 md:gap-3 leading-[1.05]">
-                            <div class="slide-in-right z-30" style="transition-delay: 150ms; transition-duration: 1.4s;">
-                                <div class="text-[clamp(64px,6.25vw,120px)] font-black whitespace-nowrap pl-[0vw]">UXUI Web & App Brand Identity</div>
-                            </div>
-                            <div class="slide-in-right z-30" style="transition-delay: 0ms; transition-duration: 1.2s;">
-                                <div class="text-[clamp(64px,6.25vw,120px)] font-black whitespace-nowrap pl-[12vw] lg:pl-[14vw]">Visual Communication</div>
-                            </div>
-                            <div class="slide-in-right z-30" style="transition-delay: 300ms; transition-duration: 1.3s;">
-                                <div class="flex flex-row items-baseline gap-6 pl-[4vw]">
-                                    <span class="text-[clamp(64px,6.25vw,120px)] font-black whitespace-nowrap">Digital Strategy</span>
-                                    <span class="text-[clamp(28px,2.6vw,50px)] font-black lowercase tracking-normal text-white whitespace-nowrap">and more...</span>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
 
-                    <!-- [OVERLAP FIX] 移走 z-40:唔再令成個 grid 困住自己嘅 stacking context,
-                         咁隻手(face)先升得過大字(z-50)、list 留喺大字下面俾佢反白兜底 -->
-                    <div id="skills-grid" class="w-full grid grid-cols-4 lg:grid-cols-6 gap-[10px] lg:gap-[40px] items-end mt-[40px] relative">
-
-                        <!-- 手部插圖：Mobile/Bridge 放 Col 3 & 4 (order-1)，負 Margin 向上推接觸字體；Desktop (≥1024) 原有排位 -->
-                        <div class="flex relative w-full col-span-2 col-start-3 lg:col-span-2 lg:col-start-5 justify-end items-end reveal-solid-up z-[60] pointer-events-none order-1 lg:order-2 -mt-[110px] lg:mt-0 lg:top-[200px]" style="transition-delay: 0ms; transition-duration: 1.4s;">
-                            <div class="relative w-full h-auto transition duration-500 group-hover:scale-110 group-hover:-rotate-3 group origin-bottom">
-                                <img src="./assets/visual_01.svg" class="visual-layer relative w-full h-auto z-10" data-depth="0.02" alt="Face Base" onerror="this.src='https://placehold.co/400x400/FFB6C1/000?text=Base'">
-                                <img src="./assets/visual_02.svg" class="visual-layer absolute inset-0 w-full h-auto z-20" data-depth="0.06" alt="Face Sparkles 1" onerror="this.src='https://placehold.co/400x400/transparent/000?text=S1'">
-                                <img src="./assets/visual_03.svg" class="visual-layer absolute inset-0 w-full h-auto z-30" data-depth="0.10" alt="Face Sparkles 2" onerror="this.src='https://placehold.co/400x400/transparent/000?text=S2'">
-                            </div>
+                    <div class="skills-meta">
+                        <div class="skills-facts">
+                            <div class="skills-fact reveal-up" style="transition-delay: 100ms;">15 years of experience</div>
+                            <div class="skills-fact reveal-up" style="transition-delay: 200ms;">Hong Kong based. Work everywhere</div>
+                            <div class="skills-fact reveal-up" style="transition-delay: 300ms;">30+ awards. 10,000+ coffees</div>
                         </div>
-                        
-                        <!-- 15 Years List 同 Logos：Mobile/Bridge 放手部下方 (order-2) -->
-                        <!-- [OVERLAP FIX] lg:top 將 list+logos 向下推離大字底行,開返空隙唔再 overlay;
-                             用 clamp 跟 viewport 縮放(大字字級都係 vw),數值可按 breakpoint 微調 -->
-                        <div class="col-span-4 flex flex-col items-start gap-[20px] lg:gap-[30px] relative z-20 order-2 lg:order-1 mt-[20px] lg:mt-0 lg:top-[clamp(40px,5vw,90px)]">
-                            
-                            <!-- 15 Years List: 16px, 圓點 5px, 距離 8px, 水平垂直置中對齊 -->
-                            <div class="text-[16px] lg:text-[20px] font-normal space-y-[16px] text-black leading-normal font-['Inter']">
-                                <div class="reveal-up flex items-center gap-[8px]" style="transition-delay: 100ms;">
-                                    <div class="w-[5px] h-[5px] bg-black rounded-full shrink-0"></div>
-                                    <span class="leading-normal pt-[1px]">15 years of experience</span>
-                                </div>
-                                <div class="reveal-up flex items-center gap-[8px]" style="transition-delay: 200ms;">
-                                    <div class="w-[5px] h-[5px] bg-black rounded-full shrink-0"></div>
-                                    <span class="leading-normal pt-[1px]">Hong Kong based. Work everywhere</span>
-                                </div>
-                                <div class="reveal-up flex items-center gap-[8px]" style="transition-delay: 300ms;">
-                                    <div class="w-[5px] h-[5px] bg-black rounded-full shrink-0"></div>
-                                    <span class="leading-normal pt-[1px]">30+ awards. 10,000+ coffees</span>
-                                </div>
-                            </div>
-
-                            <!-- 獎項 Logos: Mobile/Bridge 2 行 × 3 欄 (Figma)；Desktop (≥1024) 單行 flex -->
-                            <div class="w-full grid grid-cols-3 lg:flex lg:flex-wrap gap-x-[10px] lg:gap-x-12 gap-y-[24px] lg:gap-y-6 items-center mt-[10px] lg:mt-[30px]">
-                                <img src="./assets/HKDA.svg" alt="HKDA" class="justify-self-center lg:justify-self-start reveal-up h-[45px] lg:h-auto lg:w-[41px] object-contain theme-svg" style="transition-delay: 400ms;" onerror="this.src='https://placehold.co/41x41/transparent/000?text=HKDA'">
-                                <img src="./assets/Awwwards.svg" alt="Awwwards" class="justify-self-center lg:justify-self-start reveal-up h-[14px] lg:h-auto lg:w-[120px] object-contain theme-svg" style="transition-delay: 450ms;" onerror="this.src='https://placehold.co/120x30/transparent/000?text=Awwwards'">
-                                <img src="./assets/W3.svg" alt="W3" class="justify-self-center lg:justify-self-start reveal-up h-[26px] lg:h-auto lg:w-[36px] object-contain theme-svg" style="transition-delay: 500ms;" onerror="this.src='https://placehold.co/36x36/transparent/000?text=W3'">
-                                <img src="./assets/Horizon.svg" alt="Horizon" class="justify-self-center lg:justify-self-start reveal-up h-[20px] lg:h-auto lg:w-[88px] object-contain theme-svg" style="transition-delay: 550ms;" onerror="this.src='https://placehold.co/88x30/transparent/000?text=Horizon'">
-                                <img src="./assets/WebAward.svg" alt="WebAward" class="justify-self-center lg:justify-self-start reveal-up h-[28px] lg:h-auto lg:w-[41px] object-contain theme-svg" style="transition-delay: 600ms;" onerror="this.src='https://placehold.co/41x41/transparent/000?text=WebAward'">
-                                <img src="./assets/ComAward.svg" alt="ComAward" class="justify-self-center lg:justify-self-start reveal-up h-[22px] lg:h-auto lg:w-[124px] object-contain theme-svg" style="transition-delay: 650ms;" onerror="this.src='https://placehold.co/124x30/transparent/000?text=ComAward'">
-                            </div>
-
+                        <div class="skills-awards">
+                            <img src="./assets/HKDA.svg" alt="HKDA" class="reveal-up theme-svg" style="transition-delay: 400ms;">
+                            <img src="./assets/Awwwards.svg" alt="Awwwards" class="reveal-up theme-svg" style="transition-delay: 450ms;">
+                            <img src="./assets/W3.svg" alt="W3" class="reveal-up theme-svg" style="transition-delay: 500ms;">
+                            <img src="./assets/Horizon.svg" alt="Horizon" class="reveal-up theme-svg" style="transition-delay: 550ms;">
+                            <img src="./assets/WebAward.svg" alt="WebAward" class="reveal-up theme-svg" style="transition-delay: 600ms;">
+                            <img src="./assets/ComAward.svg" alt="ComAward" class="reveal-up theme-svg" style="transition-delay: 650ms;">
                         </div>
-                        
                     </div>
                 </section>
 
@@ -867,11 +1052,11 @@
     </main>
 
     <!-- Modal Backdrop -->
-    <div id="modal-backdrop" class="fixed inset-0 z-[90000] bg-black/80 opacity-0 pointer-events-none transition-all duration-700 hidden"></div>
+    <div id="modal-backdrop" class="fixed inset-0 z-[499999] bg-black/80 opacity-0 pointer-events-none transition-all duration-700 hidden"></div>
 
     <!-- Project Modal -->
-    <div id="project-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true" inert class="fixed inset-0 z-[99999] bg-[var(--bg-color)] text-[var(--text-color)] w-full translate-y-full transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] overflow-hidden flex flex-col">
-        <div class="shrink-0 absolute top-[33px] left-0 w-full h-[36px] z-[100005] pointer-events-none mix-blend-difference text-white">
+    <div id="project-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true" inert class="fixed inset-0 z-[500000] bg-[var(--bg-color)] text-[var(--text-color)] w-full translate-y-full transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] overflow-hidden flex flex-col">
+        <div class="shrink-0 absolute top-[33px] left-0 w-full h-[36px] z-[500005] pointer-events-none mix-blend-difference text-white">
             <div class="custom-container flex justify-between items-center w-full h-full relative">
                 <div></div>
                 
@@ -928,6 +1113,9 @@
     <script>
         // === 0. Initialize Lenis Smooth Scroll ===
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const pageParams = new URLSearchParams(window.location.search);
+        const isProjectEmbed = pageParams.get('embed') === '1';
+        if (isProjectEmbed) document.documentElement.classList.add('project-embed');
         const lenis = new Lenis({
             lerp: prefersReducedMotion ? 1 : 0.07,
             smoothWheel: !prefersReducedMotion,
@@ -1300,15 +1488,19 @@
         document.querySelectorAll('.reveal-up:not(.active), .reveal-from-br:not(.active), .reveal-solid-br:not(.active), .reveal-solid-up:not(.active), .reveal-solid-right:not(.active), .skewed-text-trigger:not(.active)').forEach(el => revealObserver.observe(el));
 
         document.addEventListener('DOMContentLoaded', () => {
-            initAyohAnimation();
-            initClientLogos();
-            runPreloader();
+            if (!isProjectEmbed) {
+                initAyohAnimation();
+                initClientLogos();
+                runPreloader();
+            } else {
+                document.getElementById('preloader')?.remove();
+            }
 
-            const requestedProject = new URLSearchParams(window.location.search).get('project');
+            const requestedProject = pageParams.get('project');
             if (requestedProject && projectsData[requestedProject]) {
-                const preloaderDuration = prefersReducedMotion ? 50 : 3000;
+                const preloaderDuration = isProjectEmbed ? 0 : (prefersReducedMotion ? 50 : 3000);
                 setTimeout(() => {
-                    lenis.scrollTo('#works', { immediate: true });
+                    if (!isProjectEmbed) lenis.scrollTo('#works', { immediate: true });
                     openModal(requestedProject);
                 }, preloaderDuration);
             }
@@ -1379,6 +1571,7 @@
             if (!data) return;
 
             lastFocusedElement = document.activeElement;
+            document.body.classList.add('modal-open');
             modal.removeAttribute('inert');
             modal.setAttribute('aria-hidden', 'false');
 
@@ -1436,9 +1629,13 @@
                 // [KARINA FIX] 關閉 Modal 後，移除 .header-hidden 恢復顯示及點擊
                 const siteHeader = document.getElementById('site-header');
                 if (siteHeader) siteHeader.classList.remove('header-hidden');
+                document.body.classList.remove('modal-open');
 
                 if (lastFocusedElement instanceof HTMLElement) lastFocusedElement.focus();
                 lastFocusedElement = null;
+                if (isProjectEmbed && window.parent !== window) {
+                    window.parent.postMessage({ type: 'project-modal-close' }, window.location.origin);
+                }
             }, 700);
         };
 

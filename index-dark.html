@@ -11,7 +11,7 @@
     <meta property="og:title" content="3am Design Studio">
     <meta property="og:description" content="An experimental portfolio experience combining design, technology and motion.">
     <meta property="og:url" content="https://3am-design.github.io/hello/index-dark.html">
-    <meta property="og:image" content="https://3am-design.github.io/hello/assets/home/Home_01.webp">
+    <meta property="og:image" content="https://3am-design.github.io/hello/assets/works/01/01_image_01.webp">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://3am-design.github.io/hello/index-dark.html">
     <link rel="icon" href="./assets/3am.svg" type="image/svg+xml">
@@ -192,6 +192,35 @@
             }
             #trail-container { display: none; }
         }
+
+        body.dark-modal-open #dark-site-header {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+        #dark-project-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 500000;
+            background: #f6f5f2;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.35s ease, visibility 0s linear 0.35s;
+        }
+        #dark-project-overlay.is-open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transition-delay: 0s;
+        }
+        #dark-project-frame {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            background: #f6f5f2;
+        }
     </style>
 </head>
 
@@ -218,7 +247,7 @@
     <div id="custom-cursor"><span>Discover</span></div>
 
     <!-- Header -->
-    <header class="fixed top-0 left-0 w-full px-[30px] pt-[30px] md:px-[5.26vw] md:pt-[35px] z-[999] flex justify-between items-end pointer-events-none fouc-protect">
+    <header id="dark-site-header" class="fixed top-0 left-0 w-full px-[30px] pt-[30px] md:px-[5.26vw] md:pt-[35px] z-[999] flex justify-between items-end pointer-events-none fouc-protect">
         <a href="index.html" id="header-logo-container" class="h-[20px] md:h-[26px] pointer-events-auto cursor-pointer flex items-end opacity-0"></a>
         <nav class="flex gap-6 md:gap-[35px] text-sm md:text-[15px] font-bold tracking-[0.04em] h-[20px] md:h-[26px] items-end pointer-events-auto">
             <a href="#portfolio-section" data-scroll-target="#portfolio-section" class="nav-link cursor-pointer leading-none opacity-0">Works</a>
@@ -226,6 +255,10 @@
             <a href="#dark-talk" data-scroll-target="#dark-talk" class="nav-link cursor-pointer leading-none opacity-0">Talk</a>
         </nav>
     </header>
+
+    <div id="dark-project-overlay" aria-hidden="true" inert>
+        <iframe id="dark-project-frame" title="Project details" loading="eager"></iframe>
+    </div>
 
     <!-- Logo SVG Container -->
     <div id="logo-wrapper" class="fouc-protect"></div>
@@ -348,29 +381,38 @@
             <div class="w-full mx-auto px-[30px] md:px-[5.26vw] grid grid-cols-4 md:grid-cols-6 gap-[15px] md:gap-[2.08vw] items-start">
                 
                 <!-- Item 1 -->
-                <a href="index.html?project=01#works" aria-label="Open project 1 details" class="portfolio-item group relative z-30 col-span-4 md:col-span-4 bg-zinc-800 aspect-[16/10] w-full cursor-pointer rounded-sm overflow-hidden">
-                    <img loading="lazy" decoding="async" src="assets/home/Home_01.webp" alt="Project 1" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.style.display='none'">
-                </a>
+                <button type="button" data-project-id="01" aria-label="Open Hong Kong Palace Museum project" class="portfolio-item group relative z-30 col-span-4 md:col-span-4 bg-zinc-800 aspect-[16/10] w-full cursor-pointer rounded-sm overflow-hidden appearance-none border-0 p-0 text-left">
+                    <img loading="lazy" decoding="async" src="assets/works/01/01_image_01.webp" alt="Hong Kong Palace Museum project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.style.display='none'">
+                </button>
 
                 <!-- Item 2 -->
-                <a href="index.html?project=02#works" aria-label="Open project 2 details" class="portfolio-item group relative z-30 col-span-2 md:col-span-2 md:col-start-5 bg-zinc-800 aspect-square md:aspect-[3/4] w-full mt-0 md:mt-[8vw] cursor-pointer rounded-sm overflow-hidden">
-                    <video src="assets/home/Home_02.mp4" poster="assets/home/Home_02_poster.webp" loop muted playsinline preload="none" aria-label="Project 2 video preview" data-autoplay-video class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"></video>
-                </a>
+                <button type="button" data-project-id="02" aria-label="Open Chow Sang Sang Sustainability Internal Hub project" class="portfolio-item group relative z-30 col-span-2 md:col-span-2 md:col-start-5 bg-zinc-800 aspect-square md:aspect-[3/4] w-full mt-0 md:mt-[8vw] cursor-pointer rounded-sm overflow-hidden appearance-none border-0 p-0 text-left">
+                    <img loading="lazy" decoding="async" src="assets/works/02/02_image_01.webp" alt="Chow Sang Sang Sustainability Internal Hub project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.style.display='none'">
+                </button>
 
                 <!-- Item 3 -->
-                <a href="index.html?project=03#works" aria-label="Open project 3 details" class="portfolio-item group relative z-30 col-span-2 md:col-span-2 md:col-start-2 bg-zinc-800 aspect-square w-full mt-0 md:-mt-[6vw] cursor-pointer rounded-sm overflow-hidden">
-                    <img loading="lazy" decoding="async" src="assets/home/Home_03.jpg" alt="Project 3" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.style.display='none'">
-                </a>
+                <button type="button" data-project-id="03" aria-label="Open Harbour Plaza Hotels and Resorts project" class="portfolio-item group relative z-30 col-span-2 md:col-span-2 md:col-start-2 bg-zinc-800 aspect-square w-full mt-0 md:-mt-[6vw] cursor-pointer rounded-sm overflow-hidden appearance-none border-0 p-0 text-left">
+                    <img loading="lazy" decoding="async" src="assets/works/03/03_image_01.webp" alt="Harbour Plaza Hotels and Resorts project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.style.display='none'">
+                </button>
 
                 <!-- Item 4 -->
-                <a href="index.html?project=04#works" aria-label="Open project 4 details" class="portfolio-item group relative z-30 col-span-4 md:col-span-3 md:col-start-4 bg-zinc-800 aspect-[16/10] md:aspect-[4/3] w-full mt-0 md:mt-[2vw] cursor-pointer rounded-sm overflow-hidden">
-                    <img loading="lazy" decoding="async" src="assets/works/04/04_image_01.webp" alt="Project 4" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.style.display='none'">
-                </a>
+                <button type="button" data-project-id="04" aria-label="Open Chow Sang Sang Digital Ecosystem project" class="portfolio-item group relative z-30 col-span-4 md:col-span-3 md:col-start-4 bg-zinc-800 aspect-[16/10] md:aspect-[4/3] w-full mt-0 md:mt-[2vw] cursor-pointer rounded-sm overflow-hidden appearance-none border-0 p-0 text-left">
+                    <img loading="lazy" decoding="async" src="assets/works/04/04_image_01.webp" alt="Chow Sang Sang Digital Ecosystem project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.style.display='none'">
+                </button>
 
                 <!-- Item 5 -->
-                <a href="index.html?project=05#works" aria-label="Open project 5 details" class="portfolio-item group relative z-30 col-span-4 md:col-span-3 md:col-start-1 bg-zinc-800 aspect-[16/10] w-full mt-0 md:-mt-[10vw] cursor-pointer rounded-sm overflow-hidden">
-                    <img loading="lazy" decoding="async" src="assets/works/05/05_image_01.webp" alt="Project 5" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.style.display='none'">
-                </a>
+                <button type="button" data-project-id="05" aria-label="Open HKICL website project" class="portfolio-item group relative z-30 col-span-4 md:col-span-3 md:col-start-1 bg-zinc-800 aspect-[16/10] w-full mt-0 md:-mt-[10vw] cursor-pointer rounded-sm overflow-hidden appearance-none border-0 p-0 text-left">
+                    <img loading="lazy" decoding="async" src="assets/works/05/05_image_01.webp" alt="HKICL website project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.style.display='none'">
+                </button>
+
+                <!-- Items 6–7 keep the asymmetric free-flow rhythm. -->
+                <button type="button" data-project-id="06" aria-label="Open Bangadang Farm project" class="portfolio-item group relative z-30 col-span-2 md:col-span-2 md:col-start-5 bg-zinc-800 aspect-square md:aspect-[3/4] w-full mt-0 md:-mt-[4vw] cursor-pointer rounded-sm overflow-hidden appearance-none border-0 p-0 text-left">
+                    <img loading="lazy" decoding="async" src="assets/works/06/06_image_01.webp" alt="Bangadang Farm project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.style.display='none'">
+                </button>
+
+                <button type="button" data-project-id="07" aria-label="Open Emphasis Jewellery project" class="portfolio-item group relative z-30 col-span-4 md:col-span-4 md:col-start-2 bg-zinc-800 aspect-[16/10] w-full mt-0 md:-mt-[8vw] cursor-pointer rounded-sm overflow-hidden appearance-none border-0 p-0 text-left">
+                    <img loading="lazy" decoding="async" src="assets/works/07/07_image_01.webp" alt="Emphasis Jewellery project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.style.display='none'">
+                </button>
 
                 <!-- View All Projects -->
                 <div class="col-span-full mt-[15px] md:-mt-[10px] flex justify-center items-center h-[76px] z-30 relative">
@@ -425,23 +467,6 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-            // Keep the off-screen portfolio preview dormant until it approaches the viewport.
-            document.querySelectorAll('[data-autoplay-video]').forEach((video) => {
-                if (prefersReducedMotion) return;
-
-                const videoObserver = new IntersectionObserver((entries) => {
-                    entries.forEach((entry) => {
-                        if (entry.isIntersecting) {
-                            entry.target.play().catch(() => {});
-                        } else {
-                            entry.target.pause();
-                        }
-                    });
-                }, { rootMargin: '240px 0px', threshold: 0.05 });
-
-                videoObserver.observe(video);
-            });
             
             const fallbackSVGs = {
                 'assets/home/3amDS.svg': '<svg viewBox="0 0 114 25"><text x="0" y="20" fill="#fff" font-size="20" font-weight="bold" font-family="sans-serif">3am.</text></svg>',
@@ -510,6 +535,53 @@
 
                 lenis.stop();
                 window.scrollTo(0, 0);
+
+                const projectOverlay = document.getElementById('dark-project-overlay');
+                const projectFrame = document.getElementById('dark-project-frame');
+                let darkProjectTrigger = null;
+
+                const closeDarkProject = () => {
+                    if (!projectOverlay?.classList.contains('is-open')) return;
+                    if (projectFrame) {
+                        projectFrame.onload = null;
+                        delete projectFrame.dataset.project;
+                    }
+                    projectOverlay.classList.remove('is-open');
+                    projectOverlay.setAttribute('aria-hidden', 'true');
+                    projectOverlay.setAttribute('inert', '');
+                    document.body.classList.remove('dark-modal-open');
+                    lenis.start();
+                    setTimeout(() => {
+                        if (projectFrame) projectFrame.src = 'about:blank';
+                        darkProjectTrigger?.focus();
+                        darkProjectTrigger = null;
+                    }, 350);
+                };
+
+                document.querySelectorAll('[data-project-id]').forEach((button) => {
+                    button.addEventListener('click', () => {
+                        const projectId = button.dataset.projectId;
+                        if (!projectId || !projectOverlay || !projectFrame) return;
+                        darkProjectTrigger = button;
+                        document.body.classList.add('dark-modal-open');
+                        lenis.stop();
+                        projectFrame.dataset.project = projectId;
+                        projectFrame.onload = () => {
+                            if (projectFrame.dataset.project !== projectId) return;
+                            projectFrame.onload = null;
+                            projectOverlay.removeAttribute('inert');
+                            projectOverlay.setAttribute('aria-hidden', 'false');
+                            projectOverlay.classList.add('is-open');
+                            projectFrame.focus();
+                        };
+                        projectFrame.src = `index.html?project=${encodeURIComponent(projectId)}&embed=1#works`;
+                    });
+                });
+
+                window.addEventListener('message', (event) => {
+                    if (event.origin !== window.location.origin) return;
+                    if (event.data?.type === 'project-modal-close') closeDarkProject();
+                });
 
                 lenis.on("scroll", ScrollTrigger.update);
                 gsap.ticker.add((time) => lenis.raf(time * 1000));
