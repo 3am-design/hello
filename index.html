@@ -360,7 +360,9 @@
         @media (min-width: 1300px) { :root { --logo-w: calc(100vw / 5); } }
         @media (min-width: 1600px) { :root { --logo-w: calc(100vw / 6); } }
 
-        #clients-marquee-container { gap: clamp(8px, 1.25vw, 24px); }
+        #clients-marquee-container { gap: clamp(6.4px, 1vw, 19.2px); }
+        .clients-heading { margin: 0 auto 32px; }
+        @media (min-width: 820px) { .clients-heading { margin-bottom: 48px; } }
         .client-marquee-track { display: flex; flex-wrap: nowrap; width: 100%; overflow: hidden; }
         .client-marquee-group { display: flex; flex-shrink: 0; flex-wrap: nowrap; align-items: center; will-change: transform; transform: translateZ(0); width: calc(var(--logo-w) * 10); animation-play-state: paused; }
         #clients-marquee-container.is-active .client-marquee-group { animation-play-state: running; }
@@ -477,7 +479,8 @@
 
             /* --- HEADER ---------------------------------------------------
                Figma: Logo 57×18, nav 13px Medium, toggle 38×38 circle      */
-            #site-header img[src*="3amDS"] {
+            #site-header img[src*="3amDS"],
+            #preloader-logo {
                 height: 18px;
             }
             #site-header nav {
@@ -622,7 +625,8 @@
 
         /* Compact phones: keep the centred nav clear of the logo and toggle. */
         @media (max-width: 359px) {
-            #site-header img[src*="3amDS"] { height: 16px; }
+            #site-header img[src*="3amDS"],
+            #preloader-logo { height: 16px; }
             #site-header nav { gap: 12px; }
             #site-header nav a { font-size: 11px; }
             #site-header button .w-\[38px\] { width: 34px; height: 34px; }
@@ -679,20 +683,24 @@
             }
         }
 
-        /* Compact desktop: the lg layout introduces six hands at 1024px.
-           Give them the full grid and keep Ayoh centered so that this switch
-           does not recreate a large empty band in the middle of the hero. */
-        @media (min-width: 1024px) and (max-width: 1279px) {
-            #hero-section { padding-top: 90px; }
+        /* Desktop Ayoh keeps the dark-mode scale while using a restrained
+           1.5vw bleed beyond the viewport's left edge. */
+        @media (min-width: 1024px) {
             #ayoh-wrapper { grid-column: 1 / -1; }
             #ayoh-wrapper svg,
             #ayoh-wrapper img {
-                width: min(72vw, 720px) !important;
+                width: 85vw !important;
                 height: auto !important;
-                margin-left: 50% !important;
+                margin-left: calc(-1.5vw - max(0px, calc((100vw - 1920px) / 2)) - var(--c-px)) !important;
                 max-width: none !important;
-                transform: translateX(-50%);
+                transform: none;
             }
+        }
+
+        /* Compact desktop: the lg layout introduces six hands at 1024px;
+           keep the hands on the full grid beneath the larger wordmark. */
+        @media (min-width: 1024px) and (max-width: 1279px) {
+            #hero-section { padding-top: 90px; }
             .hands-wrapper { grid-column: 1 / -1 !important; }
         }
 
@@ -829,12 +837,12 @@
             gap: 24px 10px;
             margin-top: 26px;
         }
-        .skills-awards img:nth-child(1) { height: 45px; }
-        .skills-awards img:nth-child(2) { height: 14px; }
-        .skills-awards img:nth-child(3) { height: 26px; }
-        .skills-awards img:nth-child(4) { height: 20px; }
-        .skills-awards img:nth-child(5) { height: 28px; }
-        .skills-awards img:nth-child(6) { height: 22px; }
+        .skills-awards img:nth-child(1) { height: 27px; }
+        .skills-awards img:nth-child(2) { height: 8.4px; }
+        .skills-awards img:nth-child(3) { height: 15.6px; }
+        .skills-awards img:nth-child(4) { height: 12px; }
+        .skills-awards img:nth-child(5) { height: 16.8px; }
+        .skills-awards img:nth-child(6) { height: 13.2px; }
 
         @media (min-width: 769px) and (max-width: 1023px) {
             #about .card-shadow-wrapper {
@@ -931,12 +939,12 @@
                 gap: 0 clamp(26px, 2.5vw, 48px);
                 margin-top: clamp(24px, 2.2vw, 42px);
             }
-            .skills-awards img:nth-child(1) { width: 41px; height: auto; }
-            .skills-awards img:nth-child(2) { width: 120px; height: auto; }
-            .skills-awards img:nth-child(3) { width: 36px; height: auto; }
-            .skills-awards img:nth-child(4) { width: 88px; height: auto; }
-            .skills-awards img:nth-child(5) { width: 41px; height: auto; }
-            .skills-awards img:nth-child(6) { width: 124px; height: auto; }
+            .skills-awards img:nth-child(1) { width: 24.6px; height: auto; }
+            .skills-awards img:nth-child(2) { width: 72px; height: auto; }
+            .skills-awards img:nth-child(3) { width: 21.6px; height: auto; }
+            .skills-awards img:nth-child(4) { width: 52.8px; height: auto; }
+            .skills-awards img:nth-child(5) { width: 24.6px; height: auto; }
+            .skills-awards img:nth-child(6) { width: 74.4px; height: auto; }
         }
 
         /* Modal must always own the top UI layer. */
@@ -974,7 +982,7 @@
 
     <!-- === Preloader === -->
     <div id="preloader" class="fixed top-0 left-0 w-full h-[100svh] bg-[#FFFFFF] z-[99999] flex justify-center items-center pointer-events-auto transition-opacity duration-[640ms] ease-in-out">
-        <img src="./assets/3amDS.svg" alt="3amDS" id="preloader-logo" class="h-[20px] md:h-[26px] object-contain brightness-0 transition-opacity duration-[480ms] ease-in-out" fetchpriority="high" onerror="this.style.display='none'">
+        <img src="./assets/3amDS.svg" alt="3amDS" id="preloader-logo" class="h-[18px] md:h-[22px] object-contain brightness-0 transition-opacity duration-[480ms] ease-in-out" fetchpriority="high" onerror="this.style.display='none'">
     </div>
 
     <!-- Design Grid -->
@@ -999,7 +1007,7 @@
         <div class="custom-container flex justify-between items-center w-full h-full relative">
             
             <a href="#top" aria-label="Back to top" class="header-item flex items-center h-[38px] cursor-pointer pointer-events-auto appearance-none border-0 bg-transparent p-0" style="animation-delay: 0s;">
-                <img src="./assets/3amDS.svg" alt="3amDS" class="h-[25px] object-contain brightness-0" onerror="this.style.display='none'">
+                <img src="./assets/3amDS.svg" alt="3amDS" class="h-[22px] object-contain brightness-0" onerror="this.style.display='none'">
             </a>
             
             <nav class="flex gap-4 md:gap-6 lg:gap-10 items-center text-[12px] md:text-[16px] font-medium leading-[40px] tracking-[0.05em] pointer-events-auto absolute left-1/2 -translate-x-1/2">
@@ -1139,11 +1147,11 @@
                 </section>
 
                 <!-- Worked With Section -->
-                <section id="clients" aria-labelledby="clients-title" class="pb-[70px] lg:pb-[100px] overflow-hidden w-full mt-[50px]">
-                    <div class="custom-container reveal-up mb-8 min-[820px]:mb-12 flex justify-center">
+                <section id="clients" aria-labelledby="clients-title" class="mt-[70px] pb-[70px] lg:mt-[100px] lg:pb-[100px] overflow-hidden w-full">
+                    <div class="clients-heading custom-container reveal-up flex justify-center">
                         <h2 id="clients-title" class="font-normal text-[10px] min-[820px]:text-[12px] tracking-[0.1em] uppercase text-black">MORE & MORE</h2>
                     </div>
-                    <div id="clients-marquee-container" aria-hidden="true" class="flex flex-col gap-[10px] min-[820px]:gap-[20px] lg:gap-[40px] w-full reveal-up" style="transition-delay: 200ms;"></div>
+                    <div id="clients-marquee-container" aria-hidden="true" class="flex flex-col w-full reveal-up" style="transition-delay: 200ms;"></div>
                 </section>
 
                 <!-- Talk Section -->

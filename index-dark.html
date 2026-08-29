@@ -252,6 +252,11 @@
             }
         }
 
+        @media (max-width: 768px) {
+            #header-logo-container,
+            #preloader-logo-container { height: 18px; }
+        }
+
         @media (max-width: 479px) {
             #dark-header-inner { padding-left: 20px !important; padding-right: 20px !important; }
             #dark-site-header nav { gap: 12px !important; }
@@ -264,7 +269,7 @@
                 padding-inline: 2px;
                 margin-inline: -2px;
             }
-            #header-logo-container { height: 17px; }
+            #header-logo-container { height: 18px; }
             #header-logo-container,
             #dark-theme-toggle {
                 position: relative;
@@ -282,7 +287,8 @@
             #dark-theme-toggle > div { width: 34px; height: 34px; }
         }
         @media (max-width: 359px) {
-            #header-logo-container { height: 16px; }
+            #header-logo-container,
+            #preloader-logo-container { height: 16px; }
             #dark-site-header nav { letter-spacing: normal !important; }
         }
 
@@ -391,7 +397,7 @@
     <img id="shared-moon" src="assets/home/moon.webp" srcset="assets/home/moon-mobile.webp 960w, assets/home/moon.webp 1920w" sizes="(max-width: 767px) 90vw, 70vw" alt="" aria-hidden="true" decoding="async" fetchpriority="high" class="fixed top-[-80vh] md:top-[-150vh] left-[-20vw] md:left-[-20vw] w-[90vw] md:w-[70vw] max-w-none z-10 pointer-events-none mix-blend-screen opacity-80" onerror="this.style.display='none'">
 
     <div id="preloader" class="fixed top-0 left-0 w-full h-[100lvh] bg-[#000] z-[99999] flex justify-center items-center pointer-events-auto">
-        <div id="preloader-logo-container" class="h-[20px] md:h-[26px]"></div>
+        <div id="preloader-logo-container" class="h-[18px] md:h-[22px]"></div>
     </div>
 
     <!-- Cursor -->
@@ -400,7 +406,7 @@
     <!-- Header -->
     <header id="dark-site-header" class="fixed top-0 left-0 w-full pt-[25px] pb-4 z-[999] text-white pointer-events-none fouc-protect">
         <div id="dark-header-inner" class="w-full max-w-[1920px] mx-auto px-[30px] md:px-[5.26vw] flex justify-between items-center relative">
-            <a href="#top" id="header-logo-container" aria-label="Back to top" class="h-[20px] md:h-[26px] pointer-events-auto cursor-pointer flex items-center opacity-0 appearance-none border-0 bg-transparent p-0"></a>
+            <a href="#top" id="header-logo-container" aria-label="Back to top" class="h-[18px] md:h-[22px] pointer-events-auto cursor-pointer flex items-center opacity-0 appearance-none border-0 bg-transparent p-0"></a>
 
             <nav class="flex gap-4 md:gap-6 lg:gap-10 items-center text-[12px] md:text-[16px] font-medium leading-[40px] tracking-[0.05em] pointer-events-auto absolute left-1/2 -translate-x-1/2">
                 <a href="#intro-trigger" data-scroll-target="#intro-trigger" class="nav-link cursor-pointer opacity-0">About</a>
