@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="zh-HK">
+<html lang="en-HK">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>3am. Portfolio</title>
     <meta name="description" content="3am Design Studio — Hong Kong based UX/UI, brand identity, visual communication and digital strategy portfolio.">
     <meta name="theme-color" content="#F6F5F2">
@@ -65,6 +65,13 @@
         }
 
         a, button, .cursor-pointer { cursor: none !important; }
+
+        a:focus-visible,
+        button:focus-visible {
+            outline: 2px solid currentColor;
+            outline-offset: 4px;
+            border-radius: 4px;
+        }
 
         @media (max-width: 819px) {
             #custom-cursor { display: none !important; }
@@ -230,6 +237,7 @@
         .sway-4 { animation: swayRotate 4.1s ease-in-out infinite alternate-reverse 1s; }
         .sway-5 { animation: swayVertical 4.7s ease-in-out infinite alternate 0.7s; }
         .sway-6 { animation: swayComplex 4.0s ease-in-out infinite alternate-reverse 0.4s; }
+        .hero-exit .origin-bottom-center { animation-play-state: paused; }
 
         @keyframes swayRotate { 0% { transform: rotate(-3deg); } 100% { transform: rotate(3deg); } }
         @keyframes swayVertical { 0% { transform: translateY(0px) rotate(0.5deg); } 100% { transform: translateY(12px) rotate(-1deg); } }
@@ -244,26 +252,30 @@
             perspective: 1000px; transform-style: preserve-3d;
         }
         #scene { position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; transform: translate(-50%, -50%); transform-style: preserve-3d; pointer-events: none; z-index: 10; }
+        #scene.motion-paused .image-plane { will-change: auto; }
         .image-plane {
             position: absolute; top: 50%; left: 50%; transform-origin: center center; transform-style: preserve-3d;
             will-change: transform, opacity; object-fit: cover; 
             width: 330px; height: 248px; 
             border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.06);
         }
+        @media (max-width: 767px) {
+            .image-plane { width: 220px; height: 165px; }
+        }
         .center-fade-mask { position: absolute; inset: 0; pointer-events: none; z-index: 25; background: var(--card-fog); transition: opacity 0.3s ease, background 0.4s ease; }
         .theme-svg { filter: var(--logo-filter); transition: filter 0.4s ease; }
 
         /* === Entrance Animations === */
-        .reveal-up { opacity: 0; transform: translateY(30px); transition: opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1), transform 1.2s cubic-bezier(0.22, 1, 0.36, 1); }
+        .reveal-up { opacity: 0; transform: translateY(30px); transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1), transform 0.85s cubic-bezier(0.22, 1, 0.36, 1); }
         .reveal-up.active { opacity: 1; transform: translateY(0); }
 
-        .reveal-from-br { opacity: 0; transform: translate(30vw, 30vh); transition: opacity 1.4s cubic-bezier(0.22, 1, 0.36, 1), transform 1.4s cubic-bezier(0.22, 1, 0.36, 1); }
+        .reveal-from-br { opacity: 0; transform: translate(30vw, 30vh); transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1), transform 1s cubic-bezier(0.22, 1, 0.36, 1); }
         .reveal-from-br.active { opacity: 1; transform: translate(0, 0); }
         
-        .reveal-solid-up { transform: translateY(40vh); transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1); }
+        .reveal-solid-up { transform: translateY(40vh); transition: transform 0.95s cubic-bezier(0.22, 1, 0.36, 1); }
         .reveal-solid-up.active { transform: translateY(0); }
 
-        .slide-in-right { transform: translateX(150vw); transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1); will-change: transform; }
+        .slide-in-right { transform: translateX(150vw); transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1); will-change: transform; }
         .skewed-text-trigger.active .slide-in-right { transform: translateX(0); }
 
         .visual-layer { will-change: transform; transition: transform 0.2s ease-out; }
@@ -276,7 +288,11 @@
 
         #clients-marquee-container { gap: clamp(8px, 1.25vw, 24px); }
         .client-marquee-track { display: flex; flex-wrap: nowrap; width: 100%; overflow: hidden; }
-        .client-marquee-group { display: flex; flex-shrink: 0; flex-wrap: nowrap; align-items: center; will-change: transform; transform: translateZ(0); width: calc(var(--logo-w) * 10); }
+        .client-marquee-group { display: flex; flex-shrink: 0; flex-wrap: nowrap; align-items: center; will-change: transform; transform: translateZ(0); width: calc(var(--logo-w) * 10); animation-play-state: paused; }
+        #clients-marquee-container.is-active .client-marquee-group { animation-play-state: running; }
+        @media (hover: hover) and (pointer: fine) {
+            #clients-marquee-container.is-active:hover .client-marquee-group { animation-play-state: paused; }
+        }
 
         .anim-rl { animation: scroll-rl linear infinite; }
         .anim-lr { animation: scroll-lr linear infinite; }
@@ -299,7 +315,7 @@
             border-radius: 10px;
             z-index: 40;
             opacity: 0;
-            transition: opacity 0.8s ease-in-out;
+            transition: opacity 0.5s ease-in-out;
             display: flex;
             justify-content: center;
         }
@@ -323,7 +339,17 @@
 
         /* === Header Menu Animation === */
         .header-item { opacity: 0; visibility: hidden; }
-        .header-container.active .header-item { visibility: visible; animation: headerDrop 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+        .header-container.active .header-item { visibility: visible; animation: headerDrop 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+        body.theme-leave { opacity: 0; transition: opacity 0.3s ease !important; }
+
+        #modal-main-scroll {
+            transition: opacity 0.18s ease, transform 0.18s ease, background-color 0.4s ease;
+        }
+        #modal-main-scroll.modal-content-switching {
+            opacity: 0;
+            transform: translateY(8px);
+        }
 
         @keyframes headerDrop {
             0% { opacity: 0; transform: translateY(-20px); }
@@ -538,6 +564,8 @@
                 animation-iteration-count: 1 !important;
                 transition-duration: 0.01ms !important;
             }
+            body, a, button, .cursor-pointer { cursor: auto !important; }
+            #custom-cursor { display: none !important; }
             #scene { display: none; }
             #clients-marquee-container .client-marquee-group {
                 animation: none !important;
@@ -874,8 +902,8 @@
 <body class="antialiased selection:bg-black/20 selection:text-black transition-colors duration-700">
 
     <!-- === Preloader === -->
-    <div id="preloader" class="fixed top-0 left-0 w-full h-[100svh] bg-[#FFFFFF] z-[99999] flex justify-center items-center pointer-events-auto transition-opacity duration-[800ms] ease-in-out">
-        <img src="./assets/3amDS.svg" alt="3amDS" id="preloader-logo" class="h-[20px] md:h-[26px] object-contain brightness-0 transition-opacity duration-[800ms] ease-in-out" onerror="this.src='https://placehold.co/100x25/FFF/000?text=3amDS'">
+    <div id="preloader" class="fixed top-0 left-0 w-full h-[100svh] bg-[#FFFFFF] z-[99999] flex justify-center items-center pointer-events-auto transition-opacity duration-[450ms] ease-in-out">
+        <img src="./assets/3amDS.svg" alt="3amDS" id="preloader-logo" class="h-[20px] md:h-[26px] object-contain brightness-0 transition-opacity duration-[350ms] ease-in-out" onerror="this.src='https://placehold.co/100x25/FFF/000?text=3amDS'">
     </div>
 
     <!-- Design Grid -->
@@ -909,7 +937,7 @@
                 <a href="#talk" class="header-item nav-link transition-colors duration-300 cursor-pointer" style="animation-delay: 0.3s;">Talk</a>
             </nav>
 
-            <button type="button" aria-label="Switch to dark mode" onclick="window.location.href='index-dark.html'" class="header-item flex items-center pointer-events-auto cursor-pointer group" style="animation-delay: 0.4s;">
+            <button id="theme-toggle" type="button" aria-label="Switch to dark mode" class="header-item flex items-center pointer-events-auto cursor-pointer group" style="animation-delay: 0.32s;">
                 <!-- [KARINA FIX] 字距變 0 (tracking-normal)，字重粗一格 (font-semibold) -->
                 <span class="hidden md:block text-[10px] font-semibold mr-2 group-hover:opacity-70 transition-opacity tracking-normal leading-none -translate-y-[1px]">Light off</span>
                 <div class="w-[38px] h-[38px] rounded-full border border-white/20 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
@@ -921,6 +949,7 @@
     </header>
 
     <main class="w-full relative overflow-x-hidden">
+        <h1 class="sr-only">3am Design Studio portfolio</h1>
         <!-- SCREEN 1: Hero Section -->
         <div id="hero-spacer" class="w-full h-[100svh]"></div>
         
@@ -936,12 +965,12 @@
                 <div class="absolute bottom-[-5px] right-[0px] flex justify-end items-end z-10 pointer-events-none w-full px-[var(--c-px)]">
                     <div class="w-full grid grid-cols-4 lg:grid-cols-6 h-full">
                         <div class="hands-wrapper col-span-4 lg:col-start-3 lg:col-span-4 flex items-end">
-                            <div class="hand-up hidden lg:block lg:w-1/6" style="transition-duration: 1.6s; transition-delay: 0.6s;"><img src="./assets/hand_01.svg" class="w-full h-auto origin-bottom-center sway-1" alt="hand" onerror="this.src='https://placehold.co/124x180/FFC0CB/000?text=H1'"></div>
-                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 1.5s; transition-delay: 0.3s;"><img src="./assets/hand_02.svg" class="w-full h-auto origin-bottom-center sway-2" alt="hand" onerror="this.src='https://placehold.co/124x180/FFFF00/000?text=H2'"></div>
-                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 1.5s; transition-delay: 0.8s;"><img src="./assets/hand_03.svg" class="w-full h-auto origin-bottom-center sway-3" alt="hand" onerror="this.src='https://placehold.co/124x180/90EE90/000?text=H3'"></div>
-                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 1.7s; transition-delay: 0.4s;"><img src="./assets/hand_04.svg" class="w-full h-auto origin-bottom-center sway-4" alt="hand" onerror="this.src='https://placehold.co/124x180/ADD8E6/000?text=H4'"></div>
-                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 1.8s; transition-delay: 0.7s;"><img src="./assets/hand_05.svg" class="w-full h-auto origin-bottom-center sway-5" alt="hand" onerror="this.src='https://placehold.co/124x180/FFA07A/000?text=H5'"></div>
-                            <div class="hand-up hidden lg:block lg:w-1/6" style="transition-duration: 1.3s; transition-delay: 0.5s;"><img src="./assets/hand_06.svg" class="w-full h-auto origin-bottom-center sway-6" alt="hand" onerror="this.src='https://placehold.co/124x180/20B2AA/000?text=H6'"></div>
+                            <div class="hand-up hidden lg:block lg:w-1/6" style="transition-duration: 1.05s; transition-delay: 0.18s;"><img src="./assets/hand_01.svg" class="w-full h-auto origin-bottom-center sway-1" alt="hand" onerror="this.src='https://placehold.co/124x180/FFC0CB/000?text=H1'"></div>
+                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 0.9s; transition-delay: 0.08s;"><img src="./assets/hand_02.svg" class="w-full h-auto origin-bottom-center sway-2" alt="hand" onerror="this.src='https://placehold.co/124x180/FFFF00/000?text=H2'"></div>
+                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 1s; transition-delay: 0.24s;"><img src="./assets/hand_03.svg" class="w-full h-auto origin-bottom-center sway-3" alt="hand" onerror="this.src='https://placehold.co/124x180/90EE90/000?text=H3'"></div>
+                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 0.95s; transition-delay: 0.12s;"><img src="./assets/hand_04.svg" class="w-full h-auto origin-bottom-center sway-4" alt="hand" onerror="this.src='https://placehold.co/124x180/ADD8E6/000?text=H4'"></div>
+                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 1.05s; transition-delay: 0.2s;"><img src="./assets/hand_05.svg" class="w-full h-auto origin-bottom-center sway-5" alt="hand" onerror="this.src='https://placehold.co/124x180/FFA07A/000?text=H5'"></div>
+                            <div class="hand-up hidden lg:block lg:w-1/6" style="transition-duration: 0.9s; transition-delay: 0.15s;"><img src="./assets/hand_06.svg" class="w-full h-auto origin-bottom-center sway-6" alt="hand" onerror="this.src='https://placehold.co/124x180/20B2AA/000?text=H6'"></div>
                         </div>
                     </div>
                 </div>
@@ -988,19 +1017,19 @@
                     <p class="skills-kicker reveal-up">What we do.</p>
 
                     <div class="skills-words skewed-text-trigger" aria-label="UXUI, Web and App, Brand Identity, Visual Communication, Digital Strategy and more">
-                        <div class="skills-row skills-row-1 slide-in-right" style="transition-delay: 150ms; transition-duration: 1.4s;">
+                        <div class="skills-row skills-row-1 slide-in-right" style="transition-delay: 100ms; transition-duration: 0.95s;">
                             <span>UXUI</span>
                             <span>Web &amp; App</span>
                             <span class="skills-brand">Brand Identity</span>
                         </div>
-                        <div class="skills-row skills-row-2 slide-in-right" style="transition-delay: 0ms; transition-duration: 1.2s;">Visual Communication</div>
-                        <div class="skills-row skills-row-3 slide-in-right" style="transition-delay: 300ms; transition-duration: 1.3s;">
+                        <div class="skills-row skills-row-2 slide-in-right" style="transition-delay: 0ms; transition-duration: 0.85s;">Visual Communication</div>
+                        <div class="skills-row skills-row-3 slide-in-right" style="transition-delay: 180ms; transition-duration: 0.9s;">
                             <span>Digital Strategy</span>
                             <small>and more...</small>
                         </div>
                     </div>
 
-                    <div class="skills-face reveal-solid-up" style="transition-delay: 0ms; transition-duration: 1.4s;">
+                    <div class="skills-face reveal-solid-up" style="transition-delay: 0ms; transition-duration: 0.95s;">
                         <div class="skills-face-art">
                             <img src="./assets/visual_01.svg" class="visual-layer relative w-full h-auto z-10" data-depth="0.02" alt="Face Base" onerror="this.src='https://placehold.co/400x400/FFB6C1/000?text=Base'">
                             <img src="./assets/visual_02.svg" class="visual-layer absolute inset-0 w-full h-auto z-20" data-depth="0.06" alt="Face Sparkles 1" onerror="this.src='https://placehold.co/400x400/transparent/000?text=S1'">
@@ -1015,12 +1044,12 @@
                             <div class="skills-fact reveal-up" style="transition-delay: 300ms;">30+ awards. 10,000+ coffees</div>
                         </div>
                         <div class="skills-awards">
-                            <img src="./assets/HKDA.svg" alt="HKDA" class="reveal-up theme-svg" style="transition-delay: 400ms;">
-                            <img src="./assets/Awwwards.svg" alt="Awwwards" class="reveal-up theme-svg" style="transition-delay: 450ms;">
-                            <img src="./assets/W3.svg" alt="W3" class="reveal-up theme-svg" style="transition-delay: 500ms;">
-                            <img src="./assets/Horizon.svg" alt="Horizon" class="reveal-up theme-svg" style="transition-delay: 550ms;">
-                            <img src="./assets/WebAward.svg" alt="WebAward" class="reveal-up theme-svg" style="transition-delay: 600ms;">
-                            <img src="./assets/ComAward.svg" alt="ComAward" class="reveal-up theme-svg" style="transition-delay: 650ms;">
+                            <img src="./assets/HKDA.svg" alt="HKDA" class="reveal-up theme-svg" style="transition-delay: 250ms;">
+                            <img src="./assets/Awwwards.svg" alt="Awwwards" class="reveal-up theme-svg" style="transition-delay: 300ms;">
+                            <img src="./assets/W3.svg" alt="W3" class="reveal-up theme-svg" style="transition-delay: 350ms;">
+                            <img src="./assets/Horizon.svg" alt="Horizon" class="reveal-up theme-svg" style="transition-delay: 400ms;">
+                            <img src="./assets/WebAward.svg" alt="WebAward" class="reveal-up theme-svg" style="transition-delay: 450ms;">
+                            <img src="./assets/ComAward.svg" alt="ComAward" class="reveal-up theme-svg" style="transition-delay: 500ms;">
                         </div>
                     </div>
                 </section>
@@ -1116,10 +1145,10 @@
     </main>
 
     <!-- Modal Backdrop -->
-    <div id="modal-backdrop" class="fixed inset-0 z-[499999] bg-black/80 opacity-0 pointer-events-none transition-all duration-700 hidden"></div>
+    <div id="modal-backdrop" class="fixed inset-0 z-[499999] bg-black/80 opacity-0 pointer-events-none transition-all duration-[500ms] min-[1281px]:duration-[650ms] hidden"></div>
 
     <!-- Project Modal -->
-    <div id="project-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-desc" aria-hidden="true" tabindex="-1" inert class="fixed inset-0 z-[500000] bg-[var(--bg-color)] text-[var(--text-color)] w-full translate-y-full transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] overflow-hidden flex flex-col">
+    <div id="project-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-desc" aria-hidden="true" tabindex="-1" inert class="fixed inset-0 z-[500000] bg-[var(--bg-color)] text-[var(--text-color)] w-full translate-y-full transition-transform duration-[500ms] min-[1281px]:duration-[650ms] ease-[cubic-bezier(0.22,1,0.36,1)] overflow-hidden flex flex-col">
         <div class="shrink-0 absolute top-[33px] left-0 w-full h-[36px] z-[500005] pointer-events-none mix-blend-difference text-white">
             <div class="custom-container flex justify-between items-center w-full h-full relative">
                 <div></div>
@@ -1177,6 +1206,16 @@
     <script>
         // === 0. Initialize Lenis Smooth Scroll ===
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const introSessionKey = '3am-intro-seen-v1';
+        const hasSeenIntro = (() => {
+            try { return sessionStorage.getItem(introSessionKey) === '1'; }
+            catch { return false; }
+        })();
+        const skipIntro = prefersReducedMotion || hasSeenIntro;
+        const rememberIntro = () => {
+            try { sessionStorage.setItem(introSessionKey, '1'); }
+            catch { /* Storage may be unavailable in privacy modes. */ }
+        };
         const pageParams = new URLSearchParams(window.location.search);
         const isProjectEmbed = pageParams.get('embed') === '1';
         if (isProjectEmbed) document.documentElement.classList.add('project-embed');
@@ -1201,31 +1240,35 @@
                 e.preventDefault();
                 lenis.scrollTo(this.getAttribute('href'), {
                     offset: -100, 
-                    duration: 1.5,
+                    duration: prefersReducedMotion ? 0 : 1.05,
                     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
                 });
             });
         });
 
-        lenis.on('scroll', () => {
-            const scrollY = window.scrollY;
-            const heroSection = document.getElementById('hero-section');
-            if (scrollY > 30) {
-                heroSection.classList.add('hero-exit');
-            } else {
-                heroSection.classList.remove('hero-exit');
+        document.getElementById('theme-toggle')?.addEventListener('click', () => {
+            rememberIntro();
+            if (prefersReducedMotion) {
+                window.location.href = 'index-dark.html';
+                return;
             }
+            document.body.classList.add('theme-leave');
+            window.setTimeout(() => { window.location.href = 'index-dark.html'; }, 300);
         });
 
-        document.addEventListener('scroll', () => {
-            const scrollY = window.scrollY;
+        window.addEventListener('pageshow', () => {
+            document.body.classList.remove('theme-leave');
+        });
+
+        const updateHeroExit = () => {
             const heroSection = document.getElementById('hero-section');
-            if (scrollY > 30) {
+            if (window.scrollY > 30) {
                 heroSection.classList.add('hero-exit');
             } else {
                 heroSection.classList.remove('hero-exit');
             }
-        });
+        };
+        window.addEventListener('scroll', updateHeroExit, { passive: true });
 
         window.isHeroReady = false;
 
@@ -1235,29 +1278,38 @@
             document.body.classList.add('lock-scroll');
             window.scrollTo(0, 0);
 
-            const holdDuration = prefersReducedMotion ? 0 : 1500;
-            const logoFadeDuration = prefersReducedMotion ? 0 : 600;
-            const screenFadeDuration = prefersReducedMotion ? 0 : 800;
+            const preloader = document.getElementById('preloader');
+            if (skipIntro) {
+                if (preloader) preloader.style.display = 'none';
+                document.body.classList.remove('lock-scroll');
+                lenis.start();
+                startHeroAnimations(true);
+                return;
+            }
+
+            rememberIntro();
+            const holdDuration = 550;
+            const logoFadeDuration = 350;
+            const screenFadeDuration = 450;
 
             setTimeout(() => {
                 const logo = document.getElementById('preloader-logo');
                 if(logo) logo.style.opacity = '0';
 
                 setTimeout(() => {
-                    const preloader = document.getElementById('preloader');
                     if(preloader) preloader.style.opacity = '0';
 
                     setTimeout(() => {
                         if(preloader) preloader.style.display = 'none';
                         document.body.classList.remove('lock-scroll');
                         lenis.start();
-                        startHeroAnimations();
+                        startHeroAnimations(false);
                     }, screenFadeDuration);
                 }, logoFadeDuration);
             }, holdDuration);
         }
 
-        function startHeroAnimations() {
+        function startHeroAnimations(immediate = false) {
             window.isHeroReady = true;
 
             const paths = document.querySelectorAll('.ayoh-path');
@@ -1269,9 +1321,12 @@
                 });
             }
 
+            const handsDelay = immediate ? 0 : 220;
+            const chromeDelay = immediate ? 0 : 620;
+
             setTimeout(() => {
                 document.querySelectorAll('.hand-up').forEach(el => el.classList.add('active'));
-            }, 1250);
+            }, handsDelay);
 
             setTimeout(() => {
                 const headerContainer = document.getElementById('site-header');
@@ -1279,7 +1334,7 @@
 
                 const scrollIcon = document.getElementById('scrolling-icon');
                 if (scrollIcon) scrollIcon.classList.add('active');
-            }, 2600);
+            }, chromeDelay);
         }
 
         // === 1. [Karina Ultimate Fix V2] 動態生成 CSS ===
@@ -1326,16 +1381,16 @@
                     path.classList.add('ayoh-path', pathClass);
                     
                     const len = path.getTotalLength ? Math.ceil(path.getTotalLength()) + 10 : 3500;
-                    const delayDraw = i * 0.15;
-                    const fillDelay = 2.5 + delayDraw;
+                    const delayDraw = i * 0.08;
+                    const fillDelay = 1.6 + delayDraw;
                     
                     cssContent += `
                         .${pathClass} {
                             stroke-dasharray: ${len}px !important;
                             stroke-dashoffset: ${len}px !important;
-                            transition: stroke-dashoffset 2.5s cubic-bezier(0.22, 1, 0.36, 1) ${delayDraw}s,
-                                        fill 0.8s ease-in-out ${fillDelay}s,
-                                        stroke-opacity 0.8s ease-in-out ${fillDelay}s,
+                            transition: stroke-dashoffset 1.6s cubic-bezier(0.22, 1, 0.36, 1) ${delayDraw}s,
+                                        fill 0.5s ease-in-out ${fillDelay}s,
+                                        stroke-opacity 0.5s ease-in-out ${fillDelay}s,
                                         opacity 0.01s linear ${delayDraw}s !important;
                         }
                         .hero-exit .${pathClass}.start-anim {
@@ -1369,21 +1424,29 @@
         const cursor = document.getElementById('custom-cursor');
         const visualLayers = document.querySelectorAll('.visual-layer');
         
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate3d(-50%, -50%, 0)`;
+        if (!prefersReducedMotion && window.matchMedia('(pointer: fine)').matches) {
+            let pointerFrame = 0;
+            let pointerX = 0;
+            let pointerY = 0;
+            document.addEventListener('mousemove', (event) => {
+                pointerX = event.clientX;
+                pointerY = event.clientY;
+                if (pointerFrame) return;
+                pointerFrame = requestAnimationFrame(() => {
+                    pointerFrame = 0;
+                    cursor.style.transform = `translate3d(${pointerX}px, ${pointerY}px, 0) translate3d(-50%, -50%, 0)`;
 
-            if(visualLayers.length > 0) {
-                const mouseX = (e.clientX / window.innerWidth) - 0.5;
-                const mouseY = (e.clientY / window.innerHeight) - 0.5;
-                
-                visualLayers.forEach(layer => {
-                    const depth = parseFloat(layer.getAttribute('data-depth')) || 0;
-                    const x = mouseX * depth * -100;
-                    const y = mouseY * depth * -100;
-                    layer.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+                    const mouseX = (pointerX / window.innerWidth) - 0.5;
+                    const mouseY = (pointerY / window.innerHeight) - 0.5;
+                    visualLayers.forEach(layer => {
+                        const depth = parseFloat(layer.getAttribute('data-depth')) || 0;
+                        const x = mouseX * depth * -100;
+                        const y = mouseY * depth * -100;
+                        layer.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+                    });
                 });
-            }
-        });
+            }, { passive: true });
+        }
 
         const cursorActive = () => cursor.classList.add('active');
         const cursorInactive = () => cursor.classList.remove('active');
@@ -1431,17 +1494,16 @@
         const scene = document.getElementById('scene');
         
         const imageUrls = [
-            'https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1?w=800&h=600&fit=crop',
-            'https://images.unsplash.com/photo-1592928302636-c83cf1e1c887?w=800&h=600&fit=crop',
-            'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=800&h=600&fit=crop',
-            'https://images.unsplash.com/photo-1538688525198-9b88f6f53126?w=800&h=600&fit=crop',
-            'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop',
-            'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=600&fit=crop',
-            'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&h=600&fit=crop',
-            'https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=800&h=600&fit=crop'
+            './assets/scene/scene_01.webp',
+            './assets/scene/scene_02.webp',
+            './assets/scene/scene_03.webp',
+            './assets/scene/scene_04.webp',
+            './assets/scene/scene_05.webp',
+            './assets/scene/scene_06.webp',
+            './assets/scene/scene_07.webp'
         ];
 
-        const numImages = prefersReducedMotion ? 0 : 31;
+        const numImages = (prefersReducedMotion || isProjectEmbed) ? 0 : (window.innerWidth < 768 ? 16 : (window.innerWidth < 1024 ? 24 : 31));
         const particles = [];
         const zStart = -4500;
         const zEnd = 850; 
@@ -1451,21 +1513,37 @@
             const img = document.createElement('img');
             img.src = imageUrls[i % imageUrls.length];
             img.className = 'image-plane';
+            img.alt = '';
+            img.setAttribute('aria-hidden', 'true');
+            img.decoding = 'async';
+            img.fetchPriority = 'low';
+            img.addEventListener('error', () => {
+                if (img.dataset.fallbackApplied === '1') {
+                    img.remove();
+                    return;
+                }
+                img.dataset.fallbackApplied = '1';
+                const projectId = String((i % 7) + 1).padStart(2, '0');
+                img.src = `./assets/works/${projectId}/${projectId}_image_01.webp`;
+            });
             initParticle(img, true, i);
             scene.appendChild(img);
         }
 
         function initParticle(img, isFirstLoad = false, index = 0) {
             const angle = (index / numImages) * Math.PI * 2 + ((Math.random() - 0.5) * 0.6);
-            const radius = 1200 + Math.random() * 2500; 
+            const radius = window.innerWidth < 768
+                ? 450 + Math.random() * 850
+                : (window.innerWidth < 1024 ? 800 + Math.random() * 1400 : 1200 + Math.random() * 2500);
             const x = Math.cos(angle) * radius; 
             const y = Math.sin(angle) * radius;
 
-            let initialZ = isFirstLoad ? zStart + (Math.random() * totalDepth) : zStart;
-            const speedZ = 5.704 + Math.random() * 8.551; 
+            const depthSlot = (index + Math.random() * 0.65) / Math.max(numImages, 1);
+            let initialZ = isFirstLoad ? zStart + (depthSlot * totalDepth) : zStart;
+            const speedZ = window.innerWidth < 768 ? 3.8 + Math.random() * 5.2 : 5.704 + Math.random() * 8.551;
             const scale = 0.6 + Math.random() * 0.3;
 
-            const p = { el: x, x: x, y: y, z: initialZ, speedZ: speedZ, scale: scale, index: index, el: img };
+            const p = { el: img, x, y, z: initialZ, speedZ, scale, index };
 
             if (isFirstLoad) {
                 particles.push(p);
@@ -1474,7 +1552,13 @@
             }
         }
 
+        let heroMotionFrame = 0;
+        let heroInView = true;
+        let heroMotionEnabled = false;
+
         function animate3D() {
+            heroMotionFrame = 0;
+            if (!heroMotionEnabled) return;
             for (let i = 0; i < particles.length; i++) {
                 let p = particles[i];
                 p.z += p.speedZ; 
@@ -1493,10 +1577,33 @@
                 p.el.style.opacity = opacity * 0.95; 
                 p.el.style.transform = `translate(-50%, -50%) translate3d(${p.x}px, ${p.y}px, ${p.z}px) scale(${p.scale})`;
             }
-            requestAnimationFrame(animate3D);
+            heroMotionFrame = requestAnimationFrame(animate3D);
         }
-        
-        if (!prefersReducedMotion) animate3D();
+
+        const syncHeroMotion = () => {
+            if (prefersReducedMotion) return;
+            heroMotionEnabled = heroInView && !document.hidden;
+            scene.classList.toggle('motion-paused', !heroMotionEnabled);
+            scene.dataset.motionState = heroMotionEnabled ? 'running' : 'paused';
+            if (heroMotionEnabled && !heroMotionFrame) {
+                heroMotionFrame = requestAnimationFrame(animate3D);
+            } else if (!heroMotionEnabled && heroMotionFrame) {
+                cancelAnimationFrame(heroMotionFrame);
+                heroMotionFrame = 0;
+            }
+        };
+
+        if (!prefersReducedMotion && !isProjectEmbed) {
+            const sceneMotionObserver = new IntersectionObserver(([entry]) => {
+                heroInView = entry.isIntersecting;
+                syncHeroMotion();
+            }, { rootMargin: '160px 0px' });
+            sceneMotionObserver.observe(document.getElementById('about'));
+            document.addEventListener('visibilitychange', syncHeroMotion);
+            syncHeroMotion();
+        } else {
+            scene.dataset.motionState = 'disabled';
+        }
 
         // === 4. Client Logos Marquee Logic ===
         function initClientLogos() {
@@ -1540,6 +1647,12 @@
             });
 
             container.innerHTML = html;
+
+            if (prefersReducedMotion) return;
+            const marqueeObserver = new IntersectionObserver(([entry]) => {
+                container.classList.toggle('is-active', entry.isIntersecting);
+            }, { rootMargin: '120px 0px', threshold: 0.01 });
+            marqueeObserver.observe(container);
         }
 
         // === 5. Reveal Logic & Init ===
@@ -1565,7 +1678,7 @@
 
             const requestedProject = pageParams.get('project');
             if (requestedProject && projectsData[requestedProject]) {
-                const preloaderDuration = isProjectEmbed ? 0 : (prefersReducedMotion ? 50 : 3000);
+                const preloaderDuration = isProjectEmbed ? 0 : (skipIntro ? 50 : 1400);
                 setTimeout(() => {
                     if (!isProjectEmbed) lenis.scrollTo('#works', { immediate: true });
                     openModal(requestedProject);
@@ -1627,6 +1740,7 @@
         const modalBackdrop = document.getElementById('modal-backdrop');
         const modalMainScroll = document.getElementById('modal-main-scroll');
         const pageMain = document.querySelector('main');
+        const modalTransitionMs = prefersReducedMotion ? 0 : (window.innerWidth >= 1281 ? 650 : 500);
         let currentProjectId = null;
         let lastFocusedElement = null;
 
@@ -1640,7 +1754,9 @@
             const data = projectsData[id];
             if (!data) return;
 
-            lastFocusedElement = document.activeElement;
+            if (modal.getAttribute('aria-hidden') === 'true') {
+                lastFocusedElement = document.activeElement;
+            }
             document.body.classList.add('modal-open');
             pageMain?.setAttribute('inert', '');
             modal.removeAttribute('inert');
@@ -1710,7 +1826,7 @@
                 if (isProjectEmbed && window.parent !== window) {
                     window.parent.postMessage({ type: 'project-modal-close' }, window.location.origin);
                 }
-            }, 700);
+            }, modalTransitionMs);
         };
 
         modal.addEventListener('keydown', (e) => {
@@ -1742,18 +1858,30 @@
         document.getElementById('modal-close-btn').addEventListener('click', closeModal);
         modalBackdrop.addEventListener('click', closeModal);
 
+        const switchModalProject = (id) => {
+            if (prefersReducedMotion || !modalMainScroll) {
+                openModal(id);
+                return;
+            }
+            modalMainScroll.classList.add('modal-content-switching');
+            window.setTimeout(() => {
+                openModal(id);
+                requestAnimationFrame(() => modalMainScroll.classList.remove('modal-content-switching'));
+            }, 180);
+        };
+
         document.getElementById('modal-prev-btn').addEventListener('click', () => {
             if (!currentProjectId) return;
             const keys = Object.keys(projectsData);
             const idx = keys.indexOf(currentProjectId);
-            openModal(keys[idx === 0 ? keys.length - 1 : idx - 1]);
+            switchModalProject(keys[idx === 0 ? keys.length - 1 : idx - 1]);
         });
 
         document.getElementById('modal-next-btn').addEventListener('click', () => {
             if (!currentProjectId) return;
             const keys = Object.keys(projectsData);
             const idx = keys.indexOf(currentProjectId);
-            openModal(keys[idx === keys.length - 1 ? 0 : idx + 1]);
+            switchModalProject(keys[idx === keys.length - 1 ? 0 : idx + 1]);
         });
     </script>
 </body>

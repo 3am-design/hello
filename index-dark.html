@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-HK">
+<html lang="en-HK">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -42,6 +42,8 @@
             color: #fff;
             font-family: "Inter", sans-serif;
         }
+
+        body.theme-leave { opacity: 0; transition: opacity 0.3s ease !important; }
 
         html.lenis, html.lenis body {
             height: auto;
@@ -103,6 +105,13 @@
             transition: width 0.3s ease-out;
         }
         .hover-underline-link:hover::after { width: 100%; }
+
+        a:focus-visible,
+        button:focus-visible {
+            outline: 2px solid currentColor;
+            outline-offset: 4px;
+            border-radius: 4px;
+        }
 
         #logo-wrapper {
             position: fixed; z-index: 40; transform-origin: center center;
@@ -185,6 +194,10 @@
             #header-logo-container { height: 17px; }
             #dark-theme-toggle > div { width: 34px; height: 34px; }
         }
+        @media (max-width: 359px) {
+            #header-logo-container { height: 16px; }
+            #dark-site-header nav { letter-spacing: normal !important; }
+        }
 
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
@@ -192,7 +205,41 @@
                 animation-iteration-count: 1 !important;
                 transition-duration: 0.01ms !important;
             }
-            #trail-container { display: none; }
+            #trail-container,
+            #shared-moon,
+            #launch-ui-wrapper,
+            #rocket-wrapper,
+            #summary-wrapper,
+            #custom-cursor { display: none !important; }
+            body, a, button, .cursor-pointer { cursor: auto !important; }
+            #logo-wrapper {
+                position: relative !important;
+                inset: auto !important;
+                width: min(100%, 1100px) !important;
+                min-height: 100svh;
+                margin: 0 auto;
+                padding: 100px 30px 60px;
+                display: flex;
+                align-items: center;
+                transform: none !important;
+            }
+            #intro-trigger,
+            #awards-trigger,
+            #portfolio-section {
+                position: relative !important;
+                top: auto !important;
+                transform: none !important;
+            }
+            #intro-section,
+            #awards-section { height: auto !important; min-height: 100svh; }
+            .awards-marquee { overflow: hidden; white-space: normal; }
+            .awards-marquee-track {
+                width: 100%;
+                flex-wrap: wrap;
+                justify-content: center;
+                transform: none !important;
+            }
+            #portfolio-section { padding-top: 80px; }
         }
 
         body.dark-modal-open #dark-site-header {
@@ -275,6 +322,9 @@
         <iframe id="dark-project-frame" title="Project details" loading="eager"></iframe>
     </div>
 
+    <main id="dark-main">
+        <h1 class="sr-only">3am Design Studio portfolio</h1>
+
     <!-- Logo SVG Container -->
     <div id="logo-wrapper" class="fouc-protect"></div>
 
@@ -317,7 +367,7 @@
         <div id="trail-container"></div>
 
         <!-- Intro Section -->
-        <div id="intro-trigger" class="absolute w-full top-[1140px] md:top-[1400px] z-20 pointer-events-none">
+        <div id="intro-trigger" class="absolute w-full top-[1000px] md:top-[1200px] z-20 pointer-events-none">
             <div id="intro-section" class="relative w-full h-[100lvh] flex justify-center items-center overflow-hidden pointer-events-none">
                 <div class="relative z-20 w-full mx-auto px-[30px] md:px-[5.26vw] -translate-y-[10vh] md:translate-y-0">
                     <div class="grid grid-cols-4 md:grid-cols-6 gap-[15px] md:gap-[2.08vw] items-end">
@@ -338,7 +388,7 @@
         </div>
 
         <!-- Awards Section -->
-        <div id="awards-trigger" class="absolute w-full top-[3200px] md:top-[4800px] z-20 pointer-events-none">
+        <div id="awards-trigger" class="absolute w-full top-[2700px] md:top-[3600px] z-20 pointer-events-none">
             <div id="awards-section" class="relative w-full h-[100lvh] flex items-center overflow-hidden pointer-events-none">
                 <div class="relative z-20 w-full mx-auto px-[30px] md:px-[5.26vw] grid grid-cols-4 md:grid-cols-6 gap-[15px] md:gap-[2.08vw] items-start">
                     <div class="col-span-4 md:col-span-6 md:-mx-[8vw] pt-[7vh] md:pt-[8vh]">
@@ -392,7 +442,7 @@
         </div>
 
         <!-- Portfolio Section -->
-        <div id="portfolio-section" class="absolute w-full top-[7500px] md:top-[11000px] z-30 pb-0">
+        <div id="portfolio-section" class="absolute w-full top-[5700px] md:top-[8000px] z-30 pb-0">
             <div class="w-full mx-auto px-[30px] md:px-[5.26vw] grid grid-cols-4 md:grid-cols-6 gap-[10px] md:gap-[2.08vw] items-start">
                 
                 <!-- Item 1 -->
@@ -477,11 +527,22 @@
             </div>
         </div>
     </div>
+    </main>
 
     <!-- Script Section -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const introSessionKey = '3am-intro-seen-v1';
+            const hasSeenIntro = (() => {
+                try { return sessionStorage.getItem(introSessionKey) === '1'; }
+                catch { return false; }
+            })();
+            const skipIntro = prefersReducedMotion || hasSeenIntro;
+            const rememberIntro = () => {
+                try { sessionStorage.setItem(introSessionKey, '1'); }
+                catch { /* Storage may be unavailable in privacy modes. */ }
+            };
             
             const fallbackSVGs = {
                 'assets/home/3amDS.svg': '<svg viewBox="0 0 114 25"><text x="0" y="20" fill="#fff" font-size="20" font-weight="bold" font-family="sans-serif">3am.</text></svg>',
@@ -554,6 +615,21 @@
 
                 lenis.stop();
                 window.scrollTo(0, 0);
+
+                document.getElementById('dark-theme-toggle')?.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    rememberIntro();
+                    if (prefersReducedMotion) {
+                        window.location.href = 'index.html';
+                        return;
+                    }
+                    document.body.classList.add('theme-leave');
+                    window.setTimeout(() => { window.location.href = 'index.html'; }, 300);
+                });
+
+                window.addEventListener('pageshow', () => {
+                    document.body.classList.remove('theme-leave');
+                });
 
                 const projectOverlay = document.getElementById('dark-project-overlay');
                 const projectFrame = document.getElementById('dark-project-frame');
@@ -643,12 +719,16 @@
                     bodyHeightFrame = requestAnimationFrame(setBodyHeight);
                 };
 
-                scheduleBodyHeight();
-                window.addEventListener("load", scheduleBodyHeight);
-                window.addEventListener("resize", scheduleBodyHeight);
-                window.visualViewport?.addEventListener("resize", scheduleBodyHeight);
-                document.fonts?.ready.then(scheduleBodyHeight);
-                if (portfolioSection) new ResizeObserver(scheduleBodyHeight).observe(portfolioSection);
+                if (!prefersReducedMotion) {
+                    scheduleBodyHeight();
+                    window.addEventListener("load", scheduleBodyHeight);
+                    window.addEventListener("resize", scheduleBodyHeight);
+                    window.visualViewport?.addEventListener("resize", scheduleBodyHeight);
+                    document.fonts?.ready.then(scheduleBodyHeight);
+                    if (portfolioSection) new ResizeObserver(scheduleBodyHeight).observe(portfolioSection);
+                } else {
+                    document.body.style.height = 'auto';
+                }
 
                 const logoPaths = gsap.utils.toArray("#logo-wrapper svg path");
                 logoPaths.forEach((path) => {
@@ -679,6 +759,25 @@
                 gsap.set(".cta-fade-text", { opacity: 0, y: 24 });
                 
                 gsap.set(".awards-marquee-track", { x: "130vw", xPercent: 0 });
+
+                if (prefersReducedMotion) {
+                    gsap.set(".fouc-protect", { autoAlpha: 1, clearProps: "transform" });
+                    gsap.set("#header-logo-container, .nav-link, .dark-theme-toggle, .intro-fade, .awards-fade, .awards-logo, .cta-fade-text", {
+                        opacity: 1,
+                        visibility: "visible",
+                        x: 0,
+                        y: 0,
+                        filter: "blur(0px)"
+                    });
+                    gsap.set(".awards-marquee-track", { x: 0, xPercent: 0 });
+                    [...logoPaths, ...intro3amPaths, ...ctaPaths].forEach((path) => {
+                        gsap.set(path, { strokeDashoffset: 0, fillOpacity: 1, strokeOpacity: 0 });
+                    });
+                    const preloader = document.getElementById("preloader");
+                    if (preloader) preloader.style.display = "none";
+                    lenis.start();
+                    return;
+                }
 
                 if (window.matchMedia("(pointer: fine)").matches) {
                     const cursor = document.getElementById("custom-cursor");
@@ -716,21 +815,29 @@
                 const initTl = gsap.timeline({ paused: true, onComplete: () => { if (!isScrolled) pulseTween.play(); } });
                 
                 if (logoPaths.length > 0) {
-                    initTl.to(logoPaths, { strokeDashoffset: 0, duration: 2.4, ease: "none", stagger: 0.03 }, 0);
-                    initTl.to(logoPaths, { fillOpacity: 1, strokeOpacity: 0, duration: 0.8, ease: "power2.out", stagger: 0.03 }, 2.45);
+                    initTl.to(logoPaths, { strokeDashoffset: 0, duration: 1.3, ease: "none", stagger: 0.018 }, 0);
+                    initTl.to(logoPaths, { fillOpacity: 1, strokeOpacity: 0, duration: 0.45, ease: "power2.out", stagger: 0.018 }, 1.3);
                 }
 
-                initTl.fromTo(".launch-text", { y: 15, filter: "blur(4px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.2, stagger: 0.2, ease: "power3.out" }, 1.5);
-                initTl.fromTo(".launch-line-bg", { scaleY: 0 }, { scaleY: 1, duration: 1.5, ease: "power3.inOut" }, 2.0);
+                initTl.fromTo(".launch-text", { y: 15, filter: "blur(4px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.65, stagger: 0.1, ease: "power3.out" }, 0.72);
+                initTl.fromTo(".launch-line-bg", { scaleY: 0 }, { scaleY: 1, duration: 0.9, ease: "power3.inOut" }, 0.9);
                 
-                initTl.fromTo(".summary-line", { x: 15 }, { x: 0, opacity: 1, duration: 1.2, stagger: 0.15, ease: "power3.out" }, 2.2);
-                initTl.fromTo("#header-logo-container, .nav-link, .dark-theme-toggle", { y: -10 }, { y: 0, opacity: 1, duration: 1.2, stagger: 0.12, ease: "power3.out" }, 2.2);
+                initTl.fromTo(".summary-line", { x: 15 }, { x: 0, opacity: 1, duration: 0.6, stagger: 0.08, ease: "power3.out" }, 1.05);
+                initTl.fromTo("#header-logo-container, .nav-link, .dark-theme-toggle", { y: -10 }, { y: 0, opacity: 1, duration: 0.65, stagger: 0.07, ease: "power3.out" }, 1.0);
                 
-                initTl.fromTo("#launch-circle", { scale: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: "back.out(1.7)" }, 3.0);
+                initTl.fromTo("#launch-circle", { scale: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.7)" }, 1.55);
 
-                const preloaderTl = gsap.timeline({ onComplete: () => { document.getElementById("preloader").style.display = "none"; lenis.start(); } });
-                preloaderTl.to("#preloader-logo-container", { opacity: 0, duration: 0.8, delay: 1.5, ease: "power2.inOut" })
-                           .to("#preloader", { opacity: 0, duration: 0.8, ease: "power2.inOut", onStart: () => initTl.play() }, "-=0.2");
+                const preloader = document.getElementById("preloader");
+                if (skipIntro) {
+                    if (preloader) preloader.style.display = "none";
+                    initTl.progress(1).pause();
+                    lenis.start();
+                } else {
+                    rememberIntro();
+                    const preloaderTl = gsap.timeline({ onComplete: () => { if (preloader) preloader.style.display = "none"; lenis.start(); } });
+                    preloaderTl.to("#preloader-logo-container", { opacity: 0, duration: 0.35, delay: 0.55, ease: "power2.inOut" })
+                               .to("#preloader", { opacity: 0, duration: 0.45, ease: "power2.inOut", onStart: () => initTl.play() }, "-=0.1");
+                }
 
                 const mm = gsap.matchMedia();
                 mm.add({
@@ -778,7 +885,7 @@
                     masterTl.to("#rocket-wrapper", { bottom: "150%", ease: "none", duration: 10 }, 85);
 
                     const colors = ["#EF4444", "#10B981", "#3B82F6", "#F59E0B", "#FFFFFF"];
-                    const numBubbles = prefersReducedMotion ? 0 : 100;
+                    const numBubbles = prefersReducedMotion ? 0 : (isMobile ? 48 : (isTablet ? 64 : 80));
                     let rocketCenterPos = isDesktop ? { left: "88.15%", xPercent: -50 } : isTablet ? { left: "88.15%", xPercent: -50 } : { left: "50%", xPercent: -50 };
                     
                     const particleOffset = isMobile ? 35 : 60;
@@ -832,7 +939,7 @@
                     masterTl.to("#rocket-drift", { keyframes: { "0%": { y: 0, ease: "sine.inOut" }, "50%": { y: 15, ease: "sine.inOut" }, "100%": { y: 0, ease: "sine.inOut" } }, duration: 26 }, 48);
 
                     // --- Introduction Section Pinned Timeline ---
-                    const introPinEnd = isMobile ? "+=2000" : "+=3400";
+                    const introPinEnd = isMobile ? "+=1600" : "+=2400";
                     const introTl = gsap.timeline({ scrollTrigger: { trigger: "#intro-trigger", start: "center center", end: introPinEnd, pin: true, pinSpacing: false, scrub: 1 } });
                     
                     if (intro3amPaths.length > 0) {
@@ -856,7 +963,7 @@
                     introTl.to("#intro-section", { opacity: 0, duration: 1.5, ease: "power2.in" }, exitLabel);
 
                     // --- Awards Section Pinned Timeline ---
-                    const awardsPinEnd = isMobile ? "+=3500" : "+=5000";
+                    const awardsPinEnd = isMobile ? "+=2600" : "+=3500";
                     const awardsTl = gsap.timeline({ scrollTrigger: { trigger: "#awards-trigger", start: "center center", end: awardsPinEnd, pin: true, pinSpacing: false, scrub: 1 } });
                     
                     awardsTl.to(".awards-marquee-track", { x: "-20vw", xPercent: -100, duration: 10, ease: "none" }, 0);
@@ -869,7 +976,7 @@
                 });
 
                 const shakeTween = gsap.to("#rocket-svg-container", { x: () => Math.random() * 4 - 2, y: () => Math.random() * 4 - 2, rotation: () => Math.random() * 2 - 1, duration: 0.1, repeat: -1, yoyo: true, ease: "none", paused: true });
-                ScrollTrigger.create({ trigger: "body", start: "500px top", end: "9000px top", onEnter: () => shakeTween.play(), onLeave: () => shakeTween.pause(), onEnterBack: () => shakeTween.play(), onLeaveBack: () => shakeTween.pause() });
+                ScrollTrigger.create({ trigger: "body", start: "500px top", end: "6500px top", onEnter: () => shakeTween.play(), onLeave: () => shakeTween.pause(), onEnterBack: () => shakeTween.play(), onLeaveBack: () => shakeTween.pause() });
 
                 const aiTitle = document.getElementById("cta-title-container");
                 if (aiTitle) {
