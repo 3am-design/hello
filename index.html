@@ -11,13 +11,28 @@
     <meta property="og:description" content="Selected UX/UI, branding and visual communication work by 3am Design Studio.">
     <meta property="og:url" content="https://3am-design.github.io/hello/">
     <meta property="og:image" content="https://3am-design.github.io/hello/assets/works/01/01_image_01.webp">
+    <meta property="og:image:width" content="1920">
+    <meta property="og:image:height" content="1440">
+    <meta property="og:image:alt" content="3am Design Studio selected portfolio work">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://3am-design.github.io/hello/">
     <link rel="icon" href="./assets/3am.svg" type="image/svg+xml">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "ProfessionalService",
+            "name": "3am Design Studio",
+            "url": "https://3am-design.github.io/hello/",
+            "description": "Hong Kong based UX/UI, brand identity, visual communication and digital strategy studio.",
+            "email": "ericng@hello-3am.com",
+            "telephone": "+85263577861",
+            "areaServed": "Hong Kong"
+        }
+    </script>
     <!-- Production-compiled Tailwind CSS -->
     <link rel="stylesheet" href="./assets/css/tailwind.min.css">
     <!-- Local motion runtime and typeface: the portfolio remains usable without a third-party CDN. -->
-    <script src="./assets/vendor/lenis.min.js"></script>
+    <link rel="preload" href="./assets/vendor/fonts/inter-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="./assets/vendor/inter.css">
     <script>
         window.setTimeout(() => {
@@ -962,7 +977,7 @@
 
     <!-- === Preloader === -->
     <div id="preloader" class="fixed top-0 left-0 w-full h-[100svh] bg-[#FFFFFF] z-[99999] flex justify-center items-center pointer-events-auto transition-opacity duration-[450ms] ease-in-out">
-        <img src="./assets/3amDS.svg" alt="3amDS" id="preloader-logo" class="h-[20px] md:h-[26px] object-contain brightness-0 transition-opacity duration-[350ms] ease-in-out" onerror="this.src='https://placehold.co/100x25/FFF/000?text=3amDS'">
+        <img src="./assets/3amDS.svg" alt="3amDS" id="preloader-logo" class="h-[20px] md:h-[26px] object-contain brightness-0 transition-opacity duration-[350ms] ease-in-out" fetchpriority="high" onerror="this.style.display='none'">
     </div>
 
     <!-- Design Grid -->
@@ -983,11 +998,11 @@
     </div>
 
     <!-- Header -->
-    <header id="site-header" class="header-container fixed top-0 left-0 w-full pt-[25px] pb-4 flex justify-between items-center z-[100000] mix-blend-difference text-white pointer-events-none transition-opacity duration-500">
+    <header id="site-header" class="header-container fixed top-0 left-0 w-full pt-[25px] pb-4 flex justify-between items-center z-[100000] text-black pointer-events-none transition-opacity duration-500">
         <div class="custom-container flex justify-between items-center w-full h-full relative">
             
             <a href="#top" aria-label="Back to top" class="header-item flex items-center h-[38px] cursor-pointer pointer-events-auto appearance-none border-0 bg-transparent p-0" style="animation-delay: 0s;">
-                <img src="./assets/3amDS.svg" alt="3amDS" class="h-[25px] object-contain brightness-0 invert" onerror="this.src='https://placehold.co/100x25/000/FFF?text=3amDS'">
+                <img src="./assets/3amDS.svg" alt="3amDS" class="h-[25px] object-contain brightness-0" onerror="this.style.display='none'">
             </a>
             
             <nav class="flex gap-4 md:gap-6 lg:gap-10 items-center text-[12px] md:text-[16px] font-medium leading-[40px] tracking-[0.05em] pointer-events-auto absolute left-1/2 -translate-x-1/2">
@@ -999,8 +1014,8 @@
             <a id="theme-toggle" href="index-dark.html" aria-label="Switch to dark mode" class="header-item flex items-center pointer-events-auto cursor-pointer group" style="animation-delay: 0.32s;">
                 <!-- [KARINA FIX] 字距變 0 (tracking-normal)，字重粗一格 (font-semibold) -->
                 <span class="hidden md:block text-[10px] font-semibold mr-2 group-hover:opacity-70 transition-opacity tracking-normal leading-none -translate-y-[1px]">Light off</span>
-                <div class="w-[38px] h-[38px] rounded-full border border-white/20 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
-                    <img id="icon-img" src="./assets/Dark-mode.svg" alt="" aria-hidden="true" class="w-4 h-4 brightness-0 invert transition-all duration-300" onerror="this.src='https://placehold.co/18x18/FFF/000?text=M'">
+                <div class="w-[38px] h-[38px] rounded-full border border-black/20 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
+                    <img id="icon-img" src="./assets/Dark-mode.svg" alt="" aria-hidden="true" class="w-4 h-4 brightness-0 transition-all duration-300" onerror="this.style.display='none'">
                 </div>
             </a>
             
@@ -1017,19 +1032,19 @@
 
                 <div class="w-full grid grid-cols-4 lg:grid-cols-6 gap-[10px] lg:gap-[40px]">
                     <div id="ayoh-wrapper" class="col-span-4 lg:col-span-5 relative">
-                        <img id="ayoh-fallback" src="./assets/ayoh.svg" alt="Ayoh!" class="ayoh-bleed opacity-0 transition-opacity duration-300" onerror="this.src='https://placehold.co/1800x500/transparent/000?text=Ayoh!'">
+                        <img id="ayoh-fallback" src="./assets/ayoh.svg" alt="Ayoh!" class="ayoh-bleed opacity-0 transition-opacity duration-300" onerror="this.style.display='none'">
                     </div>
                 </div>
                 
                 <div class="absolute bottom-[-5px] right-[0px] flex justify-end items-end z-10 pointer-events-none w-full px-[var(--c-px)]">
                     <div class="w-full grid grid-cols-4 lg:grid-cols-6 h-full">
                         <div class="hands-wrapper col-span-4 lg:col-start-3 lg:col-span-4 flex items-end">
-                            <div class="hand-up hidden lg:block lg:w-1/6" style="transition-duration: 1.05s; transition-delay: 0.18s;"><img src="./assets/hand_01.svg" class="w-full h-auto origin-bottom-center sway-1" alt="" aria-hidden="true" onerror="this.src='https://placehold.co/124x180/FFC0CB/000?text=H1'"></div>
-                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 0.9s; transition-delay: 0.08s;"><img src="./assets/hand_02.svg" class="w-full h-auto origin-bottom-center sway-2" alt="" aria-hidden="true" onerror="this.src='https://placehold.co/124x180/FFFF00/000?text=H2'"></div>
-                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 1s; transition-delay: 0.24s;"><img src="./assets/hand_03.svg" class="w-full h-auto origin-bottom-center sway-3" alt="" aria-hidden="true" onerror="this.src='https://placehold.co/124x180/90EE90/000?text=H3'"></div>
-                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 0.95s; transition-delay: 0.12s;"><img src="./assets/hand_04.svg" class="w-full h-auto origin-bottom-center sway-4" alt="" aria-hidden="true" onerror="this.src='https://placehold.co/124x180/ADD8E6/000?text=H4'"></div>
-                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 1.05s; transition-delay: 0.2s;"><img src="./assets/hand_05.svg" class="w-full h-auto origin-bottom-center sway-5" alt="" aria-hidden="true" onerror="this.src='https://placehold.co/124x180/FFA07A/000?text=H5'"></div>
-                            <div class="hand-up hidden lg:block lg:w-1/6" style="transition-duration: 0.9s; transition-delay: 0.15s;"><img src="./assets/hand_06.svg" class="w-full h-auto origin-bottom-center sway-6" alt="" aria-hidden="true" onerror="this.src='https://placehold.co/124x180/20B2AA/000?text=H6'"></div>
+                            <div class="hand-up hidden lg:block lg:w-1/6" style="transition-duration: 1.05s; transition-delay: 0.18s;"><img src="./assets/hand_01.svg" class="w-full h-auto origin-bottom-center sway-1" alt="" aria-hidden="true" onerror="this.style.display='none'"></div>
+                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 0.9s; transition-delay: 0.08s;"><img src="./assets/hand_02.svg" class="w-full h-auto origin-bottom-center sway-2" alt="" aria-hidden="true" onerror="this.style.display='none'"></div>
+                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 1s; transition-delay: 0.24s;"><img src="./assets/hand_03.svg" class="w-full h-auto origin-bottom-center sway-3" alt="" aria-hidden="true" onerror="this.style.display='none'"></div>
+                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 0.95s; transition-delay: 0.12s;"><img src="./assets/hand_04.svg" class="w-full h-auto origin-bottom-center sway-4" alt="" aria-hidden="true" onerror="this.style.display='none'"></div>
+                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 1.05s; transition-delay: 0.2s;"><img src="./assets/hand_05.svg" class="w-full h-auto origin-bottom-center sway-5" alt="" aria-hidden="true" onerror="this.style.display='none'"></div>
+                            <div class="hand-up hidden lg:block lg:w-1/6" style="transition-duration: 0.9s; transition-delay: 0.15s;"><img src="./assets/hand_06.svg" class="w-full h-auto origin-bottom-center sway-6" alt="" aria-hidden="true" onerror="this.style.display='none'"></div>
                         </div>
                     </div>
                 </div>
@@ -1090,9 +1105,9 @@
 
                     <div class="skills-face reveal-solid-up" style="transition-delay: 0ms; transition-duration: 0.95s;">
                         <div class="skills-face-art">
-                            <img src="./assets/visual_01.svg" class="visual-layer relative w-full h-auto z-10" data-depth="0.02" alt="" aria-hidden="true" onerror="this.src='https://placehold.co/400x400/FFB6C1/000?text=Base'">
-                            <img src="./assets/visual_02.svg" class="visual-layer absolute inset-0 w-full h-auto z-20" data-depth="0.06" alt="" aria-hidden="true" onerror="this.src='https://placehold.co/400x400/transparent/000?text=S1'">
-                            <img src="./assets/visual_03.svg" class="visual-layer absolute inset-0 w-full h-auto z-30" data-depth="0.10" alt="" aria-hidden="true" onerror="this.src='https://placehold.co/400x400/transparent/000?text=S2'">
+                            <img src="./assets/visual_01.svg" class="visual-layer relative w-full h-auto z-10" data-depth="0.02" alt="" aria-hidden="true" onerror="this.style.display='none'">
+                            <img src="./assets/visual_02.svg" class="visual-layer absolute inset-0 w-full h-auto z-20" data-depth="0.06" alt="" aria-hidden="true" onerror="this.style.display='none'">
+                            <img src="./assets/visual_03.svg" class="visual-layer absolute inset-0 w-full h-auto z-30" data-depth="0.10" alt="" aria-hidden="true" onerror="this.style.display='none'">
                         </div>
                     </div>
 
@@ -1116,13 +1131,13 @@
                 <!-- Portfolio Grid -->
                 <section id="works" class="custom-container pt-[90px] pb-[100px] lg:pt-[130px] lg:pb-[150px]">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-[10px] min-[820px]:gap-[20px] lg:gap-[30px] xl:gap-[40px]">
-                        <button type="button" aria-label="Open Hong Kong Palace Museum project" class="portfolio-item col-span-1 lg:col-span-4 aspect-[4/3] lg:aspect-[1132/695] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px] appearance-none border-0 p-0 text-left" data-id="01"><img loading="lazy" decoding="async" src="./assets/works/01/01_image_01.webp" alt="Hong Kong Palace Museum project" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.src='https://images.unsplash.com/photo-1558655146-d09347e92766?w=1200&h=800&fit=crop'"></button>
-                        <button type="button" aria-label="Open Chow Sang Sang Sustainability Internal Hub project" class="portfolio-item col-span-1 lg:col-span-2 aspect-[4/3] lg:aspect-[546/695] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px] appearance-none border-0 p-0 text-left" data-id="02" style="transition-delay: 100ms;"><img loading="lazy" decoding="async" src="./assets/works/02/02_image_01.webp" alt="Chow Sang Sang Sustainability Internal Hub project" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.src='https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&h=800&fit=crop'"></button>
-                        <button type="button" aria-label="Open Harbour Plaza Hotels and Resorts project" class="portfolio-item col-span-1 lg:col-span-2 aspect-[4/3] lg:aspect-[546/420] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px] appearance-none border-0 p-0 text-left" data-id="03"><img loading="lazy" decoding="async" src="./assets/works/03/03_image_01.webp" alt="Harbour Plaza Hotels and Resorts project" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.src='https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=450&fit=crop'"></button>
-                        <button type="button" aria-label="Open Chow Sang Sang Digital Ecosystem project" class="portfolio-item col-span-1 lg:col-span-2 aspect-[4/3] lg:aspect-[546/420] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px] appearance-none border-0 p-0 text-left" data-id="04" style="transition-delay: 100ms;"><img loading="lazy" decoding="async" src="./assets/works/04/04_image_01.webp" alt="Chow Sang Sang Digital Ecosystem project" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.src='https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=600&h=450&fit=crop'"></button>
-                        <button type="button" aria-label="Open HKICL website project" class="portfolio-item col-span-1 lg:col-span-2 aspect-[4/3] lg:aspect-[546/420] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px] appearance-none border-0 p-0 text-left" data-id="05" style="transition-delay: 200ms;"><img loading="lazy" decoding="async" src="./assets/works/05/05_image_01.webp" alt="HKICL website project" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=450&fit=crop'"></button>
-                        <button type="button" aria-label="Open Bangadang Farm project" class="portfolio-item col-span-1 lg:col-span-2 aspect-[4/3] lg:aspect-[546/695] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px] appearance-none border-0 p-0 text-left" data-id="06"><img loading="lazy" decoding="async" src="./assets/works/06/06_image_01.webp" alt="Bangadang Farm project" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.src='https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=600&h=800&fit=crop'"></button>
-                        <button type="button" aria-label="Open Emphasis Jewellery project" class="portfolio-item col-span-1 lg:col-span-4 aspect-[4/3] lg:aspect-[1132/695] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px] appearance-none border-0 p-0 text-left" data-id="07" style="transition-delay: 100ms;"><img loading="lazy" decoding="async" src="./assets/works/07/07_image_01.webp" alt="Emphasis Jewellery project" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=800&fit=crop'"></button>
+                        <button type="button" aria-label="Open Hong Kong Palace Museum project" class="portfolio-item col-span-1 lg:col-span-4 aspect-[4/3] lg:aspect-[1132/695] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px] appearance-none border-0 p-0 text-left" data-id="01"><img loading="lazy" decoding="async" src="./assets/works/01/01_image_01.webp" alt="Hong Kong Palace Museum project" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.style.display='none'"></button>
+                        <button type="button" aria-label="Open Chow Sang Sang Sustainability Internal Hub project" class="portfolio-item col-span-1 lg:col-span-2 aspect-[4/3] lg:aspect-[546/695] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px] appearance-none border-0 p-0 text-left" data-id="02" style="transition-delay: 100ms;"><img loading="lazy" decoding="async" src="./assets/works/02/02_image_01.webp" alt="Chow Sang Sang Sustainability Internal Hub project" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.style.display='none'"></button>
+                        <button type="button" aria-label="Open Harbour Plaza Hotels and Resorts project" class="portfolio-item col-span-1 lg:col-span-2 aspect-[4/3] lg:aspect-[546/420] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px] appearance-none border-0 p-0 text-left" data-id="03"><img loading="lazy" decoding="async" src="./assets/works/03/03_image_01.webp" alt="Harbour Plaza Hotels and Resorts project" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.style.display='none'"></button>
+                        <button type="button" aria-label="Open Chow Sang Sang Digital Ecosystem project" class="portfolio-item col-span-1 lg:col-span-2 aspect-[4/3] lg:aspect-[546/420] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px] appearance-none border-0 p-0 text-left" data-id="04" style="transition-delay: 100ms;"><img loading="lazy" decoding="async" src="./assets/works/04/04_image_01.webp" alt="Chow Sang Sang Digital Ecosystem project" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.style.display='none'"></button>
+                        <button type="button" aria-label="Open HKICL website project" class="portfolio-item col-span-1 lg:col-span-2 aspect-[4/3] lg:aspect-[546/420] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px] appearance-none border-0 p-0 text-left" data-id="05" style="transition-delay: 200ms;"><img loading="lazy" decoding="async" src="./assets/works/05/05_image_01.webp" alt="HKICL website project" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.style.display='none'"></button>
+                        <button type="button" aria-label="Open Bangadang Farm project" class="portfolio-item col-span-1 lg:col-span-2 aspect-[4/3] lg:aspect-[546/695] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px] appearance-none border-0 p-0 text-left" data-id="06"><img loading="lazy" decoding="async" src="./assets/works/06/06_image_01.webp" alt="Bangadang Farm project" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.style.display='none'"></button>
+                        <button type="button" aria-label="Open Emphasis Jewellery project" class="portfolio-item col-span-1 lg:col-span-4 aspect-[4/3] lg:aspect-[1132/695] w-full bg-[#e5e5e5] cursor-pointer overflow-hidden group reveal-up rounded-[10px] min-[820px]:rounded-[24px] lg:rounded-[40px] appearance-none border-0 p-0 text-left" data-id="07" style="transition-delay: 100ms;"><img loading="lazy" decoding="async" src="./assets/works/07/07_image_01.webp" alt="Emphasis Jewellery project" class="w-full h-full object-cover transition duration-500 group-hover:scale-[1.02]" onerror="this.style.display='none'"></button>
                     </div>
                 </section>
 
@@ -1155,19 +1170,19 @@
 
                                 <!-- Mobile: AI x Human in left 2 cols -->
                                 <div class="flex min-[1280px]:hidden col-span-2 col-start-1 items-center">
-                                    <img src="./assets/aixhuman.svg" alt="AI x Human Intelligence" class="w-full h-auto" onerror="this.src='https://placehold.co/400x200/transparent/000?text=AI+x+Human'">
+                                    <img src="./assets/aixhuman.svg" alt="AI x Human Intelligence" class="w-full h-auto" onerror="this.style.display='none'">
                                 </div>
 
                                 <!-- Person+cat SVG: right 2 cols on mobile, cols 2-3 on desktop -->
                                 <div class="col-span-2 col-start-3 min-[1280px]:col-start-2 min-[1280px]:col-span-2 flex justify-center items-center h-full reveal-up">
-                                    <img id="footer-svg-img" src="./assets/Footer.svg" alt="" aria-hidden="true" class="w-full h-auto object-contain origin-center" onerror="this.src='https://placehold.co/800x800/transparent/000?text=Footer'">
+                                    <img id="footer-svg-img" src="./assets/Footer.svg" alt="" aria-hidden="true" class="w-full h-auto object-contain origin-center" onerror="this.style.display='none'">
                                 </div>
 
                                 <div class="col-span-4 min-[1280px]:col-start-5 min-[1280px]:col-span-2 flex flex-col justify-center reveal-up h-full">
                                     <div class="grid grid-cols-1 min-[1280px]:grid-cols-2 gap-x-[10px] min-[1280px]:gap-x-[40px] text-black w-full pt-[20px] min-[1280px]:pt-[40px]">
 
                                         <div class="min-[1280px]:col-span-1 flex flex-col">
-                                            <img src="./assets/aixhuman.svg" alt="AI x Human Intelligence" class="hidden min-[1280px]:block w-full h-auto mb-[80px]" onerror="this.src='https://placehold.co/400x200/transparent/000?text=AI+x+Human'">
+                                            <img src="./assets/aixhuman.svg" alt="AI x Human Intelligence" class="hidden min-[1280px]:block w-full h-auto mb-[80px]" onerror="this.style.display='none'">
                                             <p class="font-medium text-[12px] leading-[18px] tracking-normal uppercase mb-[30px] min-[1280px]:mb-[40px]">
                                                 2026: THE YEAR OF LAUNCH.<br>WHILE OTHERS FEAR THE MACHINE,<br>I SYNCHRONIZE WITH IT.
                                             </p>
@@ -1260,6 +1275,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Load smooth scrolling after the page content so it does not block first paint. -->
+    <script src="./assets/vendor/lenis.min.js"></script>
 
     <!-- JS Scripts -->
     <script>

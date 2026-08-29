@@ -4,24 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="color-scheme" content="dark">
-    <title>3am Design Studio</title>
+    <title>3am. Portfolio — Dark Mode</title>
     <meta name="description" content="3am Design Studio — an experimental dark-mode portfolio experience from Hong Kong.">
     <meta name="theme-color" content="#000000">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="3am Design Studio">
+    <meta property="og:title" content="3am. Portfolio — Dark Mode">
     <meta property="og:description" content="An experimental portfolio experience combining design, technology and motion.">
-    <meta property="og:url" content="https://3am-design.github.io/hello/index-dark.html">
+    <meta property="og:url" content="https://3am-design.github.io/hello/">
     <meta property="og:image" content="https://3am-design.github.io/hello/assets/works/01/01_image_01.webp">
+    <meta property="og:image:width" content="1920">
+    <meta property="og:image:height" content="1440">
+    <meta property="og:image:alt" content="3am Design Studio selected portfolio work">
     <meta name="twitter:card" content="summary_large_image">
-    <link rel="canonical" href="https://3am-design.github.io/hello/index-dark.html">
+    <link rel="canonical" href="https://3am-design.github.io/hello/">
     <link rel="icon" href="./assets/3am.svg" type="image/svg+xml">
 
     <!-- Production-compiled CSS with local motion libraries and typeface. -->
     <link rel="stylesheet" href="./assets/css/tailwind.min.css">
-    <script src="./assets/vendor/gsap.min.js"></script>
-    <script src="./assets/vendor/ScrollTrigger.min.js"></script>
-    <script src="./assets/vendor/lenis.min.js"></script>
+    <link rel="preload" href="./assets/vendor/fonts/inter-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="./assets/vendor/inter.css">
+    <script src="./assets/vendor/gsap.min.js" defer></script>
+    <script src="./assets/vendor/ScrollTrigger.min.js" defer></script>
+    <script src="./assets/vendor/lenis.min.js" defer></script>
     <script>
         window.setTimeout(() => {
             const motionReady = typeof window.gsap === 'object'
@@ -384,7 +388,7 @@
         </div>
     </div>
 
-    <img id="shared-moon" src="assets/home/moon.webp" alt="" aria-hidden="true" class="fixed top-[-80vh] md:top-[-150vh] left-[-20vw] md:left-[-20vw] w-[90vw] md:w-[70vw] max-w-none z-10 pointer-events-none mix-blend-screen opacity-80" onerror="this.style.display='none'">
+    <img id="shared-moon" src="assets/home/moon.webp" srcset="assets/home/moon-mobile.webp 960w, assets/home/moon.webp 1920w" sizes="(max-width: 767px) 90vw, 70vw" alt="" aria-hidden="true" decoding="async" fetchpriority="high" class="fixed top-[-80vh] md:top-[-150vh] left-[-20vw] md:left-[-20vw] w-[90vw] md:w-[70vw] max-w-none z-10 pointer-events-none mix-blend-screen opacity-80" onerror="this.style.display='none'">
 
     <div id="preloader" class="fixed top-0 left-0 w-full h-[100lvh] bg-[#000] z-[99999] flex justify-center items-center pointer-events-auto">
         <div id="preloader-logo-container" class="h-[20px] md:h-[26px]"></div>

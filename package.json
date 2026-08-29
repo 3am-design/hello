@@ -2,9 +2,10 @@
   "name": "3am-portfolio",
   "private": true,
   "scripts": {
-    "build": "npm run build:vendor && npm run build:css",
+    "build": "npm run build:vendor && npm run build:css && npm run check:assets",
     "build:vendor": "sh ./scripts/build-vendor.sh",
-    "build:css": "tailwindcss -i ./styles/tailwind.input.css -o ./assets/css/tailwind.min.css --content ./index.html,./index-dark.html --minify"
+    "build:css": "BROWSERSLIST_IGNORE_OLD_DATA=true tailwindcss -i ./styles/tailwind.input.css -o ./assets/css/tailwind.min.css --content ./index.html,./index-dark.html --minify",
+    "check:assets": "node ./scripts/check-assets.mjs"
   },
   "devDependencies": {
     "@fontsource/inter": "5.3.0",
