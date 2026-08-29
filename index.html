@@ -16,10 +16,28 @@
     <link rel="icon" href="./assets/3am.svg" type="image/svg+xml">
     <!-- Production-compiled Tailwind CSS -->
     <link rel="stylesheet" href="./assets/css/tailwind.min.css">
-    <!-- 引入 Lenis Smooth Scroll 引擎 -->
-    <script src="https://unpkg.com/lenis@1.1.2/dist/lenis.min.js"></script>
-    <!-- 引入 Google Fonts: Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <!-- Local motion runtime and typeface: the portfolio remains usable without a third-party CDN. -->
+    <script src="./assets/vendor/lenis.min.js"></script>
+    <link rel="stylesheet" href="./assets/vendor/inter.css">
+    <script>
+        window.setTimeout(() => {
+            if (typeof window.Lenis === 'function') return;
+            document.documentElement.classList.add('motion-fallback');
+        }, 2500);
+    </script>
+    <noscript>
+        <style>
+            #preloader, #custom-cursor, #scrolling-icon { display: none !important; }
+            #hero-section { position: absolute !important; }
+            #ayoh-fallback, .header-item, .hand-up, .reveal-up, .reveal-solid-up {
+                opacity: 1 !important;
+                visibility: visible !important;
+                transform: none !important;
+            }
+            .slide-in-right { transform: none !important; }
+            body, a, button { cursor: auto !important; }
+        </style>
+    </noscript>
     <style>
         /* === Smooth Scroll (Lenis) === */
         html.lenis, html.lenis body { height: auto; }
@@ -60,11 +78,18 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             font-family: 'Inter', sans-serif;
-            cursor: none !important;
+            cursor: auto;
             transition: color 0.4s ease, background-color 0.4s ease; 
         }
 
-        a, button, .cursor-pointer { cursor: none !important; }
+        a, button, .cursor-pointer { cursor: pointer; }
+
+        @media (min-width: 820px) and (pointer: fine) {
+            html.custom-cursor-ready body,
+            html.custom-cursor-ready a,
+            html.custom-cursor-ready button,
+            html.custom-cursor-ready .cursor-pointer { cursor: none !important; }
+        }
 
         a:focus-visible,
         button:focus-visible {
@@ -76,6 +101,21 @@
         @media (max-width: 819px) {
             #custom-cursor { display: none !important; }
             body, a, button, .cursor-pointer { cursor: auto !important; }
+
+            #site-header nav a {
+                padding-block: 15px;
+                margin-block: -15px;
+                padding-inline: 2px;
+                margin-inline: -2px;
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+            }
+            #site-header > .custom-container > a:first-child,
+            #theme-toggle {
+                padding: 3px;
+                margin: -3px;
+            }
 
             /* Footer: person+cat fills its column on mobile */
             #footer-svg-img {
@@ -101,8 +141,27 @@
             mix-blend-mode: difference;
             will-change: transform;
             transition: width 0.3s ease-out, height 0.3s ease-out, border-radius 0.3s ease-out, background-color 0.3s ease-out, opacity 0.3s ease-out, border-color 0.3s ease-out;
-            display: flex; align-items: center; justify-content: center;
+            display: none; align-items: center; justify-content: center;
         }
+        html.custom-cursor-ready #custom-cursor { display: flex; }
+
+        html.motion-fallback #preloader,
+        html.motion-fallback #custom-cursor,
+        html.motion-fallback #scrolling-icon { display: none !important; }
+        html.motion-fallback #hero-section { position: absolute !important; }
+        html.motion-fallback #ayoh-fallback,
+        html.motion-fallback .header-item,
+        html.motion-fallback .hand-up,
+        html.motion-fallback .reveal-up,
+        html.motion-fallback .reveal-solid-up {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: none !important;
+        }
+        html.motion-fallback .slide-in-right { transform: none !important; }
+        html.motion-fallback body,
+        html.motion-fallback a,
+        html.motion-fallback button { cursor: auto !important; }
         
         #custom-cursor.active { 
             width: 60px; height: 60px; 
@@ -899,7 +958,7 @@
 
     </style>
 </head>
-<body class="antialiased selection:bg-black/20 selection:text-black transition-colors duration-700">
+<body id="top" class="antialiased selection:bg-black/20 selection:text-black transition-colors duration-700">
 
     <!-- === Preloader === -->
     <div id="preloader" class="fixed top-0 left-0 w-full h-[100svh] bg-[#FFFFFF] z-[99999] flex justify-center items-center pointer-events-auto transition-opacity duration-[450ms] ease-in-out">
@@ -927,9 +986,9 @@
     <header id="site-header" class="header-container fixed top-0 left-0 w-full pt-[25px] pb-4 flex justify-between items-center z-[100000] mix-blend-difference text-white pointer-events-none transition-opacity duration-500">
         <div class="custom-container flex justify-between items-center w-full h-full relative">
             
-            <button type="button" aria-label="Back to top" class="header-item flex items-center h-[38px] cursor-pointer pointer-events-auto appearance-none border-0 bg-transparent p-0" style="animation-delay: 0s;" onclick="lenis.scrollTo(0)">
+            <a href="#top" aria-label="Back to top" class="header-item flex items-center h-[38px] cursor-pointer pointer-events-auto appearance-none border-0 bg-transparent p-0" style="animation-delay: 0s;">
                 <img src="./assets/3amDS.svg" alt="3amDS" class="h-[25px] object-contain brightness-0 invert" onerror="this.src='https://placehold.co/100x25/000/FFF?text=3amDS'">
-            </button>
+            </a>
             
             <nav class="flex gap-4 md:gap-6 lg:gap-10 items-center text-[12px] md:text-[16px] font-medium leading-[40px] tracking-[0.05em] pointer-events-auto absolute left-1/2 -translate-x-1/2">
                 <a href="#about" class="header-item nav-link transition-colors duration-300 cursor-pointer" style="animation-delay: 0.1s;">About</a>
@@ -937,13 +996,13 @@
                 <a href="#talk" class="header-item nav-link transition-colors duration-300 cursor-pointer" style="animation-delay: 0.3s;">Talk</a>
             </nav>
 
-            <button id="theme-toggle" type="button" aria-label="Switch to dark mode" class="header-item flex items-center pointer-events-auto cursor-pointer group" style="animation-delay: 0.32s;">
+            <a id="theme-toggle" href="index-dark.html" aria-label="Switch to dark mode" class="header-item flex items-center pointer-events-auto cursor-pointer group" style="animation-delay: 0.32s;">
                 <!-- [KARINA FIX] 字距變 0 (tracking-normal)，字重粗一格 (font-semibold) -->
                 <span class="hidden md:block text-[10px] font-semibold mr-2 group-hover:opacity-70 transition-opacity tracking-normal leading-none -translate-y-[1px]">Light off</span>
                 <div class="w-[38px] h-[38px] rounded-full border border-white/20 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
-                    <img id="icon-img" src="./assets/Dark-mode.svg" alt="Theme" class="w-4 h-4 brightness-0 invert transition-all duration-300" onerror="this.src='https://placehold.co/18x18/FFF/000?text=M'">
+                    <img id="icon-img" src="./assets/Dark-mode.svg" alt="" aria-hidden="true" class="w-4 h-4 brightness-0 invert transition-all duration-300" onerror="this.src='https://placehold.co/18x18/FFF/000?text=M'">
                 </div>
-            </button>
+            </a>
             
         </div>
     </header>
@@ -965,12 +1024,12 @@
                 <div class="absolute bottom-[-5px] right-[0px] flex justify-end items-end z-10 pointer-events-none w-full px-[var(--c-px)]">
                     <div class="w-full grid grid-cols-4 lg:grid-cols-6 h-full">
                         <div class="hands-wrapper col-span-4 lg:col-start-3 lg:col-span-4 flex items-end">
-                            <div class="hand-up hidden lg:block lg:w-1/6" style="transition-duration: 1.05s; transition-delay: 0.18s;"><img src="./assets/hand_01.svg" class="w-full h-auto origin-bottom-center sway-1" alt="hand" onerror="this.src='https://placehold.co/124x180/FFC0CB/000?text=H1'"></div>
-                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 0.9s; transition-delay: 0.08s;"><img src="./assets/hand_02.svg" class="w-full h-auto origin-bottom-center sway-2" alt="hand" onerror="this.src='https://placehold.co/124x180/FFFF00/000?text=H2'"></div>
-                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 1s; transition-delay: 0.24s;"><img src="./assets/hand_03.svg" class="w-full h-auto origin-bottom-center sway-3" alt="hand" onerror="this.src='https://placehold.co/124x180/90EE90/000?text=H3'"></div>
-                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 0.95s; transition-delay: 0.12s;"><img src="./assets/hand_04.svg" class="w-full h-auto origin-bottom-center sway-4" alt="hand" onerror="this.src='https://placehold.co/124x180/ADD8E6/000?text=H4'"></div>
-                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 1.05s; transition-delay: 0.2s;"><img src="./assets/hand_05.svg" class="w-full h-auto origin-bottom-center sway-5" alt="hand" onerror="this.src='https://placehold.co/124x180/FFA07A/000?text=H5'"></div>
-                            <div class="hand-up hidden lg:block lg:w-1/6" style="transition-duration: 0.9s; transition-delay: 0.15s;"><img src="./assets/hand_06.svg" class="w-full h-auto origin-bottom-center sway-6" alt="hand" onerror="this.src='https://placehold.co/124x180/20B2AA/000?text=H6'"></div>
+                            <div class="hand-up hidden lg:block lg:w-1/6" style="transition-duration: 1.05s; transition-delay: 0.18s;"><img src="./assets/hand_01.svg" class="w-full h-auto origin-bottom-center sway-1" alt="" aria-hidden="true" onerror="this.src='https://placehold.co/124x180/FFC0CB/000?text=H1'"></div>
+                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 0.9s; transition-delay: 0.08s;"><img src="./assets/hand_02.svg" class="w-full h-auto origin-bottom-center sway-2" alt="" aria-hidden="true" onerror="this.src='https://placehold.co/124x180/FFFF00/000?text=H2'"></div>
+                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 1s; transition-delay: 0.24s;"><img src="./assets/hand_03.svg" class="w-full h-auto origin-bottom-center sway-3" alt="" aria-hidden="true" onerror="this.src='https://placehold.co/124x180/90EE90/000?text=H3'"></div>
+                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 0.95s; transition-delay: 0.12s;"><img src="./assets/hand_04.svg" class="w-full h-auto origin-bottom-center sway-4" alt="" aria-hidden="true" onerror="this.src='https://placehold.co/124x180/ADD8E6/000?text=H4'"></div>
+                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 1.05s; transition-delay: 0.2s;"><img src="./assets/hand_05.svg" class="w-full h-auto origin-bottom-center sway-5" alt="" aria-hidden="true" onerror="this.src='https://placehold.co/124x180/FFA07A/000?text=H5'"></div>
+                            <div class="hand-up hidden lg:block lg:w-1/6" style="transition-duration: 0.9s; transition-delay: 0.15s;"><img src="./assets/hand_06.svg" class="w-full h-auto origin-bottom-center sway-6" alt="" aria-hidden="true" onerror="this.src='https://placehold.co/124x180/20B2AA/000?text=H6'"></div>
                         </div>
                     </div>
                 </div>
@@ -1031,9 +1090,9 @@
 
                     <div class="skills-face reveal-solid-up" style="transition-delay: 0ms; transition-duration: 0.95s;">
                         <div class="skills-face-art">
-                            <img src="./assets/visual_01.svg" class="visual-layer relative w-full h-auto z-10" data-depth="0.02" alt="Face Base" onerror="this.src='https://placehold.co/400x400/FFB6C1/000?text=Base'">
-                            <img src="./assets/visual_02.svg" class="visual-layer absolute inset-0 w-full h-auto z-20" data-depth="0.06" alt="Face Sparkles 1" onerror="this.src='https://placehold.co/400x400/transparent/000?text=S1'">
-                            <img src="./assets/visual_03.svg" class="visual-layer absolute inset-0 w-full h-auto z-30" data-depth="0.10" alt="Face Sparkles 2" onerror="this.src='https://placehold.co/400x400/transparent/000?text=S2'">
+                            <img src="./assets/visual_01.svg" class="visual-layer relative w-full h-auto z-10" data-depth="0.02" alt="" aria-hidden="true" onerror="this.src='https://placehold.co/400x400/FFB6C1/000?text=Base'">
+                            <img src="./assets/visual_02.svg" class="visual-layer absolute inset-0 w-full h-auto z-20" data-depth="0.06" alt="" aria-hidden="true" onerror="this.src='https://placehold.co/400x400/transparent/000?text=S1'">
+                            <img src="./assets/visual_03.svg" class="visual-layer absolute inset-0 w-full h-auto z-30" data-depth="0.10" alt="" aria-hidden="true" onerror="this.src='https://placehold.co/400x400/transparent/000?text=S2'">
                         </div>
                     </div>
 
@@ -1101,7 +1160,7 @@
 
                                 <!-- Person+cat SVG: right 2 cols on mobile, cols 2-3 on desktop -->
                                 <div class="col-span-2 col-start-3 min-[1280px]:col-start-2 min-[1280px]:col-span-2 flex justify-center items-center h-full reveal-up">
-                                    <img id="footer-svg-img" src="./assets/Footer.svg" alt="Footer Illustration" class="w-full h-auto object-contain origin-center" onerror="this.src='https://placehold.co/800x800/transparent/000?text=Footer'">
+                                    <img id="footer-svg-img" src="./assets/Footer.svg" alt="" aria-hidden="true" class="w-full h-auto object-contain origin-center" onerror="this.src='https://placehold.co/800x800/transparent/000?text=Footer'">
                                 </div>
 
                                 <div class="col-span-4 min-[1280px]:col-start-5 min-[1280px]:col-span-2 flex flex-col justify-center reveal-up h-full">
@@ -1160,14 +1219,14 @@
                 <div class="flex justify-end items-center gap-4 min-[820px]:gap-6 pointer-events-auto">
                     <div class="flex items-center gap-2 mr-[5px] min-[820px]:mr-0">
                         <button id="modal-prev-btn" type="button" aria-label="Previous project" class="p-2 flex items-center justify-center hover:opacity-50 transition duration-300 cursor-pointer transform-gpu">
-                            <img src="./assets/arrow.svg" alt="Prev" class="w-[18px] min-[820px]:w-[20px] rotate-180 object-contain pointer-events-none brightness-0 invert transition-opacity duration-300" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <img src="./assets/arrow.svg" alt="" aria-hidden="true" class="w-[18px] min-[820px]:w-[20px] rotate-180 object-contain pointer-events-none brightness-0 invert transition-opacity duration-300" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-[18px] h-[18px] min-[820px]:w-[20px] min-[820px]:h-[20px] hidden pointer-events-none" style="transform: scaleX(-1);">
                                 <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </button>
                         
                         <button id="modal-next-btn" type="button" aria-label="Next project" class="p-2 flex items-center justify-center hover:opacity-50 transition duration-300 cursor-pointer transform-gpu">
-                            <img src="./assets/arrow.svg" alt="Next" class="w-[18px] min-[820px]:w-[20px] object-contain pointer-events-none brightness-0 invert transition-opacity duration-300" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <img src="./assets/arrow.svg" alt="" aria-hidden="true" class="w-[18px] min-[820px]:w-[20px] object-contain pointer-events-none brightness-0 invert transition-opacity duration-300" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-[18px] h-[18px] min-[820px]:w-[20px] min-[820px]:h-[20px] hidden pointer-events-none">
                                 <path d="M5 12H19M19 12L12 19M19 12L12 5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
@@ -1246,7 +1305,8 @@
             });
         });
 
-        document.getElementById('theme-toggle')?.addEventListener('click', () => {
+        document.getElementById('theme-toggle')?.addEventListener('click', (event) => {
+            event.preventDefault();
             rememberIntro();
             if (prefersReducedMotion) {
                 window.location.href = 'index-dark.html';
@@ -1425,6 +1485,7 @@
         const visualLayers = document.querySelectorAll('.visual-layer');
         
         if (!prefersReducedMotion && window.matchMedia('(pointer: fine)').matches) {
+            document.documentElement.classList.add('custom-cursor-ready');
             let pointerFrame = 0;
             let pointerX = 0;
             let pointerY = 0;
@@ -1492,6 +1553,7 @@
 
         // === 3. 3D Image Animation Logic ===
         const scene = document.getElementById('scene');
+        const isShortLandscape = window.innerHeight <= 500 && window.innerWidth > window.innerHeight;
         
         const imageUrls = [
             './assets/scene/scene_01.webp',
@@ -1503,7 +1565,9 @@
             './assets/scene/scene_07.webp'
         ];
 
-        const numImages = (prefersReducedMotion || isProjectEmbed) ? 0 : (window.innerWidth < 768 ? 16 : (window.innerWidth < 1024 ? 24 : 31));
+        const numImages = (prefersReducedMotion || isProjectEmbed)
+            ? 0
+            : (isShortLandscape ? 12 : (window.innerWidth < 768 ? 16 : (window.innerWidth < 1024 ? 24 : 31)));
         const particles = [];
         const zStart = -4500;
         const zEnd = 850; 
@@ -1536,7 +1600,7 @@
                 ? 450 + Math.random() * 850
                 : (window.innerWidth < 1024 ? 800 + Math.random() * 1400 : 1200 + Math.random() * 2500);
             const x = Math.cos(angle) * radius; 
-            const y = Math.sin(angle) * radius;
+            const y = Math.sin(angle) * radius + (isShortLandscape ? 220 : 0);
 
             const depthSlot = (index + Math.random() * 0.65) / Math.max(numImages, 1);
             let initialZ = isFirstLoad ? zStart + (depthSlot * totalDepth) : zStart;
@@ -1636,7 +1700,7 @@
                     loopLogos.forEach(logoId => {
                         html += `
                             <div class="client-logo-wrapper flex items-center justify-center aspect-[3/2]">
-                                <img loading="lazy" decoding="async" src="./assets/project_logo/logo_${String(logoId).padStart(2, '0')}.svg" alt="Client Logo" class="w-full h-full object-contain brightness-0 scale-125 min-[820px]:scale-100 min-[1600px]:max-[1699px]:scale-110 pointer-events-none opacity-80 hover:opacity-100 transition-opacity duration-300">
+                                <img loading="lazy" decoding="async" src="./assets/project_logo/logo_${String(logoId).padStart(2, '0')}.svg" alt="" aria-hidden="true" class="w-full h-full object-contain brightness-0 scale-125 min-[820px]:scale-100 min-[1600px]:max-[1699px]:scale-110 pointer-events-none opacity-80 hover:opacity-100 transition-opacity duration-300">
                             </div>
                         `;
                     });

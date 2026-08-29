@@ -16,12 +16,39 @@
     <link rel="canonical" href="https://3am-design.github.io/hello/index-dark.html">
     <link rel="icon" href="./assets/3am.svg" type="image/svg+xml">
 
-    <!-- Production-compiled Tailwind CSS and external motion libraries -->
+    <!-- Production-compiled CSS with local motion libraries and typeface. -->
     <link rel="stylesheet" href="./assets/css/tailwind.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://unpkg.com/lenis@1.1.2/dist/lenis.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="./assets/vendor/gsap.min.js"></script>
+    <script src="./assets/vendor/ScrollTrigger.min.js"></script>
+    <script src="./assets/vendor/lenis.min.js"></script>
+    <link rel="stylesheet" href="./assets/vendor/inter.css">
+    <script>
+        window.setTimeout(() => {
+            const motionReady = typeof window.gsap === 'object'
+                && typeof window.ScrollTrigger === 'function'
+                && typeof window.Lenis === 'function';
+            if (motionReady) return;
+            document.documentElement.classList.add('motion-fallback');
+        }, 2500);
+    </script>
+    <noscript>
+        <style>
+            #preloader, #custom-cursor, #trail-container, #shared-moon,
+            #logo-wrapper, #launch-ui-wrapper, #rocket-wrapper, #summary-wrapper { display: none !important; }
+            #intro-trigger, #awards-trigger, #portfolio-section {
+                position: relative !important;
+                top: auto !important;
+            }
+            .fouc-protect, .nav-link, .dark-theme-toggle, .intro-fade,
+            .awards-fade, .awards-logo, .cta-fade-text {
+                opacity: 1 !important;
+                visibility: visible !important;
+                transform: none !important;
+                filter: none !important;
+            }
+            body, a, button { cursor: auto !important; }
+        </style>
+    </noscript>
 
     <script>
         if ("scrollRestoration" in history) {
@@ -145,16 +172,50 @@
         }
 
         @media (pointer: fine) {
-            body, a, button, .cursor-pointer { cursor: none !important; }
+            html.custom-cursor-ready body,
+            html.custom-cursor-ready a,
+            html.custom-cursor-ready button,
+            html.custom-cursor-ready .cursor-pointer { cursor: none !important; }
         }
 
         #custom-cursor {
             position: fixed; top: 0; left: 0; width: 20px; height: 20px;
             border: 1.5px solid #fff; border-radius: 50%; pointer-events: none;
-            z-index: 9999; display: flex; justify-content: center; align-items: center;
+            z-index: 9999; display: none; justify-content: center; align-items: center;
             mix-blend-mode: difference; will-change: transform;
             transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
         }
+        html.custom-cursor-ready #custom-cursor { display: flex; }
+
+        html.motion-fallback #preloader,
+        html.motion-fallback #custom-cursor,
+        html.motion-fallback #trail-container,
+        html.motion-fallback #shared-moon,
+        html.motion-fallback #logo-wrapper,
+        html.motion-fallback #launch-ui-wrapper,
+        html.motion-fallback #rocket-wrapper,
+        html.motion-fallback #summary-wrapper { display: none !important; }
+        html.motion-fallback #intro-trigger,
+        html.motion-fallback #awards-trigger,
+        html.motion-fallback #portfolio-section {
+            position: relative !important;
+            top: auto !important;
+        }
+        html.motion-fallback .fouc-protect,
+        html.motion-fallback .nav-link,
+        html.motion-fallback .dark-theme-toggle,
+        html.motion-fallback .intro-fade,
+        html.motion-fallback .awards-fade,
+        html.motion-fallback .awards-logo,
+        html.motion-fallback .cta-fade-text {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: none !important;
+            filter: none !important;
+        }
+        html.motion-fallback body,
+        html.motion-fallback a,
+        html.motion-fallback button { cursor: auto !important; }
         #custom-cursor.hover-nav { width: 60px; height: 60px; background-color: #fff; border-color: #fff; }
         #custom-cursor.hover-img { width: 100px; height: 100px; background-color: #fff; border-color: #fff; mix-blend-mode: normal; }
         #custom-cursor span {
@@ -190,13 +251,47 @@
         @media (max-width: 479px) {
             #dark-header-inner { padding-left: 20px !important; padding-right: 20px !important; }
             #dark-site-header nav { gap: 12px !important; }
-            #dark-site-header nav a { font-size: 11px !important; }
+            #dark-site-header nav a {
+                font-size: 11px !important;
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                margin-block: -2px;
+                padding-inline: 2px;
+                margin-inline: -2px;
+            }
             #header-logo-container { height: 17px; }
+            #header-logo-container,
+            #dark-theme-toggle {
+                position: relative;
+            }
+            #header-logo-container::before {
+                content: "";
+                position: absolute;
+                inset: -14px -5px;
+            }
+            #dark-theme-toggle::before {
+                content: "";
+                position: absolute;
+                inset: -5px;
+            }
             #dark-theme-toggle > div { width: 34px; height: 34px; }
         }
         @media (max-width: 359px) {
             #header-logo-container { height: 16px; }
             #dark-site-header nav { letter-spacing: normal !important; }
+        }
+
+        @media (orientation: landscape) and (max-height: 500px) {
+            #rocket-svg-container { width: 56px !important; }
+            #vehicle-summary {
+                left: auto !important;
+                right: 18px !important;
+                bottom: 104px !important;
+                margin-left: 0 !important;
+            }
+            .launch-line-bg { height: 58px !important; }
+            #shared-moon { opacity: 0.58 !important; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -276,7 +371,7 @@
     </style>
 </head>
 
-<body class="antialiased selection:bg-gray-700 selection:text-white">
+<body id="top" class="antialiased selection:bg-gray-700 selection:text-white">
 
     <div id="bg-grid" class="fixed top-0 left-0 w-full min-h-[100lvh] h-[100lvh] pointer-events-none z-0 px-[30px] md:px-[5.26vw] transition-opacity duration-300 opacity-0">
         <div class="w-full h-full grid grid-cols-4 md:grid-cols-6 gap-[15px] md:gap-[2.08vw]">
@@ -289,7 +384,7 @@
         </div>
     </div>
 
-    <img id="shared-moon" src="assets/home/moon.webp" alt="Moon" class="fixed top-[-80vh] md:top-[-150vh] left-[-20vw] md:left-[-20vw] w-[90vw] md:w-[70vw] max-w-none z-10 pointer-events-none mix-blend-screen opacity-80" onerror="this.style.display='none'">
+    <img id="shared-moon" src="assets/home/moon.webp" alt="" aria-hidden="true" class="fixed top-[-80vh] md:top-[-150vh] left-[-20vw] md:left-[-20vw] w-[90vw] md:w-[70vw] max-w-none z-10 pointer-events-none mix-blend-screen opacity-80" onerror="this.style.display='none'">
 
     <div id="preloader" class="fixed top-0 left-0 w-full h-[100lvh] bg-[#000] z-[99999] flex justify-center items-center pointer-events-auto">
         <div id="preloader-logo-container" class="h-[20px] md:h-[26px]"></div>
@@ -301,7 +396,7 @@
     <!-- Header -->
     <header id="dark-site-header" class="fixed top-0 left-0 w-full pt-[25px] pb-4 z-[999] text-white pointer-events-none fouc-protect">
         <div id="dark-header-inner" class="w-full max-w-[1920px] mx-auto px-[30px] md:px-[5.26vw] flex justify-between items-center relative">
-            <button type="button" id="header-logo-container" aria-label="Back to top" class="h-[20px] md:h-[26px] pointer-events-auto cursor-pointer flex items-center opacity-0 appearance-none border-0 bg-transparent p-0"></button>
+            <a href="#top" id="header-logo-container" aria-label="Back to top" class="h-[20px] md:h-[26px] pointer-events-auto cursor-pointer flex items-center opacity-0 appearance-none border-0 bg-transparent p-0"></a>
 
             <nav class="flex gap-4 md:gap-6 lg:gap-10 items-center text-[12px] md:text-[16px] font-medium leading-[40px] tracking-[0.05em] pointer-events-auto absolute left-1/2 -translate-x-1/2">
                 <a href="#intro-trigger" data-scroll-target="#intro-trigger" class="nav-link cursor-pointer opacity-0">About</a>
@@ -609,7 +704,8 @@
                     smoothWheel: !prefersReducedMotion
                 });
 
-                document.getElementById('header-logo-container')?.addEventListener('click', () => {
+                document.getElementById('header-logo-container')?.addEventListener('click', (event) => {
+                    event.preventDefault();
                     lenis.scrollTo(0);
                 });
 
@@ -782,6 +878,7 @@
                 if (window.matchMedia("(pointer: fine)").matches) {
                     const cursor = document.getElementById("custom-cursor");
                     if (cursor) {
+                        document.documentElement.classList.add("custom-cursor-ready");
                         gsap.set(cursor, { xPercent: -50, yPercent: -50 });
                         const xTo = gsap.quickTo(cursor, "x", { duration: 0.15, ease: "power3" });
                         const yTo = gsap.quickTo(cursor, "y", { duration: 0.15, ease: "power3" });

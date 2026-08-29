@@ -10,14 +10,14 @@ Static portfolio with separate light and dark experiences:
 
 ## CSS build
 
-Tailwind is compiled ahead of time so the production site does not depend on the browser CDN compiler.
+Tailwind and the local motion/font vendor files are compiled or copied ahead of time so the production site does not depend on third-party CDNs.
 
 ```sh
 npm install
 npm run build
 ```
 
-Commit `assets/css/tailwind.min.css` together with any HTML class changes.
+Commit `assets/css/tailwind.min.css` and `assets/vendor/` together with any HTML or dependency changes.
 
 ## Deployment
 
