@@ -364,9 +364,6 @@
         .client-marquee-track { display: flex; flex-wrap: nowrap; width: 100%; overflow: hidden; }
         .client-marquee-group { display: flex; flex-shrink: 0; flex-wrap: nowrap; align-items: center; will-change: transform; transform: translateZ(0); width: calc(var(--logo-w) * 10); animation-play-state: paused; }
         #clients-marquee-container.is-active .client-marquee-group { animation-play-state: running; }
-        @media (hover: hover) and (pointer: fine) {
-            #clients-marquee-container.is-active:hover .client-marquee-group { animation-play-state: paused; }
-        }
 
         .anim-rl { animation: scroll-rl linear infinite; }
         .anim-lr { animation: scroll-lr linear infinite; }
@@ -976,8 +973,8 @@
 <body id="top" class="antialiased selection:bg-black/20 selection:text-black transition-colors duration-700">
 
     <!-- === Preloader === -->
-    <div id="preloader" class="fixed top-0 left-0 w-full h-[100svh] bg-[#FFFFFF] z-[99999] flex justify-center items-center pointer-events-auto transition-opacity duration-[450ms] ease-in-out">
-        <img src="./assets/3amDS.svg" alt="3amDS" id="preloader-logo" class="h-[20px] md:h-[26px] object-contain brightness-0 transition-opacity duration-[350ms] ease-in-out" fetchpriority="high" onerror="this.style.display='none'">
+    <div id="preloader" class="fixed top-0 left-0 w-full h-[100svh] bg-[#FFFFFF] z-[99999] flex justify-center items-center pointer-events-auto transition-opacity duration-[640ms] ease-in-out">
+        <img src="./assets/3amDS.svg" alt="3amDS" id="preloader-logo" class="h-[20px] md:h-[26px] object-contain brightness-0 transition-opacity duration-[480ms] ease-in-out" fetchpriority="high" onerror="this.style.display='none'">
     </div>
 
     <!-- Design Grid -->
@@ -1039,12 +1036,12 @@
                 <div class="absolute bottom-[-5px] right-[0px] flex justify-end items-end z-10 pointer-events-none w-full px-[var(--c-px)]">
                     <div class="w-full grid grid-cols-4 lg:grid-cols-6 h-full">
                         <div class="hands-wrapper col-span-4 lg:col-start-3 lg:col-span-4 flex items-end">
-                            <div class="hand-up hidden lg:block lg:w-1/6" style="transition-duration: 1.05s; transition-delay: 0.18s;"><img src="./assets/hand_01.svg" class="w-full h-auto origin-bottom-center sway-1" alt="" aria-hidden="true" onerror="this.style.display='none'"></div>
-                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 0.9s; transition-delay: 0.08s;"><img src="./assets/hand_02.svg" class="w-full h-auto origin-bottom-center sway-2" alt="" aria-hidden="true" onerror="this.style.display='none'"></div>
-                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 1s; transition-delay: 0.24s;"><img src="./assets/hand_03.svg" class="w-full h-auto origin-bottom-center sway-3" alt="" aria-hidden="true" onerror="this.style.display='none'"></div>
-                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 0.95s; transition-delay: 0.12s;"><img src="./assets/hand_04.svg" class="w-full h-auto origin-bottom-center sway-4" alt="" aria-hidden="true" onerror="this.style.display='none'"></div>
-                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 1.05s; transition-delay: 0.2s;"><img src="./assets/hand_05.svg" class="w-full h-auto origin-bottom-center sway-5" alt="" aria-hidden="true" onerror="this.style.display='none'"></div>
-                            <div class="hand-up hidden lg:block lg:w-1/6" style="transition-duration: 0.9s; transition-delay: 0.15s;"><img src="./assets/hand_06.svg" class="w-full h-auto origin-bottom-center sway-6" alt="" aria-hidden="true" onerror="this.style.display='none'"></div>
+                            <div class="hand-up hidden lg:block lg:w-1/6" style="transition-duration: 1.28s; transition-delay: 0.48s;"><img src="./assets/hand_01.svg" class="w-full h-auto origin-bottom-center sway-1" alt="" aria-hidden="true" onerror="this.style.display='none'"></div>
+                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 1.2s; transition-delay: 0.24s;"><img src="./assets/hand_02.svg" class="w-full h-auto origin-bottom-center sway-2" alt="" aria-hidden="true" onerror="this.style.display='none'"></div>
+                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 1.2s; transition-delay: 0.64s;"><img src="./assets/hand_03.svg" class="w-full h-auto origin-bottom-center sway-3" alt="" aria-hidden="true" onerror="this.style.display='none'"></div>
+                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 1.36s; transition-delay: 0.32s;"><img src="./assets/hand_04.svg" class="w-full h-auto origin-bottom-center sway-4" alt="" aria-hidden="true" onerror="this.style.display='none'"></div>
+                            <div class="hand-up w-1/4 lg:w-1/6" style="transition-duration: 1.44s; transition-delay: 0.56s;"><img src="./assets/hand_05.svg" class="w-full h-auto origin-bottom-center sway-5" alt="" aria-hidden="true" onerror="this.style.display='none'"></div>
+                            <div class="hand-up hidden lg:block lg:w-1/6" style="transition-duration: 1.04s; transition-delay: 0.4s;"><img src="./assets/hand_06.svg" class="w-full h-auto origin-bottom-center sway-6" alt="" aria-hidden="true" onerror="this.style.display='none'"></div>
                         </div>
                     </div>
                 </div>
@@ -1283,16 +1280,7 @@
     <script>
         // === 0. Initialize Lenis Smooth Scroll ===
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const introSessionKey = '3am-intro-seen-v1';
-        const hasSeenIntro = (() => {
-            try { return sessionStorage.getItem(introSessionKey) === '1'; }
-            catch { return false; }
-        })();
-        const skipIntro = prefersReducedMotion || hasSeenIntro;
-        const rememberIntro = () => {
-            try { sessionStorage.setItem(introSessionKey, '1'); }
-            catch { /* Storage may be unavailable in privacy modes. */ }
-        };
+        const skipIntro = prefersReducedMotion;
         const pageParams = new URLSearchParams(window.location.search);
         const isProjectEmbed = pageParams.get('embed') === '1';
         if (isProjectEmbed) document.documentElement.classList.add('project-embed');
@@ -1325,7 +1313,6 @@
 
         document.getElementById('theme-toggle')?.addEventListener('click', (event) => {
             event.preventDefault();
-            rememberIntro();
             if (prefersReducedMotion) {
                 window.location.href = 'index-dark.html';
                 return;
@@ -1365,10 +1352,9 @@
                 return;
             }
 
-            rememberIntro();
-            const holdDuration = 550;
-            const logoFadeDuration = 350;
-            const screenFadeDuration = 450;
+            const holdDuration = 1200;
+            const logoFadeDuration = 480;
+            const screenFadeDuration = 640;
 
             setTimeout(() => {
                 const logo = document.getElementById('preloader-logo');
@@ -1399,8 +1385,8 @@
                 });
             }
 
-            const handsDelay = immediate ? 0 : 220;
-            const chromeDelay = immediate ? 0 : 620;
+            const handsDelay = immediate ? 0 : 1000;
+            const chromeDelay = immediate ? 0 : 2080;
 
             setTimeout(() => {
                 document.querySelectorAll('.hand-up').forEach(el => el.classList.add('active'));
@@ -1459,16 +1445,16 @@
                     path.classList.add('ayoh-path', pathClass);
                     
                     const len = path.getTotalLength ? Math.ceil(path.getTotalLength()) + 10 : 3500;
-                    const delayDraw = i * 0.08;
-                    const fillDelay = 1.6 + delayDraw;
+                    const delayDraw = i * 0.12;
+                    const fillDelay = 2 + delayDraw;
                     
                     cssContent += `
                         .${pathClass} {
                             stroke-dasharray: ${len}px !important;
                             stroke-dashoffset: ${len}px !important;
-                            transition: stroke-dashoffset 1.6s cubic-bezier(0.22, 1, 0.36, 1) ${delayDraw}s,
-                                        fill 0.5s ease-in-out ${fillDelay}s,
-                                        stroke-opacity 0.5s ease-in-out ${fillDelay}s,
+                            transition: stroke-dashoffset 2s cubic-bezier(0.22, 1, 0.36, 1) ${delayDraw}s,
+                                        fill 0.64s ease-in-out ${fillDelay}s,
+                                        stroke-opacity 0.64s ease-in-out ${fillDelay}s,
                                         opacity 0.01s linear ${delayDraw}s !important;
                         }
                         .hero-exit .${pathClass}.start-anim {
@@ -1718,7 +1704,7 @@
                     loopLogos.forEach(logoId => {
                         html += `
                             <div class="client-logo-wrapper flex items-center justify-center aspect-[3/2]">
-                                <img loading="lazy" decoding="async" src="./assets/project_logo/logo_${String(logoId).padStart(2, '0')}.svg" alt="" aria-hidden="true" class="w-full h-full object-contain brightness-0 scale-125 min-[820px]:scale-100 min-[1600px]:max-[1699px]:scale-110 pointer-events-none opacity-80 hover:opacity-100 transition-opacity duration-300">
+                                <img loading="lazy" decoding="async" src="./assets/project_logo/logo_${String(logoId).padStart(2, '0')}.svg" alt="" aria-hidden="true" class="w-full h-full object-contain brightness-0 scale-[0.875] min-[820px]:scale-[0.7] min-[1600px]:max-[1699px]:scale-[0.77] pointer-events-none opacity-80 hover:opacity-100 transition-opacity duration-300">
                             </div>
                         `;
                     });

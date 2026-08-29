@@ -632,16 +632,6 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            const introSessionKey = '3am-intro-seen-v1';
-            const hasSeenIntro = (() => {
-                try { return sessionStorage.getItem(introSessionKey) === '1'; }
-                catch { return false; }
-            })();
-            const skipIntro = prefersReducedMotion || hasSeenIntro;
-            const rememberIntro = () => {
-                try { sessionStorage.setItem(introSessionKey, '1'); }
-                catch { /* Storage may be unavailable in privacy modes. */ }
-            };
             
             const fallbackSVGs = {
                 'assets/home/3amDS.svg': '<svg viewBox="0 0 114 25"><text x="0" y="20" fill="#fff" font-size="20" font-weight="bold" font-family="sans-serif">3am.</text></svg>',
@@ -718,7 +708,6 @@
 
                 document.getElementById('dark-theme-toggle')?.addEventListener('click', (event) => {
                     event.preventDefault();
-                    rememberIntro();
                     if (prefersReducedMotion) {
                         window.location.href = 'index.html';
                         return;
@@ -929,16 +918,9 @@
                 initTl.fromTo("#launch-circle", { scale: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.7)" }, 1.55);
 
                 const preloader = document.getElementById("preloader");
-                if (skipIntro) {
-                    if (preloader) preloader.style.display = "none";
-                    initTl.progress(1).pause();
-                    lenis.start();
-                } else {
-                    rememberIntro();
-                    const preloaderTl = gsap.timeline({ onComplete: () => { if (preloader) preloader.style.display = "none"; lenis.start(); } });
-                    preloaderTl.to("#preloader-logo-container", { opacity: 0, duration: 0.35, delay: 0.55, ease: "power2.inOut" })
-                               .to("#preloader", { opacity: 0, duration: 0.45, ease: "power2.inOut", onStart: () => initTl.play() }, "-=0.1");
-                }
+                const preloaderTl = gsap.timeline({ onComplete: () => { if (preloader) preloader.style.display = "none"; lenis.start(); } });
+                preloaderTl.to("#preloader-logo-container", { opacity: 0, duration: 0.35, delay: 0.55, ease: "power2.inOut" })
+                           .to("#preloader", { opacity: 0, duration: 0.45, ease: "power2.inOut", onStart: () => initTl.play() }, "-=0.1");
 
                 const mm = gsap.matchMedia();
                 mm.add({
