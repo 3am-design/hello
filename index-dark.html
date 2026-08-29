@@ -178,10 +178,12 @@
             }
         }
 
-        @media (max-width: 359px) {
-            header { padding-left: 20px !important; padding-right: 20px !important; }
-            header nav { gap: 14px !important; font-size: 12px !important; }
+        @media (max-width: 479px) {
+            #dark-header-inner { padding-left: 20px !important; padding-right: 20px !important; }
+            #dark-site-header nav { gap: 12px !important; }
+            #dark-site-header nav a { font-size: 11px !important; }
             #header-logo-container { height: 17px; }
+            #dark-theme-toggle > div { width: 34px; height: 34px; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -202,7 +204,7 @@
             position: fixed;
             inset: 0;
             z-index: 500000;
-            background: #f6f5f2;
+            background: #050505;
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
@@ -219,7 +221,10 @@
             width: 100%;
             height: 100%;
             border: 0;
-            background: #f6f5f2;
+            background: #050505;
+        }
+        #dark-project-frame:focus {
+            outline: none;
         }
     </style>
 </head>
@@ -247,13 +252,23 @@
     <div id="custom-cursor"><span>Discover</span></div>
 
     <!-- Header -->
-    <header id="dark-site-header" class="fixed top-0 left-0 w-full px-[30px] pt-[30px] md:px-[5.26vw] md:pt-[35px] z-[999] flex justify-between items-end pointer-events-none fouc-protect">
-        <a href="index.html" id="header-logo-container" class="h-[20px] md:h-[26px] pointer-events-auto cursor-pointer flex items-end opacity-0"></a>
-        <nav class="flex gap-6 md:gap-[35px] text-sm md:text-[15px] font-bold tracking-[0.04em] h-[20px] md:h-[26px] items-end pointer-events-auto">
-            <a href="#portfolio-section" data-scroll-target="#portfolio-section" class="nav-link cursor-pointer leading-none opacity-0">Works</a>
-            <a href="#intro-trigger" data-scroll-target="#intro-trigger" class="nav-link cursor-pointer leading-none opacity-0">About</a>
-            <a href="#dark-talk" data-scroll-target="#dark-talk" class="nav-link cursor-pointer leading-none opacity-0">Talk</a>
-        </nav>
+    <header id="dark-site-header" class="fixed top-0 left-0 w-full pt-[25px] pb-4 z-[999] text-white pointer-events-none fouc-protect">
+        <div id="dark-header-inner" class="w-full max-w-[1920px] mx-auto px-[30px] md:px-[5.26vw] flex justify-between items-center relative">
+            <button type="button" id="header-logo-container" aria-label="Back to top" class="h-[20px] md:h-[26px] pointer-events-auto cursor-pointer flex items-center opacity-0 appearance-none border-0 bg-transparent p-0"></button>
+
+            <nav class="flex gap-4 md:gap-6 lg:gap-10 items-center text-[12px] md:text-[16px] font-medium leading-[40px] tracking-[0.05em] pointer-events-auto absolute left-1/2 -translate-x-1/2">
+                <a href="#intro-trigger" data-scroll-target="#intro-trigger" class="nav-link cursor-pointer opacity-0">About</a>
+                <a href="#portfolio-section" data-scroll-target="#portfolio-section" class="nav-link cursor-pointer opacity-0">Works</a>
+                <a href="#dark-talk" data-scroll-target="#dark-talk" class="nav-link cursor-pointer opacity-0">Talk</a>
+            </nav>
+
+            <a href="index.html" id="dark-theme-toggle" aria-label="Switch to light mode" class="dark-theme-toggle flex items-center pointer-events-auto cursor-pointer group opacity-0">
+                <span class="hidden md:block text-[10px] font-semibold mr-2 group-hover:opacity-70 transition-opacity tracking-normal leading-none -translate-y-[1px]">Light on</span>
+                <div class="w-[38px] h-[38px] rounded-full border border-white/20 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
+                    <img src="./assets/Light-mode.svg" alt="" aria-hidden="true" class="w-[18px] h-[18px] transition-all duration-300">
+                </div>
+            </a>
+        </div>
     </header>
 
     <div id="dark-project-overlay" aria-hidden="true" inert>
@@ -378,39 +393,39 @@
 
         <!-- Portfolio Section -->
         <div id="portfolio-section" class="absolute w-full top-[7500px] md:top-[11000px] z-30 pb-0">
-            <div class="w-full mx-auto px-[30px] md:px-[5.26vw] grid grid-cols-4 md:grid-cols-6 gap-[15px] md:gap-[2.08vw] items-start">
+            <div class="w-full mx-auto px-[30px] md:px-[5.26vw] grid grid-cols-4 md:grid-cols-6 gap-[10px] md:gap-[2.08vw] items-start">
                 
                 <!-- Item 1 -->
-                <button type="button" data-project-id="01" aria-label="Open Hong Kong Palace Museum project" class="portfolio-item group relative z-30 col-span-4 md:col-span-4 bg-zinc-800 aspect-[16/10] w-full cursor-pointer rounded-sm overflow-hidden appearance-none border-0 p-0 text-left">
+                <button type="button" data-project-id="01" aria-label="Open Hong Kong Palace Museum project" class="portfolio-item group relative z-30 col-span-4 md:col-span-4 bg-zinc-800 aspect-[4/3] md:aspect-[16/10] w-full cursor-pointer rounded-[10px] md:rounded-sm overflow-hidden appearance-none border-0 p-0 text-left">
                     <img loading="lazy" decoding="async" src="assets/works/01/01_image_01.webp" alt="Hong Kong Palace Museum project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.style.display='none'">
                 </button>
 
                 <!-- Item 2 -->
-                <button type="button" data-project-id="02" aria-label="Open Chow Sang Sang Sustainability Internal Hub project" class="portfolio-item group relative z-30 col-span-2 md:col-span-2 md:col-start-5 bg-zinc-800 aspect-square md:aspect-[3/4] w-full mt-0 md:mt-[8vw] cursor-pointer rounded-sm overflow-hidden appearance-none border-0 p-0 text-left">
+                <button type="button" data-project-id="02" aria-label="Open Chow Sang Sang Sustainability Internal Hub project" class="portfolio-item group relative z-30 col-span-4 md:col-span-2 md:col-start-5 bg-zinc-800 aspect-[4/3] md:aspect-[3/4] w-full mt-0 md:mt-[8vw] cursor-pointer rounded-[10px] md:rounded-sm overflow-hidden appearance-none border-0 p-0 text-left">
                     <img loading="lazy" decoding="async" src="assets/works/02/02_image_01.webp" alt="Chow Sang Sang Sustainability Internal Hub project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.style.display='none'">
                 </button>
 
                 <!-- Item 3 -->
-                <button type="button" data-project-id="03" aria-label="Open Harbour Plaza Hotels and Resorts project" class="portfolio-item group relative z-30 col-span-2 md:col-span-2 md:col-start-2 bg-zinc-800 aspect-square w-full mt-0 md:-mt-[6vw] cursor-pointer rounded-sm overflow-hidden appearance-none border-0 p-0 text-left">
+                <button type="button" data-project-id="03" aria-label="Open Harbour Plaza Hotels and Resorts project" class="portfolio-item group relative z-30 col-span-4 md:col-span-2 md:col-start-2 bg-zinc-800 aspect-[4/3] md:aspect-square w-full mt-0 md:-mt-[6vw] cursor-pointer rounded-[10px] md:rounded-sm overflow-hidden appearance-none border-0 p-0 text-left">
                     <img loading="lazy" decoding="async" src="assets/works/03/03_image_01.webp" alt="Harbour Plaza Hotels and Resorts project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.style.display='none'">
                 </button>
 
                 <!-- Item 4 -->
-                <button type="button" data-project-id="04" aria-label="Open Chow Sang Sang Digital Ecosystem project" class="portfolio-item group relative z-30 col-span-4 md:col-span-3 md:col-start-4 bg-zinc-800 aspect-[16/10] md:aspect-[4/3] w-full mt-0 md:mt-[2vw] cursor-pointer rounded-sm overflow-hidden appearance-none border-0 p-0 text-left">
+                <button type="button" data-project-id="04" aria-label="Open Chow Sang Sang Digital Ecosystem project" class="portfolio-item group relative z-30 col-span-4 md:col-span-3 md:col-start-4 bg-zinc-800 aspect-[4/3] w-full mt-0 md:mt-[2vw] cursor-pointer rounded-[10px] md:rounded-sm overflow-hidden appearance-none border-0 p-0 text-left">
                     <img loading="lazy" decoding="async" src="assets/works/04/04_image_01.webp" alt="Chow Sang Sang Digital Ecosystem project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.style.display='none'">
                 </button>
 
                 <!-- Item 5 -->
-                <button type="button" data-project-id="05" aria-label="Open HKICL website project" class="portfolio-item group relative z-30 col-span-4 md:col-span-3 md:col-start-1 bg-zinc-800 aspect-[16/10] w-full mt-0 md:-mt-[10vw] cursor-pointer rounded-sm overflow-hidden appearance-none border-0 p-0 text-left">
+                <button type="button" data-project-id="05" aria-label="Open HKICL website project" class="portfolio-item group relative z-30 col-span-4 md:col-span-3 md:col-start-1 bg-zinc-800 aspect-[4/3] md:aspect-[16/10] w-full mt-0 md:-mt-[10vw] cursor-pointer rounded-[10px] md:rounded-sm overflow-hidden appearance-none border-0 p-0 text-left">
                     <img loading="lazy" decoding="async" src="assets/works/05/05_image_01.webp" alt="HKICL website project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.style.display='none'">
                 </button>
 
                 <!-- Items 6–7 keep the asymmetric free-flow rhythm. -->
-                <button type="button" data-project-id="06" aria-label="Open Bangadang Farm project" class="portfolio-item group relative z-30 col-span-2 md:col-span-2 md:col-start-5 bg-zinc-800 aspect-square md:aspect-[3/4] w-full mt-0 md:-mt-[4vw] cursor-pointer rounded-sm overflow-hidden appearance-none border-0 p-0 text-left">
+                <button type="button" data-project-id="06" aria-label="Open Bangadang Farm project" class="portfolio-item group relative z-30 col-span-4 md:col-span-2 md:col-start-5 bg-zinc-800 aspect-[4/3] md:aspect-[3/4] w-full mt-0 md:-mt-[4vw] cursor-pointer rounded-[10px] md:rounded-sm overflow-hidden appearance-none border-0 p-0 text-left">
                     <img loading="lazy" decoding="async" src="assets/works/06/06_image_01.webp" alt="Bangadang Farm project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.style.display='none'">
                 </button>
 
-                <button type="button" data-project-id="07" aria-label="Open Emphasis Jewellery project" class="portfolio-item group relative z-30 col-span-4 md:col-span-4 md:col-start-2 bg-zinc-800 aspect-[16/10] w-full mt-0 md:-mt-[8vw] cursor-pointer rounded-sm overflow-hidden appearance-none border-0 p-0 text-left">
+                <button type="button" data-project-id="07" aria-label="Open Emphasis Jewellery project" class="portfolio-item group relative z-30 col-span-4 md:col-span-4 md:col-start-2 bg-zinc-800 aspect-[4/3] md:aspect-[16/10] w-full mt-0 md:-mt-[8vw] cursor-pointer rounded-[10px] md:rounded-sm overflow-hidden appearance-none border-0 p-0 text-left">
                     <img loading="lazy" decoding="async" src="assets/works/07/07_image_01.webp" alt="Emphasis Jewellery project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.style.display='none'">
                 </button>
 
@@ -533,11 +548,18 @@
                     smoothWheel: !prefersReducedMotion
                 });
 
+                document.getElementById('header-logo-container')?.addEventListener('click', () => {
+                    lenis.scrollTo(0);
+                });
+
                 lenis.stop();
                 window.scrollTo(0, 0);
 
                 const projectOverlay = document.getElementById('dark-project-overlay');
                 const projectFrame = document.getElementById('dark-project-frame');
+                const projectBackground = [...document.body.children].filter((element) =>
+                    element !== projectOverlay && element.tagName !== 'SCRIPT'
+                );
                 let darkProjectTrigger = null;
 
                 const closeDarkProject = () => {
@@ -550,6 +572,7 @@
                     projectOverlay.setAttribute('aria-hidden', 'true');
                     projectOverlay.setAttribute('inert', '');
                     document.body.classList.remove('dark-modal-open');
+                    projectBackground.forEach((element) => element.removeAttribute('inert'));
                     lenis.start();
                     setTimeout(() => {
                         if (projectFrame) projectFrame.src = 'about:blank';
@@ -564,6 +587,7 @@
                         if (!projectId || !projectOverlay || !projectFrame) return;
                         darkProjectTrigger = button;
                         document.body.classList.add('dark-modal-open');
+                        projectBackground.forEach((element) => element.setAttribute('inert', ''));
                         lenis.stop();
                         projectFrame.dataset.project = projectId;
                         projectFrame.onload = () => {
@@ -574,7 +598,7 @@
                             projectOverlay.classList.add('is-open');
                             projectFrame.focus();
                         };
-                        projectFrame.src = `index.html?project=${encodeURIComponent(projectId)}&embed=1#works`;
+                        projectFrame.src = `index.html?project=${encodeURIComponent(projectId)}&embed=1&theme=dark#works`;
                     });
                 });
 
@@ -593,6 +617,7 @@
                         if (!target) return;
                         event.preventDefault();
                         lenis.scrollTo(target, {
+                            offset: link.dataset.scrollTarget === '#portfolio-section' ? -90 : 0,
                             duration: prefersReducedMotion ? 0 : 1.4,
                             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
                         });
@@ -647,7 +672,7 @@
                 });
 
                 gsap.set(".fouc-protect", { autoAlpha: 1 });
-                gsap.set(".nav-link, .launch-text, #launch-circle, .summary-line", { opacity: 0 });
+                gsap.set(".nav-link, .dark-theme-toggle, .launch-text, #launch-circle, .summary-line", { opacity: 0 });
                 gsap.set(".intro-fade", { opacity: 0, y: 24 });
                 gsap.set(".awards-fade, .awards-logo", { opacity: 0, y: 34, filter: "blur(10px)" });
                 
@@ -663,7 +688,7 @@
                         const yTo = gsap.quickTo(cursor, "y", { duration: 0.15, ease: "power3" });
 
                         window.addEventListener("mousemove", (e) => { xTo(e.clientX); yTo(e.clientY); });
-                        document.querySelectorAll(".nav-link, .hover-underline-link, #header-logo-container").forEach((link) => {
+                        document.querySelectorAll(".nav-link, .hover-underline-link, #header-logo-container, .dark-theme-toggle").forEach((link) => {
                             link.addEventListener("mouseenter", () => cursor.classList.add("hover-nav"));
                             link.addEventListener("mouseleave", () => cursor.classList.remove("hover-nav"));
                         });
@@ -699,7 +724,7 @@
                 initTl.fromTo(".launch-line-bg", { scaleY: 0 }, { scaleY: 1, duration: 1.5, ease: "power3.inOut" }, 2.0);
                 
                 initTl.fromTo(".summary-line", { x: 15 }, { x: 0, opacity: 1, duration: 1.2, stagger: 0.15, ease: "power3.out" }, 2.2);
-                initTl.fromTo(".nav-link", { y: -10 }, { y: 0, opacity: 1, duration: 1.2, stagger: 0.15, ease: "power3.out" }, 2.2);
+                initTl.fromTo("#header-logo-container, .nav-link, .dark-theme-toggle", { y: -10 }, { y: 0, opacity: 1, duration: 1.2, stagger: 0.12, ease: "power3.out" }, 2.2);
                 
                 initTl.fromTo("#launch-circle", { scale: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: "back.out(1.7)" }, 3.0);
 
