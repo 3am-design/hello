@@ -19,6 +19,8 @@ npm run build
 
 Commit `assets/css/tailwind.min.css` and `assets/vendor/` together with any HTML or dependency changes.
 
+The `postcss-selector-parser` override pins the security fix in 7.1.6 for Tailwind 3 and its nesting plugin. Keep this override until their dependency ranges include the patched parser. The lockfile also includes `source-map-js` 1.2.2. Run `npm ci`, `npm audit`, and `npm run build` when updating these dependencies; compare the generated CSS and vendor files before deployment.
+
 ## Deployment
 
 GitHub Pages publishes the repository root from `main`:
